@@ -19,7 +19,7 @@ export default function TabHeader() {
 }
 const styles = StyleSheet.create({
   travogue: {
-    fontSize: 32,
+    fontSize: 30,
     textAlign: "center",
     color: "white",
   },
@@ -31,6 +31,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 19,
-    paddingVertical: 16,
+    paddingVertical: 13,
   },
 });

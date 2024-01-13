@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   Pressable,
+  FlatList,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -18,7 +19,9 @@ import WhereScreen from "./WhereScreen";
 import EatScreen from "./EatScreen";
 import PlaceScreen from "./PlaceScreen";
 import ExperienceScreen from "./ExperienceScreen";
-
+import { DATA } from "../Utils/data";
+import AccommodationCard from "@/Components/AccomodationCard";
+import { StarIcon } from "@/Assets/Icons/Card";
 export default function HomeScreen() {
   const navigation = useNavigation();
   const tabs = ["Đi đâu", "Ăn gì", "Ở đâu", "Trải Nghiệm"];

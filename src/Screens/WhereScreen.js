@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   Pressable,
+  FlatList,
 } from "react-native";
 import React, { useLayoutEffect, useState, useRef } from "react";
 import { SvgXml } from "react-native-svg";
@@ -23,6 +24,10 @@ import {
   ScenicIconActive,
   MuseumIconActive,
 } from "@/Assets/Icons/Where";
+import { DATA } from "../Utils/data";
+import AccommodationCard from "@/Components/AccomodationCard";
+import { StarIcon } from "@/Assets/Icons/Card";
+
 export default function WhereScreen() {
   const menu = [
     { name: "Công viên", svg: ParkIcon, svgActive: ParkIconActive },
@@ -39,30 +44,54 @@ export default function WhereScreen() {
 
   return (
     <ScrollView>
-      <Text style={styles.title}>Bạn có thể thích những địa điểm này</Text>
-      <View style={styles.header}>
-        {menu.map((e, i) => (
-          <Pressable
-            style={styles.categoryItem}
-            key={i}
-            onPress={() => setSelected(i)}
-          >
-            <SvgXml
-              style={styles.icon}
-              xml={selected === i ? e.svgActive : e.svg}
-            />
-            <Text
-              style={[
-                styles.titleTab,
-                selected == i && {
-                  color: "#151515",
-                },
-              ]}
+      <View>
+        <Text style={styles.title}>Bạn có thể thích những địa điểm này</Text>
+        <View style={styles.header}>
+          {menu.map((e, i) => (
+            <Pressable
+              style={styles.categoryItem}
+              key={i}
+              onPress={() => setSelected(i)}
             >
-              {e.name}
-            </Text>
-          </Pressable>
-        ))}
+              <SvgXml
+                style={styles.icon}
+                xml={selected === i ? e.svgActive : e.svg}
+              />
+              <Text
+                style={[
+                  styles.titleTab,
+                  selected == i && {
+                    color: "#151515",
+                  },
+                ]}
+              >
+                {e.name}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+        <FlatList
+          // onScroll={Animated.event(
+          //   [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
+          //   { useNativeDriver: false }
+          // )}
+          data={DATA}
+          renderItem={({ index, item }) => (
+            <AccommodationCard
+              id={item.id}
+              cardName={item.cardName}
+              imgPath={item.imgPath}
+              location={item.location}
+              price={item.price}
+              star={item.star}
+              style={{ marginRight: index % 2 !== 0 ? 0 : "4%" }}
+            />
+          )}
+          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          numColumns={2}
+          keyExtractor={(item, index) => index}
+          style={{ minHeight: 700 }}
+        />
       </View>
     </ScrollView>
   );
