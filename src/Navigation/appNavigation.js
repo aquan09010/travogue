@@ -3,6 +3,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getItem } from "@/Utils/asyncStorage.js";
 import OnboardingScreen from "@/Screens/OnBoardingScreen";
+import MainNavigator from "./MainNavigation";
+
 const Stack = createNativeStackNavigator();
 export default function AppNavigation() {
   const [showOnboarding, setShowOnboarding] = useState(null);
@@ -31,6 +33,11 @@ export default function AppNavigation() {
           name="Onboarding"
           options={{ headerShown: false }}
           component={OnboardingScreen}
+        />
+        <Stack.Screen
+          name="Main"
+          options={{ headerShown: false }}
+          component={MainNavigator}
         />
       </Stack.Navigator>
     </NavigationContainer>

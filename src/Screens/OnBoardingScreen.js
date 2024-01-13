@@ -17,14 +17,14 @@ export default function OnboardingScreen() {
   const navigation = useNavigation();
 
   const handleDone = () => {
-    navigation.navigate("Auth");
+    navigation.navigate("Main");
     setItem("onboarded", "1");
   };
 
   const skipButton = ({ ...props }) => {
     return (
       <TouchableOpacity style={styles.skipButton} {...props}>
-        <Text style={{ color: "white", fontSize: 18 }}>Bỏ qua</Text>
+        <Text style={{ color: "#A80027", fontSize: 18 }}>Bỏ qua</Text>
       </TouchableOpacity>
     );
   };
@@ -32,7 +32,7 @@ export default function OnboardingScreen() {
   const nextButton = ({ ...props }) => {
     return (
       <TouchableOpacity style={styles.skipButton} {...props}>
-        <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>
+        <Text style={{ color: "#A80027", fontWeight: "bold", fontSize: 18 }}>
           Tiếp theo →
         </Text>
       </TouchableOpacity>
@@ -52,9 +52,9 @@ export default function OnboardingScreen() {
   const Square = ({ isLight, selected }) => {
     let backgroundColor;
     if (isLight) {
-      backgroundColor = selected ? "#651D43" : "#fff";
+      backgroundColor = selected ? "#A80027" : "#FFEBEF";
     } else {
-      backgroundColor = selected ? "#651D43" : "#fff";
+      backgroundColor = selected ? "#A80027" : "#FFEBEF";
     }
     return (
       <View
@@ -81,11 +81,11 @@ export default function OnboardingScreen() {
         NextButtonComponent={nextButton}
         DotComponent={Square}
         containerStyles={{ paddingHorizontal: 15 }}
-        titleStyles={{ color: "white", fontWeight: "bold", fontSize: 28 }}
-        subTitleStyles={{ color: "white", fontSize: 18 }}
+        titleStyles={{ color: "#E00034", fontWeight: "bold", fontSize: 28 }}
+        subTitleStyles={{ color: "black", fontSize: 18 }}
         pages={[
           {
-            backgroundColor: "#FFAF4E",
+            backgroundColor: "white",
             image: (
               <View style={styles.lottie}>
                 <Lottie
@@ -100,7 +100,7 @@ export default function OnboardingScreen() {
               "Hãy cho chúng tôi biết điểm đến của bạn, những địa điểm tốt nhất và phù hợp nhất sẽ được đề xuất",
           },
           {
-            backgroundColor: "#FFBE97",
+            backgroundColor: "white",
             image: (
               <View style={styles.lottie}>
                 <Lottie
@@ -115,7 +115,7 @@ export default function OnboardingScreen() {
               "Tìm hiểu những trải nghiệm đem lại những cảm giác mới mẽ, đồng thời hiểu được cuộc sống con người địa phương",
           },
           {
-            backgroundColor: "#1FB090",
+            backgroundColor: "white",
             image: (
               <View style={styles.lottie}>
                 <Lottie
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   doneButton: {
     marginRight: 0.1 * width,
-    backgroundColor: "#651D43",
+    backgroundColor: "#A80027",
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
