@@ -6,21 +6,24 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import { SearchIcon } from '@/Assets/Icons/Search';
-import { SvgXml } from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
-import { MiniLocation, StarIcon } from '@/Assets/Icons/Card';
-import HeartButton from './HeartButton';
+} from "react-native";
+import { SearchIcon } from "@/Assets/Icons/Search";
+import { SvgXml } from "react-native-svg";
+import { useNavigation } from "@react-navigation/native";
+import { MiniLocation, StarIcon } from "@/Assets/Icons/Card";
+import HeartButton from "./HeartButton";
 
 export default function AccommodationCard(props) {
   const navigation = useNavigation();
-
+  const goToDetail = async (e) => {
+    e.preventDefault();
+    navigation.navigate("Detail");
+  };
   return (
     <TouchableOpacity
       style={[styles.itemContainer, props.style]}
       key={props.id}
-      onPress={() => {}}
+      onPress={goToDetail}
     >
       <Image style={styles.image} source={props.imgPath} />
       <View style={styles.cardDetail}>
@@ -54,41 +57,41 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 7,
-    width: '100%',
+    width: "100%",
     height: 230,
   },
   cardDetail: {
     padding: 8,
   },
   line: {
-    flexDirection: 'row',
-    alignContent: 'center',
+    flexDirection: "row",
+    alignContent: "center",
     // height: 10,
     marginBottom: 3,
   },
   location: {
     marginLeft: 4,
     fontSize: 12,
-    color: '#262626',
+    color: "#262626",
   },
   cardName: {
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 3,
     minHeight: 30,
     maxHeight: 30,
   },
   categoryText: {
     fontSize: 12,
-    color: '#262626',
+    color: "#262626",
   },
   imageIcon: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     height: 250,
   },
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

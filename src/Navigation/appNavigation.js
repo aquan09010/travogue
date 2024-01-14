@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getItem } from "@/Utils/asyncStorage.js";
 import OnboardingScreen from "@/Screens/OnBoardingScreen";
 import MainNavigator from "./MainNavigation";
+import DetailScreen from "@/Screens/DetailScreen";
+import OrderConfirm from "@/Screens/OrderConfirmed";
 import LoginScreen from "@/Screens/LoginScreen";
 import RegisterScreen from "@/Screens/RegisterScreen";
 
@@ -40,6 +42,16 @@ export default function AppNavigation() {
           name="Main"
           options={{ headerShown: false }}
           component={MainNavigator}
+        />
+        <Stack.Screen
+          name="Detail"
+          options={{ headerShown: false }}
+          component={DetailScreen}
+        />
+        <Stack.Screen
+          name="OrderConfirm"
+          options={{ headerShown: false }}
+          component={OrderConfirm}
         />
         <Stack.Screen
           name="Login"
