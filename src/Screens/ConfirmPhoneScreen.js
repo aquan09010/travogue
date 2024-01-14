@@ -26,6 +26,10 @@ export default function ConfirmPhoneScreen ()  {
         navigation.navigate("ConfirmPhone");
     };
 
+    const goToRegisterPage = () => {
+        navigation.navigate("Register");
+    };
+
     const inputs = Array(6).fill().map(() => React.createRef());
 
     return (
@@ -35,7 +39,7 @@ export default function ConfirmPhoneScreen ()  {
             </View>
 
             <View style={styles.title}>
-                <SvgXml xml={LeftArrow} style={styles.arrow} />
+                <SvgXml xml={LeftArrow} style={styles.arrow} onPress={goToRegisterPage}/>
                 <Text style={styles.titleText}>Đăng ký</Text>
             </View>
 

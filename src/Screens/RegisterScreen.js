@@ -26,6 +26,10 @@ export default function RegisterScreen ()  {
         navigation.navigate("ConfirmPhone");
     };
 
+    const goToLoginPage = () => {
+        navigation.navigate("Login");
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -33,7 +37,7 @@ export default function RegisterScreen ()  {
             </View>
 
             <View style={styles.title}>
-                <SvgXml xml={LeftArrow} style={styles.arrow} />
+                <SvgXml xml={LeftArrow} style={styles.arrow} onPress={goToLoginPage}/>
                 <Text style={styles.titleText}>Đăng ký</Text>
             </View>
 

@@ -103,50 +103,50 @@ export default function LoginScreen () {
                     <Text style={styles.buttonText}>Đăng nhập</Text>
                 </TouchableOpacity>
 
-                <View style={styles.dividerContainer}>
-                    <View style={styles.dividerLine} />
-                    <Text style={styles.dividerText}>OR</Text>
-                    <View style={styles.dividerLine} />
-                </View>
+            </View>
+            
+            <View style={styles.dividerContainer}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>OR</Text>
+                <View style={styles.dividerLine} />
+            </View>
 
-                {/* {user && <ShowUserInfo/>}       
+            {/* {user && <ShowUserInfo/>}       
 
-                {user === null && 
-                    <>
-                    <TouchableOpacity
-                        disabled={!request}
-                        onPress={() => {
-                            promptAsync();
-                        }}
-                        style={styles.buttonGoogle}
-                    >
-                        <SvgXml xml={GoogleIcon} />
-                        <Text style={styles.buttonText}>Đăng nhập bằng Google</Text>
-                    </TouchableOpacity>
-                    </>
-                }          */}
-
-                <TouchableOpacity style={styles.buttonGG}>
-                    <SvgXml xml={GoogleIcon} style={{marginRight: 16}} />
-                    <Text style={styles.buttonTextGG}>Đăng nhập bằng Google</Text>
+            {user === null && 
+                <>
+                <TouchableOpacity
+                    disabled={!request}
+                    onPress={() => {
+                        promptAsync();
+                    }}
+                    style={styles.buttonGoogle}
+                >
+                    <SvgXml xml={GoogleIcon} />
+                    <Text style={styles.buttonText}>Đăng nhập bằng Google</Text>
                 </TouchableOpacity>
+                </>
+            }          */}
 
-                <TouchableOpacity style={styles.buttonFB}>
-                    <SvgXml xml={FacebookIcon} style={{marginRight: 16}} />
-                    <Text style={styles.buttonTextFB}>Đăng nhập bằng Facebook</Text>
+            <TouchableOpacity style={styles.buttonGG}>
+                <SvgXml xml={GoogleIcon} style={{marginRight: 16}} />
+                <Text style={styles.buttonTextGG}>Đăng nhập bằng Google</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.buttonFB}>
+                <SvgXml xml={FacebookIcon} style={{marginRight: 16}} />
+                <Text style={styles.buttonTextFB}>Đăng nhập bằng Facebook</Text>
+            </TouchableOpacity>
+
+            <View style={styles.dividerContainer1}>
+                <View style={styles.dividerLine1} />
+            </View>
+
+            <View style={styles.signupTextCont}>
+                <Text style={styles.signupText}>Bạn chưa có tài khoản ?</Text>
+                <TouchableOpacity onPress={goToRegisterPage}>
+                    <Text style={styles.signupButton}> Đăng ký</Text>
                 </TouchableOpacity>
-
-                <View style={styles.dividerContainer}>
-                    <View style={styles.dividerLine} />
-                    <View style={styles.dividerLine} />
-                </View>
-
-                <View style={styles.signupTextCont}>
-                    <Text style={styles.signupText}>Bạn chưa có tài khoản ?</Text>
-                    <TouchableOpacity onPress={goToRegisterPage}>
-                        <Text style={styles.signupButton}> Đăng ký</Text>
-                    </TouchableOpacity>
-                </View>
             </View>
         </View>
     );
@@ -155,29 +155,29 @@ export default function LoginScreen () {
 const styles = StyleSheet.create({
     travogue: {
         fontSize: 30,
+        color: "#ffffff",
         textAlign: "center",
-        color: "white",
     },
     header: {
         width: "95%",
-        backgroundColor: "#151515",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingHorizontal: 19,
         paddingVertical: 13,
+        alignItems: "center",
+        paddingHorizontal: 19,
+        justifyContent: "center",
+        backgroundColor: "#151515",
     },
     container: {
         flex: 1,
-        marginTop: 8,
+        marginTop: '10%',
         alignItems: 'center',
         backgroundColor: '#fff',
     },
     detail: {
-        marginTop: 16,
+        padding: '6%',
         width: "100%",
-        justifyContent: 'center',
+        marginTop: '5%',
         alignItems: 'center',
-        padding: 24,
+        justifyContent: 'center',
     },
     input: {
         width: '100%',
@@ -205,11 +205,11 @@ const styles = StyleSheet.create({
     dividerContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: 40, 
+        marginBottom: 24,
     },
     dividerLine: {
-        flex: 1,
         height: 1,
+        width: 115,
         backgroundColor: '#C7C7CD', 
     },
     dividerText: {
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     },
     buttonGG: {
         flexDirection: 'row',
-        width: "100%",
+        width: "85%",
         height: 65,
         backgroundColor: '#FFFFFF', 
         borderColor: '#767676',
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     buttonFB: {
         marginTop: 24,
         flexDirection: 'row',
-        width: "100%",
+        width: "85%",
         height: 65,
         backgroundColor: '#FFFFFF', 
         borderColor: '#767676',
@@ -247,6 +247,17 @@ const styles = StyleSheet.create({
         color: '#767676', 
         fontWeight: 'light', 
         fontSize: 18,
+    },
+    dividerContainer1: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 32,
+        marginTop: 32,
+    },
+    dividerLine1: {
+        height: 1,
+        width: '85%',
+        backgroundColor: '#C7C7CD', 
     },
     signupTextCont: {
         flexDirection: 'row',
