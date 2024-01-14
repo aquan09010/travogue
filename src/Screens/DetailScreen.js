@@ -31,6 +31,10 @@ export default function DetailScreen() {
       headerShown: false,
     });
   }, []);
+  const goToOrder = async (e) => {
+    e.preventDefault();
+    navigation.navigate("OrderConfirm");
+  };
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -42,7 +46,7 @@ export default function DetailScreen() {
             <Pressable onPress={() => navigation.goBack()}>
               <SvgXml xml={ArrowLeft} />
             </Pressable>
-            <Pressable onPress={() => navigation.goBack()}>
+            <Pressable onPress={() => {}}>
               <SvgXml xml={SearchIcon} />
             </Pressable>
           </View>
@@ -62,16 +66,17 @@ export default function DetailScreen() {
             <SvgXml xml={CommentIcon} />
             <Text style={styles.text}>120</Text>
           </Pressable>
-          <Pressable style={styles.actionPadding}>
+          <Pressable style={[styles.actionPadding, styles.extraLine]}>
             <SvgXml xml={ShareIcon} />
+            <Text style={styles.text}>120</Text>
           </Pressable>
         </View>
-        <View style={styles.buttonTicket}>
+        <Pressable style={styles.buttonTicket}>
           <Text style={styles.textDetail}>Từ 12$/người</Text>
-          <Pressable style={styles.button} onPress={() => {}}>
-            <Text style={styles.textDetail}>Đặt ngay</Text>
+          <Pressable style={styles.button} onPress={goToOrder}>
+            <Text style={[styles.textDetail]}>Đặt ngay</Text>
           </Pressable>
-        </View>
+        </Pressable>
         <View style={styles.detailContainer}>
           <View style={styles.topWrapper}>
             <Text style={[styles.textDetail]}>Top trải nghiệm</Text>
@@ -269,7 +274,8 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "#fff",
     borderWidth: 1,
-    width: 95,
+    width: 100,
+    height: 40,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,

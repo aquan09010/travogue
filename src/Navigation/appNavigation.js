@@ -5,6 +5,7 @@ import { getItem } from "@/Utils/asyncStorage.js";
 import OnboardingScreen from "@/Screens/OnBoardingScreen";
 import MainNavigator from "./MainNavigation";
 import DetailScreen from "@/Screens/DetailScreen";
+import OrderConfirm from "@/Screens/OrderConfirmed";
 
 const Stack = createNativeStackNavigator();
 export default function AppNavigation() {
@@ -44,6 +45,11 @@ export default function AppNavigation() {
           name="Detail"
           options={{ headerShown: false }}
           component={DetailScreen}
+        />
+        <Stack.Screen
+          name="OrderConfirm"
+          options={{ headerShown: false }}
+          component={OrderConfirm}
         />
       </Stack.Navigator>
     </NavigationContainer>
