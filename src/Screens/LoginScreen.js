@@ -28,8 +28,8 @@ import { FacebookIcon } from '@/Assets/Icons/Facebook';
 export default function Login () {
     const navigation = useNavigation();
 
-    const goToMainPage = () => {
-        navigation.navigate("Main");
+    const goToOnboardingPage = () => {
+        navigation.navigate("Onboarding");
     };
 
     const goToRegisterPage = () => {
@@ -97,7 +97,7 @@ export default function Login () {
                     onChangeText={setPassword}
                 />
 
-                <TouchableOpacity style={styles.button} onPress={goToMainPage}>
+                <TouchableOpacity style={styles.button} onPress={goToOnboardingPage}>
                     <Text style={styles.buttonText}>Đăng nhập</Text>
                 </TouchableOpacity>
 
@@ -166,12 +166,12 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        marginTop: 44,
+        marginTop: 8,
         alignItems: 'center',
         backgroundColor: '#fff',
     },
     detail: {
-        marginTop: 24,
+        marginTop: 16,
         width: "100%",
         justifyContent: 'center',
         alignItems: 'center',
