@@ -17,7 +17,7 @@ import { GoogleIcon } from '@/Assets/Icons/Google';
 import { FacebookIcon } from '@/Assets/Icons/Facebook';
 import { LeftArrow } from '@/Assets/Icons/LeftArrow';
 
-export default function ConfirmPhoneScreen ()  {
+export default function CreatePasswordScreen ()  {
     const [selectedOption, setSelectedOption] = useState('Điện thoại');
 
     const navigation = useNavigation();
@@ -28,10 +28,6 @@ export default function ConfirmPhoneScreen ()  {
 
     const goToRegisterPage = () => {
         navigation.navigate("Register");
-    };
-
-    const goToCreatePasswordPage = () => {
-        navigation.navigate("CreatePassword");
     };
 
     const inputs = Array(6).fill().map(() => React.createRef());
@@ -48,47 +44,28 @@ export default function ConfirmPhoneScreen ()  {
             </View>
 
             <Text 
-                style={{marginLeft: -120, 
+                style={{marginLeft: -140, 
                         marginTop: 16,
                         fontSize: 22, 
                         fontWeight: '800'}
                 }
             >
-                Nhập mã xác nhận
+                Tạo mật khẩu
             </Text>
 
-            <Text 
-                style={{marginLeft: 5, 
-                        marginTop: 16, 
-                        width: 307,
-                        fontSize: 17, 
-                        fontWeight: '300',
-                        color: '#747474'}
-                }
-            >
-                Vui lòng nhập mã gồm 6 chữ số đã được gửi đến +84 1234567890
-            </Text>
+            <TextInput
+                    style={[styles.input, {fontWeight: '200'}]}
+                    placeholder="Nhập mật khẩu"
+                    placeholderTextColor="#767676"
+                    secureTextEntry
+            />
 
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: 307, marginTop: 16}}>
-                {inputs.map((input, i) => (
-                    <TextInput
-                        key={i}
-                        ref={input}
-                        style={styles.input}
-                        maxLength={1}
-                        keyboardType="number-pad"
-                        onSubmitEditing={() => inputs[i + 1] && inputs[i + 1].current.focus()}
-                    />
-                ))}
-            </View>
-
-            <TouchableOpacity style={styles.button} onPress={goToCreatePasswordPage}>
+            <View style={styles.dividerLine} />
+            
+            <TouchableOpacity style={styles.button} onPress={goToConfirmPhonePage}>
                 <Text style={styles.buttonText}>Tiếp tục</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button2} onPress={goToConfirmPhonePage}>
-                <Text style={styles.buttonText2}>Gửi lại mã</Text>
-            </TouchableOpacity>
         </View>
     );
     
@@ -133,7 +110,7 @@ const styles = StyleSheet.create({
     button: {
         height: 55,
         width: "85%",
-        marginTop: 40,
+        marginTop: 24,
         borderRadius: 15, 
         alignItems: 'center', 
         justifyContent: 'center',
@@ -144,25 +121,19 @@ const styles = StyleSheet.create({
         color: 'white', 
         fontWeight: 'bold', 
     },
-    button2: {
-        height: 55,
-        width: "85%",
-        marginTop: 32,
-        borderWidth: 1.5,
-        borderRadius: 15, 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        backgroundColor: '#FFFFFF', 
-    },
-    buttonText2: {
-        fontSize: 22,
-        color: '#000000', 
-        fontWeight: 'bold', 
-    },
     input: {
-        width: 40,
-        borderBottomWidth: 1,
-        textAlign: 'center',
-        fontSize: 24,
+        width: '84%',
+        height: 60,
+        borderWidth: 1.5,
+        borderColor: '#767676',
+        marginTop: 24,
+        paddingHorizontal: 24,
+        borderRadius: 20,
+    },
+    dividerLine: {
+        height: 1,
+        width: 115,
+        marginTop: 24,
+        backgroundColor: '#747474', 
     },
 });

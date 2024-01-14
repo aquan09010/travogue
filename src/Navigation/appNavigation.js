@@ -9,6 +9,7 @@ import OrderConfirm from "@/Screens/OrderConfirmed";
 import LoginScreen from "@/Screens/LoginScreen";
 import RegisterScreen from "@/Screens/RegisterScreen";
 import ConfirmPhoneScreen from "@/Screens/ConfirmPhoneScreen";
+import CreatePasswordScreen from "@/Screens/CreatePasswordScreen";
 
 const Stack = createNativeStackNavigator();
 export default function AppNavigation() {
@@ -68,6 +69,11 @@ export default function AppNavigation() {
           name="ConfirmPhone"
           options={{ headerShown: false }}
           component={ConfirmPhoneScreen}
+        />
+        <Stack.Screen
+          name="CreatePassword"
+          options={{ headerShown: false }}
+          component={CreatePasswordScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
