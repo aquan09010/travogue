@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getItem } from "@/Utils/asyncStorage.js";
 import OnboardingScreen from "@/Screens/OnBoardingScreen";
 import MainNavigator from "./MainNavigation";
+import DetailScreen from "@/Screens/DetailScreen";
 
 const Stack = createNativeStackNavigator();
 export default function AppNavigation() {
@@ -38,6 +39,11 @@ export default function AppNavigation() {
           name="Main"
           options={{ headerShown: false }}
           component={MainNavigator}
+        />
+        <Stack.Screen
+          name="Detail"
+          options={{ headerShown: false }}
+          component={DetailScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
