@@ -17,7 +17,7 @@ import { GoogleIcon } from '@/Assets/Icons/Google';
 import { FacebookIcon } from '@/Assets/Icons/Facebook';
 import { LeftArrow } from '@/Assets/Icons/LeftArrow';
 
-export default function RegisterScreen ()  {
+export default function ConfirmPhoneScreen ()  {
     const [selectedOption, setSelectedOption] = useState('Điện thoại');
 
     const navigation = useNavigation();
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        marginTop: 40,
+        marginTop: 8,
         alignItems: 'center',
         backgroundColor: '#fff',
     },

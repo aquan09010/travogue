@@ -25,7 +25,7 @@ import { FacebookIcon } from '@/Assets/Icons/Facebook';
 
 // WebBrowser.maybeCompleteAuthSession();
 
-export default function Login () {
+export default function LoginScreen () {
     const navigation = useNavigation();
 
     const goToOnboardingPage = () => {
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        marginTop: 8,
+        marginTop: 40,
         alignItems: 'center',
         backgroundColor: '#fff',
     },
