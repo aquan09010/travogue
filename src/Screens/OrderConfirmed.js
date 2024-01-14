@@ -87,17 +87,66 @@ export default function OrderConfirm() {
           </Pressable>
         </View>
       </View>
-      <View style={[styles.line]}>
-        <SvgXml xml={OrderIcon} />
-        <Text style={{ fontWeight: "600", fontSize: 16 }}>
-          {" "}
-          Nhập mã giảm giá
-        </Text>
+      <View style={styles.mainView}>
+        <View style={[styles.line]}>
+          <SvgXml xml={OrderIcon} />
+          <Text style={{ fontWeight: "600", fontSize: 16 }}>
+            {" "}
+            Nhập mã giảm giá
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: 10,
+            marginBottom: 10,
+          }}
+        >
+          <TextInput
+            style={styles.inputArea}
+            placeholder="Nhập mã giảm giá"
+          ></TextInput>
+          <View style={styles.button}>
+            <Text>Áp dụng</Text>
+          </View>
+        </View>
+        <View style={styles.line3}>
+          <Text style={{}}>Đã áp dụng mã giảm giá ABCDEF</Text>
+          <Text style={{}}>-đ20.000</Text>
+        </View>
+        <View style={styles.line3}>
+          <Text style={{}}>Đã áp dụng mã giảm giá ABCDEF</Text>
+          <Text style={{}}>-đ20.000</Text>
+        </View>
+      </View>
+      <View style={styles.mainView}>
+        <View style={[styles.line]}>
+          <SvgXml xml={OrderIcon} />
+          <Text style={{ fontWeight: "600", fontSize: 16 }}>
+            {" "}
+            Chi tiết thanh toán
+          </Text>
+        </View>
+
+        <View style={styles.line3}>
+          <Text style={{}}>Vé người lớn</Text>
+          <Text style={{}}>đ240.000</Text>
+        </View>
+        <View style={styles.line3}>
+          <Text style={{}}>Vé trẻ em</Text>
+          <Text style={{}}>đ100.000</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
+  mainView: {
+    padding: 16,
+    paddingBottom: 0,
+  },
   container: {
     backgroundColor: "#fff",
     paddingTop: "10%",
@@ -151,5 +200,33 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: 40 / 2,
+  },
+  inputArea: {
+    borderRadius: 7,
+    borderStyle: "solid",
+    borderColor: "#767676",
+    borderWidth: 1,
+    width: "70%",
+    flexDirection: "row",
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+  },
+  button: {
+    borderRadius: 7,
+    backgroundColor: "#fff",
+    borderStyle: "solid",
+    borderColor: "#151515",
+    borderWidth: 1,
+    overflow: "hidden",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  line3: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingTop: 12,
   },
 });
