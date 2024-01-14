@@ -31,8 +31,8 @@ export default function AccommodationCard(props) {
           <Text style={styles.location}>{props.location}</Text>
         </View>
         <View style={styles.container}>
-          <View>
-            <Text style={styles.categoryText}> $ {props.price}</Text>
+          <View style={styles.line}>
+            <Text style={styles.categoryText}>$ {props.price}</Text>
           </View>
           <View style={styles.line}>
             <SvgXml xml={StarIcon} />
@@ -46,7 +46,7 @@ export default function AccommodationCard(props) {
 }
 const styles = StyleSheet.create({
   itemContainer: {
-    height: 100,
+    height: 300,
     width: "48%",
     marginBottom: 8,
   },

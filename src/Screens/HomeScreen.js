@@ -51,7 +51,7 @@ export default function HomeScreen() {
           ))}
         </View>
       </View>
-      <View style={styles.mainView}>
+      <View>
         {selected == 0 && <WhereScreen />}
         {selected == 1 && <EatScreen />}
         {selected == 2 && <PlaceScreen />}

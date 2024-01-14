@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Pressable,
   FlatList,
+  Animated,
 } from "react-native";
 import React, { useLayoutEffect, useState, useRef } from "react";
 import { SvgXml } from "react-native-svg";
@@ -41,10 +42,11 @@ export default function WhereScreen() {
     { name: "Bảo tàng", svg: MuseumIcon, svgActive: MuseumIconActive },
   ];
   const [selected, setSelected] = useState(0);
+  const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
   return (
-    <ScrollView>
-      <View>
+    <View>
+      <View style={styles.mainView}>
         <Text style={styles.title}>Bạn có thể thích những địa điểm này</Text>
         <View style={styles.header}>
           {menu.map((e, i) => (
@@ -71,10 +73,10 @@ export default function WhereScreen() {
           ))}
         </View>
         <FlatList
-          // onScroll={Animated.event(
-          //   [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
-          //   { useNativeDriver: false }
-          // )}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
+            { useNativeDriver: false }
+          )}
           data={DATA}
           renderItem={({ index, item }) => (
             <AccommodationCard
@@ -84,19 +86,52 @@ export default function WhereScreen() {
               location={item.location}
               price={item.price}
               star={item.star}
-              style={{ marginRight: index % 2 !== 0 ? 0 : "4%" }}
+              style={{
+                marginRight: index % 2 !== 0 ? 0 : "4%",
+              }}
             />
           )}
-          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
           numColumns={2}
+          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
           keyExtractor={(item, index) => index}
-          style={{ minHeight: 700 }}
+          style={{ paddingTop: 18 }}
         />
       </View>
-    </ScrollView>
+      <View style={styles.mainView}>
+        <Text style={styles.title}>Các địa điểm du lịch đang HOT</Text>
+        <FlatList
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
+            { useNativeDriver: false }
+          )}
+          data={DATA}
+          renderItem={({ index, item }) => (
+            <AccommodationCard
+              id={item.id}
+              cardName={item.cardName}
+              imgPath={item.imgPath}
+              location={item.location}
+              price={item.price}
+              star={item.star}
+              style={{
+                marginRight: index % 2 !== 0 ? 0 : "4%",
+              }}
+            />
+          )}
+          numColumns={2}
+          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          keyExtractor={(item, index) => index}
+          style={{ paddingTop: 18 }}
+        />
+      </View>
+    </View>
   );
 }
 const styles = StyleSheet.create({
+  mainView: {
+    padding: 16,
+    paddingBottom: 0,
+  },
   title: {
     fontSize: 18,
     fontWeight: "600",
