@@ -18,6 +18,7 @@ import { SvgXml } from "react-native-svg";
 import { GoogleIcon } from '@/Assets/Icons/Google';
 import { FacebookIcon } from '@/Assets/Icons/Facebook';
 
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 // Web: 373800336352-24ckj1qtr3u74urpb8sm9kb3rsmckq83.apps.googleusercontent.com
 // iOS: 373800336352-qhjib0ej5vg0nv7tkfjsilgla9d00f4v.apps.googleusercontent.com
@@ -79,6 +80,7 @@ export default function LoginScreen () {
             <View style={styles.header}>
                 <Text style={styles.travogue}>TRAVOGUE</Text>
             </View>
+            
             <View style={styles.detail}>
                 <TextInput
                     style={[styles.input, {fontWeight: '200'}]}
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        marginTop: 40,
+        marginTop: 8,
         alignItems: 'center',
         backgroundColor: '#fff',
     },

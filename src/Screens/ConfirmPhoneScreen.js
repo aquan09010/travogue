@@ -26,6 +26,8 @@ export default function ConfirmPhoneScreen ()  {
         navigation.navigate("ConfirmPhone");
     };
 
+    const inputs = Array(6).fill().map(() => React.createRef());
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -37,57 +39,47 @@ export default function ConfirmPhoneScreen ()  {
                 <Text style={styles.titleText}>Đăng ký</Text>
             </View>
 
-            <View style={styles.formTitle}>
-                <View style={styles.dividerContainer}>
-                    <TouchableOpacity onPress={() => setSelectedOption('Điện thoại')} style={{ alignItems: 'center' }}>
-                        <Text style={selectedOption === 'Điện thoại' ? styles.selectedText : styles.unselectedText}>Điện thoại</Text>
-                        {
-                            selectedOption === 'Điện thoại' && 
-                            <View style={styles.selectedUnderline} /> 
-                        }
-                        {
-                            selectedOption === 'Email' && 
-                            <View style={styles.unselectedUnderline}/>
-                        }
-                    </TouchableOpacity>
-                </View >
-                <View style={styles.dividerContainer}>
-                    <TouchableOpacity onPress={() => setSelectedOption('Email')} style={{ alignItems: 'center' }}>
-                        <Text style={selectedOption === 'Email' ? styles.selectedText : styles.unselectedText}>Email</Text>
-                        {
-                            selectedOption === 'Email' && 
-                            <View style={styles.selectedUnderline} />
-                        }
-                        {
-                            selectedOption === 'Điện thoại' && 
-                            <View style={styles.unselectedUnderline} />
-                        }
-                    </TouchableOpacity>
-                </View>
+            <Text 
+                style={{marginLeft: -120, 
+                        marginTop: 16,
+                        fontSize: 22, 
+                        fontWeight: '800'}
+                }
+            >
+                Nhập mã xác nhận
+            </Text>
+
+            <Text 
+                style={{marginLeft: 5, 
+                        marginTop: 16, 
+                        width: 307,
+                        fontSize: 17, 
+                        fontWeight: '300',
+                        color: '#747474'}
+                }
+            >
+                Vui lòng nhập mã gồm 6 chữ số đã được gửi đến +84 1234567890
+            </Text>
+
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: 307, marginTop: 16}}>
+                {inputs.map((input, i) => (
+                    <TextInput
+                        key={i}
+                        ref={input}
+                        style={styles.input}
+                        maxLength={1}
+                        keyboardType="number-pad"
+                        onSubmitEditing={() => inputs[i + 1] && inputs[i + 1].current.focus()}
+                    />
+                ))}
             </View>
 
-            {
-                selectedOption === 'Điện thoại' && 
-                <TextInput
-                    style={[styles.input, {fontWeight: '200'}, {fontSize: 18}]}
-                    placeholder="Số điện thoại"
-                    placeholderTextColor="#767676"
-                    keyboardType="phone-pad"
-                />
-            }
-            {
-                selectedOption === 'Email' && 
-                <TextInput
-                    style={[styles.input, {fontWeight: '200'}, {fontSize: 18}]}
-                    placeholder="Email"
-                    placeholderTextColor="#767676"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                />
-            }
-
             <TouchableOpacity style={styles.button} onPress={goToConfirmPhonePage}>
-                <Text style={styles.buttonText}>Gửi mã xác nhận</Text>
+                <Text style={styles.buttonText}>Tiếp tục</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button2} onPress={goToConfirmPhonePage}>
+                <Text style={styles.buttonText2}>Gửi lại mã</Text>
             </TouchableOpacity>
         </View>
     );
@@ -130,59 +122,39 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: 'bold',
     },
-    formTitle: {
-        width: "100%",
-        marginTop: 32,
-        flexDirection: 'row',
-        paddingHorizontal: 24,
-        justifyContent: 'space-around',
-    },
-    dividerContainer: {
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    selectedUnderline: {
-        height: 2, 
-        width: 130,
-        marginTop: 8,
-        backgroundColor: '#000000', 
-    },
-    unselectedUnderline: {
-        height: 1, 
-        width: 130,
-        marginTop: 8,
-        backgroundColor: '#747474', 
-    },
-    selectedText: {
-        fontWeight: 'bold',
-        fontSize: 18,
-    },
-    unselectedText: {
-        fontSize: 18,
-        color: '#747474',
-        fontWeight: 'normal',
-    },
-    input: {
-        height: 65,
-        width: "85%",
-        marginTop: 40,
-        borderWidth: 1.5,
-        borderRadius: 20,
-        paddingHorizontal: 24,
-        borderColor: '#767676',
-    },
     button: {
-        marginTop: 40,
-        width: "85%",
         height: 55,
-        backgroundColor: '#000000', 
+        width: "85%",
+        marginTop: 40,
         borderRadius: 15, 
         alignItems: 'center', 
         justifyContent: 'center',
+        backgroundColor: '#000000', 
     },
     buttonText: {
+        fontSize: 22,
         color: 'white', 
         fontWeight: 'bold', 
+    },
+    button2: {
+        height: 55,
+        width: "85%",
+        marginTop: 32,
+        borderWidth: 1.5,
+        borderRadius: 15, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        backgroundColor: '#FFFFFF', 
+    },
+    buttonText2: {
         fontSize: 22,
+        color: '#000000', 
+        fontWeight: 'bold', 
+    },
+    input: {
+        width: 40,
+        borderBottomWidth: 1,
+        textAlign: 'center',
+        fontSize: 24,
     },
 });

@@ -29,7 +29,7 @@
     "native-base": "^3.4.15",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.14",
+    "react-native": "^0.73.2",
     "react-native-async-storage": "^0.0.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-onboarding-swiper": "^1.2.0",
