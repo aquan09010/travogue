@@ -15,12 +15,15 @@ import HeartButton from './HeartButton';
 
 export default function AccommodationCard(props) {
   const navigation = useNavigation();
-
+  const goToDetail = async (e) => {
+    e.preventDefault();
+    navigation.navigate('Detail');
+  };
   return (
     <TouchableOpacity
       style={[styles.itemContainer, props.style]}
       key={props.id}
-      onPress={() => {}}
+      onPress={goToDetail}
     >
       <Image style={styles.image} source={{ uri: props.imgPath }} />
       <View style={styles.cardDetail}>
