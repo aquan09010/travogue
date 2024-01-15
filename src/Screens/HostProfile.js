@@ -24,8 +24,11 @@ import {
 } from "@/Assets/Icons/OrderConfirm";
 import { LanguageIcon } from "@/Assets/Icons/DetailIcon";
 import {
+  FacebookBlackIcon,
   LanguageBlackIcon,
   ListBlackIcon,
+  MailBlackIcon,
+  PhoneBlackIcon,
   StarBlackIcon,
 } from "@/Assets/Icons/Proflie";
 import CircleCard from "@/Components/CircleCard";
@@ -37,6 +40,12 @@ export default function HostProfile() {
       cardName={item.cardName1}
       cityName={item.cityName1}
       star={item.star1}
+    />
+  );
+  const renderCircleAvatar = ({ item }) => (
+    <Image
+      source={item.ava1}
+      style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
     />
   );
   return (
@@ -67,7 +76,9 @@ export default function HostProfile() {
             </View>
           </View>
           <View style={styles.orderCard}>
-            <Text style={[styles.textDetail, { paddingBottom: 5 }]}>
+            <Text
+              style={[styles.textDetail, { paddingTop: 10, paddingBottom: 5 }]}
+            >
               Martin Nguyen
             </Text>
             <Text style={(styles.line, styles.textDetail)}>
@@ -109,6 +120,45 @@ export default function HostProfile() {
             showsHorizontalScrollIndicator={false}
             ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
           />
+        </View>
+        <View style={styles.mainView}>
+          <Text style={{ fontWeight: "600", fontSize: 16, paddingBottom: 10 }}>
+            {" "}
+            Về Martin{" "}
+          </Text>
+          <Text style={{ paddingBottom: 15 }}>
+            Xin chào mọi người, tôi là Martin Nguyen. Lorem ipsum dolor sit
+            amet, consectetur adipiscing elit. Vestibulum blandit velit erat.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
+            blandit velit erat. Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit. Vestibulum blandit velit erat.
+          </Text>
+          <FlatList
+            data={DATA}
+            renderItem={renderCircleAvatar}
+            keyExtractor={(item, index) => index}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          />
+        </View>
+        <View style={styles.mainView}>
+          <Text style={{ fontWeight: "600", fontSize: 16 }}>
+            {" "}
+            Thông tin liên hệ{" "}
+          </Text>
+          <View style={[styles.line]}>
+            <SvgXml xml={MailBlackIcon} />
+            <Text style={[styles.text]}> abc@gmail.com</Text>
+          </View>
+          <View style={[styles.line]}>
+            <SvgXml xml={PhoneBlackIcon} />
+            <Text style={[styles.text]}> 0123456789</Text>
+          </View>
+          <View style={[styles.line]}>
+            <SvgXml xml={FacebookBlackIcon} />
+            <Text style={[styles.text]}> Martin Nguyen</Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

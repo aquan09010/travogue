@@ -12,5 +12,6 @@ for (let i = 1; i <= 9; i++) {
     cityName1: "Đà Lạt",
     star1: "4.98 (253)",
     imgPath1: require("../Assets/detail1.jpg"),
+    ava1: require("../Assets/ava1.jpg"),
   });
 }
