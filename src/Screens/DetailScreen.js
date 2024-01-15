@@ -35,6 +35,10 @@ export default function DetailScreen() {
     e.preventDefault();
     navigation.navigate("OrderConfirm");
   };
+  const gotoHost = async (e) => {
+    e.preventDefault();
+    navigation.navigate("HostProfile");
+  };
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -52,13 +56,16 @@ export default function DetailScreen() {
           </View>
         </View>
         <View style={styles.actionContainer}>
-          <View style={[styles.avatar, styles.actionPadding]}>
+          <Pressable
+            onPress={gotoHost}
+            style={[styles.avatar, styles.actionPadding]}
+          >
             <Image
               style={styles.avaImg}
               resizeMode="cover"
               source={require("../Assets/ava1.jpg")}
             />
-          </View>
+          </Pressable>
           <Pressable style={styles.actionPadding}>
             <SvgXml xml={HeartIcon} />
           </Pressable>

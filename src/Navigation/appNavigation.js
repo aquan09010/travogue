@@ -10,6 +10,7 @@ import LoginScreen from "@/Screens/LoginScreen";
 import RegisterScreen from "@/Screens/RegisterScreen";
 import ConfirmPhoneScreen from "@/Screens/ConfirmPhoneScreen";
 import CreatePasswordScreen from "@/Screens/CreatePasswordScreen";
+import HostProfile from "@/Screens/HostProfile";
 
 const Stack = createNativeStackNavigator();
 export default function AppNavigation() {
@@ -54,6 +55,11 @@ export default function AppNavigation() {
           name="OrderConfirm"
           options={{ headerShown: false }}
           component={OrderConfirm}
+        />
+        <Stack.Screen
+          name="HostProfile"
+          options={{ headerShown: false }}
+          component={HostProfile}
         />
         <Stack.Screen
           name="Login"

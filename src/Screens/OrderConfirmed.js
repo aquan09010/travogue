@@ -31,6 +31,7 @@ import {
 } from "@/Assets/Icons/DetailIcon";
 import { MiniLocation } from "@/Assets/Icons/Card";
 import {
+  AppleIcon,
   BoxCheckIcon,
   CalendarIcon,
   CashIcon,
@@ -39,10 +40,14 @@ import {
   PeopleIcon,
   SuccessIcon,
   TimeIcon,
+  VisaIcon,
 } from "@/Assets/Icons/OrderConfirm";
 export default function OrderConfirm() {
   const navigation = useNavigation();
-
+  const gotoHost = async (e) => {
+    e.preventDefault();
+    navigation.navigate("HostProfile");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.statusBar}>
@@ -54,7 +59,7 @@ export default function OrderConfirm() {
           <SvgXml xml={SearchIconBlack} />
         </Pressable>
       </View>
-      <ScrollView style={{ height: "85%" }}>
+      <ScrollView style={{ height: "87%" }}>
         <View style={styles.containerCard}>
           <Image
             style={styles.img}
@@ -77,7 +82,7 @@ export default function OrderConfirm() {
               <SvgXml xml={PeopleIcon} />
               <Text style={[styles.text]}> 2 người lớn, 1 trẻ em, 1 em bé</Text>
             </View>
-            <Pressable style={styles.line1} onPress={() => {}}>
+            <Pressable style={styles.line1} onPress={gotoHost}>
               <Text style={{ alignSelf: "center", marginRight: 5 }}>
                 <Text style={{ fontWeight: "600", fontSize: 16 }}>Host:</Text>
                 <Text style={{ fontSize: 16 }}> Martin Nguyen</Text>
@@ -136,11 +141,18 @@ export default function OrderConfirm() {
 
           <View style={styles.line3}>
             <Text style={{}}>Vé người lớn</Text>
+            <Text style={{}}>x2</Text>
             <Text style={{}}>đ240.000</Text>
           </View>
           <View style={styles.line3}>
             <Text style={{}}>Vé trẻ em</Text>
+            <Text style={{}}>x1</Text>
             <Text style={{}}>đ100.000</Text>
+          </View>
+          <View style={styles.line3}>
+            <Text style={{}}>Vé em bé</Text>
+            <Text style={{}}>x1</Text>
+            <Text style={{}}>đ0</Text>
           </View>
           <View style={styles.line3}>
             <Text style={{}}>Giảm giá từ event của app</Text>
@@ -166,6 +178,14 @@ export default function OrderConfirm() {
               {" "}
               Phương thức thanh toán
             </Text>
+          </View>
+          <View style={[styles.line, { marginLeft: 5 }]}>
+            <SvgXml xml={VisaIcon} />
+            <Text style={{}}> Thẻ Tín dụng/Ghi nợ</Text>
+          </View>
+          <View style={[styles.line, { marginLeft: 5 }]}>
+            <SvgXml xml={AppleIcon} />
+            <Text style={{}}> Apple Pay</Text>
           </View>
         </View>
         <View style={styles.mainView}>
