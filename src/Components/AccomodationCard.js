@@ -17,8 +17,12 @@ export default function AccommodationCard(props) {
   const navigation = useNavigation();
   const goToDetail = async (e) => {
     e.preventDefault();
-    navigation.navigate('Detail');
+    navigation.navigate('Detail', {
+      activityId: props.id,
+      isExperience: props.isExperience,
+    });
   };
+
   return (
     <TouchableOpacity
       style={[styles.itemContainer, props.style]}

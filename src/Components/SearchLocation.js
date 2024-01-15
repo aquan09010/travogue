@@ -16,10 +16,14 @@ export default function SearchLocation() {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('SearchCityScreen')}>
+    <TouchableOpacity>
       <View style={styles.container}>
         <SvgXml style={styles.icon} xml={LocationDotIcon} />
-        <TextInput style={styles.inputArea} placeholder="Bạn muốn đi đâu ?" />
+        <TextInput
+          style={styles.inputArea}
+          placeholder="Bạn muốn đi đâu ?"
+          onFocus={() => navigation.navigate('SearchCityScreen')}
+        />
       </View>
     </TouchableOpacity>
   );

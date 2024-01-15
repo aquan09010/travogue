@@ -129,4 +129,50 @@ const getActivityByCategory = (accessToken, categoryId) => {
   return { activities, isActivitiesLoading, activitiesError, refetch };
 };
 
-export { getChildCategories, getPopularByCategory, getActivityByCategory };
+const getDetailActivity = (accessToken, activityId) => {
+  const [activity, setActivity] = useState([]);
+  const [isActivityLoading, setIsLoading] = useState(true);
+  const [activityError, setError] = useState(null);
+
+  const options = {
+    method: 'GET',
+    url: `https://travogue-production.up.railway.app/travogue-service/travel-activities/${activityId}`,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.request(options);
+
+      setActivity(response.data); // Assuming the response contains the child categories
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const refetch = () => {
+    setIsLoading(true);
+    fetchData();
+  };
+
+  return { activity, isActivityLoading, activityError, refetch };
+};
+
+export {
+  getChildCategories,
+  getPopularByCategory,
+  getActivityByCategory,
+  getDetailActivity,
+};

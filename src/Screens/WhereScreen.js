@@ -14,21 +14,7 @@ import {
 } from 'react-native';
 import React, { useLayoutEffect, useState, useRef, useEffect } from 'react';
 import { SvgXml } from 'react-native-svg';
-import {
-  ParkIcon,
-  CentreIcon,
-  RelicIcon,
-  ScenicIcon,
-  MuseumIcon,
-  ParkIconActive,
-  CentreIconActive,
-  RelicIconActive,
-  ScenicIconActive,
-  MuseumIconActive,
-  FireIcon,
-  BookIcon,
-} from '@/Assets/Icons/Where';
-import { DATA } from '../Utils/data';
+import { FireIcon, BookIcon } from '@/Assets/Icons/Where';
 import AccommodationCard from '@/Components/AccomodationCard';
 import { StarIcon } from '@/Assets/Icons/Card';
 import CityCard from '@/Components/CityCard';
@@ -70,6 +56,7 @@ export default function WhereScreen() {
       location={item.city.name}
       price={item.generalPrice}
       star={item.averageRating}
+      isExperience={false}
     />
   );
 
@@ -135,7 +122,7 @@ export default function WhereScreen() {
           <Text style={styles.title}>Các thành phố du lịch bạn nên đến</Text>
         </View>
 
-        {isPopularLoading ? (
+        {isTopCitiesLoading ? (
           <>
             <ActivityIndicator
               size="large"
@@ -153,7 +140,7 @@ export default function WhereScreen() {
               Please wait...
             </Text>
           </>
-        ) : popularError ? (
+        ) : topCitiesError ? (
           <Text
             style={{
               color: '#A80027',
@@ -282,6 +269,7 @@ export default function WhereScreen() {
                   location={item.city.name}
                   price={item.generalPrice}
                   star={item.averageRating}
+                  isExperience={false}
                 />
               );
             })}
