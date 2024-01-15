@@ -9,7 +9,9 @@ import {
   ImageBackground,
   Pressable,
   SafeAreaView,
+  FlatList,
 } from "react-native";
+import { DATA } from "../Utils/data";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { ParkIconActive } from "@/Assets/Icons/Where";
@@ -26,9 +28,17 @@ import {
   ListBlackIcon,
   StarBlackIcon,
 } from "@/Assets/Icons/Proflie";
+import CircleCard from "@/Components/CircleCard";
 export default function HostProfile() {
   const navigation = useNavigation();
-
+  const renderCircleItem = ({ item }) => (
+    <CircleCard
+      imgPath={item.imgPath1}
+      cardName={item.cardName1}
+      cityName={item.cityName1}
+      star={item.star1}
+    />
+  );
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.statusBar}>
@@ -85,6 +95,20 @@ export default function HostProfile() {
               <Text style={[styles.text]}> 4.5</Text>
             </View>
           </View>
+        </View>
+        <View style={styles.mainView}>
+          <Text style={{ fontWeight: "600", fontSize: 16, paddingBottom: 10 }}>
+            {" "}
+            Trải nghiệm nổi bật của Martin
+          </Text>
+          <FlatList
+            data={DATA}
+            renderItem={renderCircleItem}
+            keyExtractor={(item, index) => index}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
