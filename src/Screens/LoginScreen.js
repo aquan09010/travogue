@@ -129,13 +129,13 @@ export default function LoginScreen () {
                 </>
             }          */}
 
-            <TouchableOpacity style={styles.buttonGG}>
+            <TouchableOpacity style={styles.buttonGG} onPress={goToOnboardingPage}>
                 <SvgXml xml={GoogleIcon} style={{marginRight: 16}} />
 
                 <Text style={styles.buttonTextGG}>Đăng nhập bằng Google</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonFB}>
+            <TouchableOpacity style={styles.buttonFB} onPress={goToOnboardingPage}>
                 <SvgXml xml={FacebookIcon} style={{marginRight: 16}} />
 
                 <Text style={styles.buttonTextFB}>Đăng nhập bằng Facebook</Text>

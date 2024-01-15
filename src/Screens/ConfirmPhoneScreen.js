@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { 
@@ -18,8 +18,7 @@ import { FacebookIcon } from '@/Assets/Icons/Facebook';
 import { LeftArrow } from '@/Assets/Icons/LeftArrow';
 
 export default function ConfirmPhoneScreen ()  {
-    const [selectedOption, setSelectedOption] = useState('Điện thoại');
-
+    // Move to other pages.
     const navigation = useNavigation();
 
     const goToConfirmPhonePage = () => {
@@ -34,7 +33,50 @@ export default function ConfirmPhoneScreen ()  {
         navigation.navigate("CreatePassword");
     };
 
+    // 6-numbers input.
     const inputs = Array(6).fill().map(() => React.createRef());
+
+    const handleInput = (index, value) => {
+        if (value && index < 5) {
+            inputs[index + 1].current.focus();
+        }
+    };
+
+    const handleKeyPress = (index, event) => {
+        if (event.nativeEvent.key === 'Backspace' && index > 0 && !inputs[index].current.value) {
+            inputs[index - 1].current.focus();
+        }
+    };
+
+    // Resend code.
+    const [seconds, setSeconds] = useState(0);
+    const intervalRef = useRef();
+
+    useEffect(() => {
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
+    }, []);
+
+    const resendCode = () => {
+        setSeconds(60);
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+        }
+        intervalRef.current = setInterval(() => {
+            setSeconds((s) => {
+                if (s === 1) {
+                    clearInterval(intervalRef.current);
+                    return 0;
+                }
+                return s - 1;
+            });
+        }, 1000);
+        // Code to resend the code goes here
+    };
+
 
     return (
         <View style={styles.container}>
@@ -44,26 +86,27 @@ export default function ConfirmPhoneScreen ()  {
 
             <View style={styles.title}>
                 <SvgXml xml={LeftArrow} style={styles.arrow} onPress={goToRegisterPage}/>
+                
                 <Text style={styles.titleText}>Đăng ký</Text>
             </View>
 
             <Text 
-                style={{marginLeft: -120, 
-                        marginTop: 16,
-                        fontSize: 22, 
-                        fontWeight: '800'}
+                style={{fontSize: 22, 
+                        marginTop: '5%',
+                        fontWeight: '800',
+                        marginLeft: '-33%',}
                 }
             >
                 Nhập mã xác nhận
             </Text>
 
             <Text 
-                style={{marginLeft: 5, 
-                        marginTop: 16, 
-                        width: 307,
+                style={{width: '85%',
                         fontSize: 17, 
-                        fontWeight: '300',
-                        color: '#747474'}
+                        marginTop: '5%', 
+                        color: '#747474',
+                        marginLeft: '1%', 
+                        fontWeight: '300'}
                 }
             >
                 Vui lòng nhập mã gồm 6 chữ số đã được gửi đến +84 1234567890
@@ -74,10 +117,11 @@ export default function ConfirmPhoneScreen ()  {
                     <TextInput
                         key={i}
                         ref={input}
-                        style={styles.input}
                         maxLength={1}
-                        keyboardType="number-pad"
-                        onSubmitEditing={() => inputs[i + 1] && inputs[i + 1].current.focus()}
+                        style={styles.input}
+                        keyboardType="numeric"
+                        onChangeText={(value) => handleInput(i, value)}
+                        onKeyPress={(event) => handleKeyPress(i, event)}
                     />
                 ))}
             </View>
@@ -86,8 +130,8 @@ export default function ConfirmPhoneScreen ()  {
                 <Text style={styles.buttonText}>Tiếp tục</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button2} onPress={goToConfirmPhonePage}>
-                <Text style={styles.buttonText2}>Gửi lại mã</Text>
+            <TouchableOpacity style={styles.button2} onPress={resendCode}>
+                <Text style={styles.buttonText2}>Gửi lại mã {seconds > 0 && `(${seconds})`}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -95,45 +139,51 @@ export default function ConfirmPhoneScreen ()  {
 };
 
 const styles = StyleSheet.create({
-    travogue: {
-        fontSize: 30,
-        textAlign: "center",
-        color: "white",
+    container: {
+        flex: 1,
+        marginTop: '10%',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
     },
     header: {
         width: "95%",
-        backgroundColor: "#151515",
         alignItems: "center",
+        paddingVertical: "2%",
         justifyContent: "center",
-        paddingHorizontal: 19,
-        paddingVertical: 13,
+        backgroundColor: "#151515",
     },
-    container: {
-        flex: 1,
-        marginTop: 8,
-        alignItems: 'center',
-        backgroundColor: '#fff',
+    travogue: {
+        fontWeight: '500',
+        fontSize: 30,
+        color: "#ffffff",
+        textAlign: "center",
     },
     title: {
-        flexDirection: 'row',
-        marginTop: 32,
         width: "100%",
-        justifyContent: 'center',
+        marginTop: '8%',
         alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
     },
     arrow: {
+        left: '7%',
         position: 'absolute',
-        left: 24,
     },
     titleText: {
         center: true,
         fontSize: 22,
-        fontWeight: 'bold',
+        fontWeight: '700',
+    },
+    input: {
+        width: '13%',
+        fontSize: 24,
+        textAlign: 'center',
+        borderBottomWidth: 1,
     },
     button: {
         height: 55,
         width: "85%",
-        marginTop: 40,
+        marginTop: '11%',
         borderRadius: 15, 
         alignItems: 'center', 
         justifyContent: 'center',
@@ -142,12 +192,12 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 22,
         color: 'white', 
-        fontWeight: 'bold', 
+        fontWeight: '800', 
     },
     button2: {
         height: 55,
         width: "85%",
-        marginTop: 32,
+        marginTop: '8%',
         borderWidth: 1.5,
         borderRadius: 15, 
         alignItems: 'center', 
@@ -157,12 +207,6 @@ const styles = StyleSheet.create({
     buttonText2: {
         fontSize: 22,
         color: '#000000', 
-        fontWeight: 'bold', 
-    },
-    input: {
-        width: 40,
-        borderBottomWidth: 1,
-        textAlign: 'center',
-        fontSize: 24,
+        fontWeight: '800', 
     },
 });
