@@ -117,7 +117,7 @@ export default function DetailScreen({ route }) {
                   <Image
                     style={styles.avaImg}
                     resizeMode="cover"
-                    source={require('../Assets/ava1.jpg')}
+                    source={{ uri: activity.data.host.avatar }}
                   />
                 </Pressable>
               )}
@@ -143,7 +143,9 @@ export default function DetailScreen({ route }) {
                 style={styles.buttonTicket}
                 onPress={toggleModalTicket}
               >
-                <Text style={styles.textDetail}>Từ 12$/người</Text>
+                <Text style={styles.textDetail}>
+                  Từ {activity.data.generalPrice / 1000}K/người
+                </Text>
                 <View style={styles.button}>
                   <Text style={[styles.textDetail]}>Đặt ngay</Text>
                 </View>
@@ -151,11 +153,12 @@ export default function DetailScreen({ route }) {
             )}
 
             <View style={styles.detailContainer}>
-              {route.params.isExperience && (
-                <View style={styles.topWrapper}>
-                  <Text style={[styles.textDetail]}>Top trải nghiệm</Text>
-                </View>
-              )}
+              {route.params.isExperience &&
+                activity.data.averageRating >= 4.8 && (
+                  <View style={styles.topWrapper}>
+                    <Text style={[styles.textDetail]}>Top trải nghiệm</Text>
+                  </View>
+                )}
 
               <View>
                 <Text style={[styles.title]} numberOfLines={2}>
@@ -168,7 +171,7 @@ export default function DetailScreen({ route }) {
                   <View style={[styles.line]}>
                     <SvgXml xml={MiniStar} />
                     <Text style={[styles.text]}>
-                      {activity.data.averageRating}
+                      {parseFloat(activity.data.averageRating).toFixed(1)}
                     </Text>
                   </View>
                   <View style={[styles.line]}>
@@ -190,7 +193,7 @@ export default function DetailScreen({ route }) {
                   <View style={[styles.line]}>
                     <SvgXml xml={LanguageIcon} />
                     <Text style={[styles.languageBorder]}>
-                      Tiếng Anh, Tiếng Trung, Tiếng Việt
+                      {activity.data.languages}
                     </Text>
                   </View>
                 )}
@@ -206,6 +209,7 @@ export default function DetailScreen({ route }) {
         swipeDirection="down"
         onSwipeComplete={toggleModal}
         isVisible={isModalVisible}
+        avoidKeyboard={true}
         style={{
           justifyContent: 'flex-end',
           width: '100%',
@@ -219,7 +223,7 @@ export default function DetailScreen({ route }) {
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             backgroundColor: '#fff',
-            height: 600,
+            height: 500,
             minHeight: 100,
           }}
         >
@@ -383,6 +387,7 @@ export default function DetailScreen({ route }) {
         swipeDirection="down"
         onSwipeComplete={toggleModalTicket}
         isVisible={isModalTicketVisible}
+        avoidKeyboard={true}
         style={{
           justifyContent: 'flex-end',
           width: '100%',
@@ -396,7 +401,7 @@ export default function DetailScreen({ route }) {
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             backgroundColor: '#fff',
-            height: 600,
+            height: 500,
             minHeight: 100,
           }}
         >
@@ -577,6 +582,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     textAlign: 'left',
     color: '#fff',
+    textTransform: 'capitalize',
   },
   line: {
     flexDirection: 'row',

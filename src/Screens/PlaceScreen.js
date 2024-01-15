@@ -12,32 +12,26 @@ import {
   Animated,
   ActivityIndicator,
 } from 'react-native';
-import React, { useLayoutEffect, useState, useRef } from 'react';
+import React, { useLayoutEffect, useState, useRef, useEffect } from 'react';
 import { SvgXml } from 'react-native-svg';
-import {
-  ParkIcon,
-  CentreIcon,
-  RelicIcon,
-  ScenicIcon,
-  MuseumIcon,
-  ParkIconActive,
-  CentreIconActive,
-  RelicIconActive,
-  ScenicIconActive,
-  MuseumIconActive,
-  FireIcon,
-  BookIcon,
-} from '@/Assets/Icons/Where';
-import { DATA } from '../Utils/data';
+import { FireIcon, BookIcon } from '@/Assets/Icons/Where';
 import AccommodationCard from '@/Components/AccomodationCard';
 import { StarIcon } from '@/Assets/Icons/Card';
 import CityCard from '@/Components/CityCard';
 import { useStateContext } from '@/Context/StateContext';
-import { getChildCategories } from '@/Hooks/TravelActivityHooks';
+import {
+  getActivityByCategory,
+  getChildCategories,
+  getPopularByCategory,
+} from '@/Hooks/TravelActivityHooks';
+import { getTopCities } from '@/Hooks/CityHooks';
 
 export default function PlaceScreen() {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(
+    '1eea318b-19b1-48dc-a0e8-0b1404466cf7'
+  );
   // const scrollOffsetY = useRef(new Animated.Value(0)).current;
+
   const { mainCategories, accessToken } = useStateContext();
 
   const { childCategories, isLoading, error } = getChildCategories(
@@ -45,19 +39,29 @@ export default function PlaceScreen() {
     mainCategories.odau.id
   );
 
+  const { popularActivities, isPopularLoading, popularError } =
+    getPopularByCategory(accessToken, mainCategories.odau.id);
+
+  const { activities, isActivitiesLoading, activitiesError } =
+    getActivityByCategory(accessToken, selected);
+
+  const { topCities, isTopCitiesLoading, topCitiesError } =
+    getTopCities(accessToken);
+
   const renderItem = ({ item }) => (
     <AccommodationCard
       id={item.id}
-      cardName={item.cardName}
-      imgPath={item.imgPath}
-      location={item.location}
-      price={item.price}
-      star={item.star}
+      cardName={item.activityName}
+      imgPath={item.mainImage}
+      location={item.city.name}
+      price={item.generalPrice}
+      star={item.averageRating}
+      isExperience={false}
     />
   );
 
   const renderCityItem = ({ item }) => (
-    <CityCard cardName={item.cardName} imgPath={item.imgPath} />
+    <CityCard cardName={item.name} imgPath={item.images} />
   );
 
   return (
@@ -68,53 +72,101 @@ export default function PlaceScreen() {
       <View style={styles.mainView}>
         <View style={styles.flex}>
           <SvgXml xml={FireIcon} />
-          <Text style={styles.title}>
-            Các điểm ăn dừng chân lý tưởng cho chuyến đi của bạn
+          <Text style={styles.title}>Điểm dừng chân lý tưởng</Text>
+        </View>
+
+        {isPopularLoading ? (
+          <>
+            <ActivityIndicator
+              size="large"
+              color="#ED2939"
+              style={{ paddingVertical: 12 }}
+            />
+            <Text
+              style={{
+                color: '#ED2939',
+                textAlign: 'center',
+                paddingBottom: 20,
+                fontSize: 14,
+              }}
+            >
+              Please wait...
+            </Text>
+          </>
+        ) : popularError ? (
+          <Text
+            style={{
+              color: '#A80027',
+              textAlign: 'center',
+              paddingBottom: 20,
+              fontSize: 16,
+            }}
+          >
+            Something went wrong!
           </Text>
-        </View>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-        />
+        ) : (
+          <FlatList
+            data={popularActivities.data}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          />
+        )}
       </View>
 
       <View style={styles.mainView}>
         <View style={styles.flex}>
           <SvgXml xml={BookIcon} />
-          <Text style={styles.title}>Khám phá các khu nghỉ dưỡng nổi bật</Text>
+          <Text style={styles.title}>Các thành phố du lịch bạn nên đến</Text>
         </View>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-        />
+
+        {isTopCitiesLoading ? (
+          <>
+            <ActivityIndicator
+              size="large"
+              color="#ED2939"
+              style={{ paddingVertical: 12 }}
+            />
+            <Text
+              style={{
+                color: '#ED2939',
+                textAlign: 'center',
+                paddingBottom: 20,
+                fontSize: 14,
+              }}
+            >
+              Please wait...
+            </Text>
+          </>
+        ) : topCitiesError ? (
+          <Text
+            style={{
+              color: '#A80027',
+              textAlign: 'center',
+              paddingBottom: 20,
+              fontSize: 16,
+            }}
+          >
+            Something went wrong!
+          </Text>
+        ) : (
+          <FlatList
+            data={topCities.data}
+            renderItem={renderCityItem}
+            keyExtractor={(item, index) => index}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          />
+        )}
       </View>
 
       <View style={styles.mainView}>
-        <View style={styles.flex}>
-          <SvgXml xml={BookIcon} />
-          <Text style={styles.title}>Các thành phố du lịch nghỉ dưỡng</Text>
-        </View>
-        <FlatList
-          data={DATA}
-          renderItem={renderCityItem}
-          keyExtractor={(item, index) => index}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-        />
-      </View>
-
-      <View style={styles.mainView}>
-        <Text style={styles.title}>Bạn có thể thích những địa điểm này</Text>
-
+        <Text style={styles.title}>
+          Khám phá nơi dừng chân cho chuyến đi của bạn
+        </Text>
         {isLoading ? (
           <>
             <ActivityIndicator
@@ -155,16 +207,16 @@ export default function PlaceScreen() {
                   <Pressable
                     style={styles.categoryItem}
                     key={i}
-                    onPress={() => setSelected(i)}
+                    onPress={() => setSelected(e.id)}
                   >
                     <SvgXml
                       style={styles.icon}
-                      xml={selected === i ? e.svgActive : e.svg}
+                      xml={selected === e.id ? e.svgActive : e.svg}
                     />
                     <Text
                       style={[
                         styles.titleTab,
-                        selected == i && {
+                        selected == e.id && {
                           color: '#151515',
                         },
                       ]}
@@ -179,20 +231,52 @@ export default function PlaceScreen() {
           </>
         )}
 
-        <View style={styles.cardListContainer}>
-          {DATA.map((item, index) => {
-            return (
-              <AccommodationCard
-                id={item.id}
-                cardName={item.cardName}
-                imgPath={item.imgPath}
-                location={item.location}
-                price={item.price}
-                star={item.star}
-              />
-            );
-          })}
-        </View>
+        {isActivitiesLoading ? (
+          <>
+            <ActivityIndicator
+              size="large"
+              color="#ED2939"
+              style={{ paddingVertical: 12 }}
+            />
+            <Text
+              style={{
+                color: '#ED2939',
+                textAlign: 'center',
+                paddingBottom: 20,
+                fontSize: 14,
+              }}
+            >
+              Please wait...
+            </Text>
+          </>
+        ) : activitiesError ? (
+          <Text
+            style={{
+              color: '#A80027',
+              textAlign: 'center',
+              paddingBottom: 20,
+              fontSize: 16,
+            }}
+          >
+            Something went wrong!
+          </Text>
+        ) : (
+          <View style={styles.cardListContainer}>
+            {activities.data.data.map((item, index) => {
+              return (
+                <AccommodationCard
+                  id={item.id}
+                  cardName={item.activityName}
+                  imgPath={item.mainImage}
+                  location={item.city.name}
+                  price={item.generalPrice}
+                  star={item.averageRating}
+                  isExperience={false}
+                />
+              );
+            })}
+          </View>
+        )}
       </View>
     </ScrollView>
   );
