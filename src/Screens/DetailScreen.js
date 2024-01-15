@@ -158,6 +158,7 @@ export default function DetailScreen() {
         swipeDirection="down"
         onSwipeComplete={toggleModal}
         isVisible={isModalVisible}
+        avoidKeyboard={true}
         style={{
           justifyContent: "flex-end",
           width: "100%",
@@ -171,7 +172,7 @@ export default function DetailScreen() {
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             backgroundColor: "#fff",
-            height: 600,
+            height: 500,
             minHeight: 100,
           }}
         >
@@ -335,6 +336,7 @@ export default function DetailScreen() {
         swipeDirection="down"
         onSwipeComplete={toggleModalTicket}
         isVisible={isModalTicketVisible}
+        avoidKeyboard={true}
         style={{
           justifyContent: "flex-end",
           width: "100%",
@@ -348,7 +350,7 @@ export default function DetailScreen() {
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             backgroundColor: "#fff",
-            height: 600,
+            height: 500,
             minHeight: 100,
           }}
         >
