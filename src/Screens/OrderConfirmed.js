@@ -31,9 +31,13 @@ import {
 } from "@/Assets/Icons/DetailIcon";
 import { MiniLocation } from "@/Assets/Icons/Card";
 import {
+  BoxCheckIcon,
   CalendarIcon,
+  CashIcon,
+  FailIcon,
   OrderIcon,
   PeopleIcon,
+  SuccessIcon,
   TimeIcon,
 } from "@/Assets/Icons/OrderConfirm";
 export default function OrderConfirm() {
@@ -50,93 +54,182 @@ export default function OrderConfirm() {
           <SvgXml xml={SearchIconBlack} />
         </Pressable>
       </View>
-      <View style={styles.containerCard}>
-        <Image
-          style={styles.img}
-          resizeMode="cover"
-          source={require("../Assets/detail1.jpg")}
-        />
-        <View style={styles.orderCard}>
-          <Text style={styles.textDetail}>
-            Khám phá kiến trúc Kinh thành Huế
-          </Text>
-          <View style={[styles.line]}>
-            <SvgXml xml={CalendarIcon} />
-            <Text style={[styles.text]}> Th 7, 14 thg 10, 2023</Text>
-          </View>
-          <View style={[styles.line]}>
-            <SvgXml xml={TimeIcon} />
-            <Text style={[styles.text]}> 17:30 - 20:30</Text>
-          </View>
-          <View style={[styles.line]}>
-            <SvgXml xml={PeopleIcon} />
-            <Text style={[styles.text]}> 2 người lớn, 1 trẻ em, 1 em bé</Text>
-          </View>
-          <Pressable style={styles.line1} onPress={() => {}}>
-            <Text style={{ alignSelf: "center", marginRight: 5 }}>
-              <Text style={{ fontWeight: "600", fontSize: 16 }}>Host:</Text>
-              <Text style={{ fontSize: 16 }}> Martin Nguyen</Text>
+      <ScrollView style={{ height: "85%" }}>
+        <View style={styles.containerCard}>
+          <Image
+            style={styles.img}
+            resizeMode="cover"
+            source={require("../Assets/detail1.jpg")}
+          />
+          <View style={styles.orderCard}>
+            <Text style={styles.textDetail}>
+              Khám phá kiến trúc Kinh thành Huế
             </Text>
-            <View style={[styles.avatar, styles.actionPadding]}>
-              <Image
-                style={styles.avaImg}
-                resizeMode="cover"
-                source={require("../Assets/ava1.jpg")}
-              />
+            <View style={[styles.line]}>
+              <SvgXml xml={CalendarIcon} />
+              <Text style={[styles.text]}> Th 7, 14 thg 10, 2023</Text>
             </View>
-          </Pressable>
-        </View>
-      </View>
-      <View style={styles.mainView}>
-        <View style={[styles.line]}>
-          <SvgXml xml={OrderIcon} />
-          <Text style={{ fontWeight: "600", fontSize: 16 }}>
-            {" "}
-            Nhập mã giảm giá
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginTop: 10,
-            marginBottom: 10,
-          }}
-        >
-          <TextInput
-            style={styles.inputArea}
-            placeholder="Nhập mã giảm giá"
-          ></TextInput>
-          <View style={styles.button}>
-            <Text>Áp dụng</Text>
+            <View style={[styles.line]}>
+              <SvgXml xml={TimeIcon} />
+              <Text style={[styles.text]}> 17:30 - 20:30</Text>
+            </View>
+            <View style={[styles.line]}>
+              <SvgXml xml={PeopleIcon} />
+              <Text style={[styles.text]}> 2 người lớn, 1 trẻ em, 1 em bé</Text>
+            </View>
+            <Pressable style={styles.line1} onPress={() => {}}>
+              <Text style={{ alignSelf: "center", marginRight: 5 }}>
+                <Text style={{ fontWeight: "600", fontSize: 16 }}>Host:</Text>
+                <Text style={{ fontSize: 16 }}> Martin Nguyen</Text>
+              </Text>
+              <View style={[styles.avatar, styles.actionPadding]}>
+                <Image
+                  style={styles.avaImg}
+                  resizeMode="cover"
+                  source={require("../Assets/ava1.jpg")}
+                />
+              </View>
+            </Pressable>
           </View>
         </View>
-        <View style={styles.line3}>
-          <Text style={{}}>Đã áp dụng mã giảm giá ABCDEF</Text>
-          <Text style={{}}>-đ20.000</Text>
+        <View style={styles.mainView}>
+          <View style={[styles.line]}>
+            <SvgXml xml={OrderIcon} />
+            <Text style={{ fontWeight: "600", fontSize: 16 }}>
+              {" "}
+              Nhập mã giảm giá
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: 10,
+            }}
+          >
+            <TextInput
+              style={styles.inputArea}
+              placeholder="Nhập mã giảm giá"
+            ></TextInput>
+            <View style={styles.button}>
+              <Text>Áp dụng</Text>
+            </View>
+          </View>
+          <View style={styles.line3}>
+            <Text style={{}}>Đã áp dụng mã giảm giá ABCDEF</Text>
+            <Text style={{}}>-đ20.000</Text>
+          </View>
+          <View style={styles.line3}>
+            <Text style={{}}>Đã áp dụng mã giảm giá ABCDEF</Text>
+            <Text style={{}}>-đ20.000</Text>
+          </View>
         </View>
-        <View style={styles.line3}>
-          <Text style={{}}>Đã áp dụng mã giảm giá ABCDEF</Text>
-          <Text style={{}}>-đ20.000</Text>
+        <View style={styles.mainView}>
+          <View style={[styles.line]}>
+            <SvgXml xml={OrderIcon} />
+            <Text style={{ fontWeight: "600", fontSize: 16 }}>
+              {" "}
+              Chi tiết thanh toán
+            </Text>
+          </View>
+
+          <View style={styles.line3}>
+            <Text style={{}}>Vé người lớn</Text>
+            <Text style={{}}>đ240.000</Text>
+          </View>
+          <View style={styles.line3}>
+            <Text style={{}}>Vé trẻ em</Text>
+            <Text style={{}}>đ100.000</Text>
+          </View>
+          <View style={styles.line3}>
+            <Text style={{}}>Giảm giá từ event của app</Text>
+            <Text style={{}}>-đ20.000</Text>
+          </View>
+          <View style={styles.line3}>
+            <Text style={{}}>Tổng cộng Voucher giảm giá</Text>
+            <Text style={{}}>-đ40.000</Text>
+          </View>
+          <View style={styles.line3}>
+            <Text style={{ fontWeight: "600", fontSize: 16 }}>
+              Tổng thanh toán:
+            </Text>
+            <Text style={{ fontWeight: "600", fontSize: 16, color: "#ed2939" }}>
+              đ260.000
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.mainView}>
-        <View style={[styles.line]}>
-          <SvgXml xml={OrderIcon} />
+        <View style={styles.mainView}>
+          <View style={[styles.line]}>
+            <SvgXml xml={CashIcon} />
+            <Text style={{ fontWeight: "600", fontSize: 16 }}>
+              {" "}
+              Phương thức thanh toán
+            </Text>
+          </View>
+        </View>
+        <View style={styles.mainView}>
           <Text style={{ fontWeight: "600", fontSize: 16 }}>
             {" "}
-            Chi tiết thanh toán
+            Chính sách về vé và giá
+          </Text>
+          <View style={[styles.line]}>
+            <SvgXml xml={SuccessIcon} />
+            <Text style={{ color: "#1d800e", textAlign: "left" }}>
+              {" "}
+              Hoàn 100% tiền vé nếu huỷ trước 24 giờ bắt đầu
+            </Text>
+          </View>
+          <View style={[styles.line]}>
+            <SvgXml xml={SuccessIcon} />
+            <Text style={{ color: "#1d800e", textAlign: "left" }}>
+              {" "}
+              Đã bao gồm phí cho tất cả các dịch vụ trong suốt trải nghiệm
+            </Text>
+          </View>
+          <View style={[styles.line]}>
+            <SvgXml xml={SuccessIcon} />
+            <Text style={{ color: "#1d800e", textAlign: "left" }}>
+              {" "}
+              Giảm 10% khi đăng ký từ 2 người trở lên, Giảm 10% khi đăng ký từ 2
+              người trở lên
+            </Text>
+          </View>
+          <View style={[styles.line]}>
+            <SvgXml xml={FailIcon} />
+            <Text style={{ color: "#ff0000", textAlign: "left" }}>
+              {" "}
+              Chưa bao gồm tiền ...
+            </Text>
+          </View>
+          <View style={[styles.line]}>
+            <SvgXml xml={FailIcon} />
+            <Text style={{ color: "#ff0000", textAlign: "left" }}>
+              {" "}
+              Huỷ không hoàn tiền
+            </Text>
+          </View>
+        </View>
+        <View style={styles.mainView}>
+          <View style={[styles.line]}>
+            <SvgXml xml={BoxCheckIcon} />
+            <Text style={{}}>
+              {" "}
+              Nhấn “Thanh toán” đồng nghĩa với việc bạn đồng ý tuân theo Điều
+              khoản của Travogue.
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
+      <View style={[styles.frameParent4, styles.frameParentPosition]}>
+        <View style={styles.tngThanhTonGroup}>
+          <Text style={{}}>Tổng thanh toán</Text>
+          <Text style={{ fontWeight: "600", fontSize: 16, color: "#ed2939" }}>
+            đ260.000
           </Text>
         </View>
-
-        <View style={styles.line3}>
-          <Text style={{}}>Vé người lớn</Text>
-          <Text style={{}}>đ240.000</Text>
-        </View>
-        <View style={styles.line3}>
-          <Text style={{}}>Vé trẻ em</Text>
-          <Text style={{}}>đ100.000</Text>
+        <View style={[styles.button1]}>
+          <Text style={{ color: "#fff" }}>Thanh toán</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -149,7 +242,6 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "#fff",
-    paddingTop: "10%",
   },
   statusBar: {
     width: "100%",
@@ -188,13 +280,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "center",
     // height: 10,
-    marginTop: 5,
+    paddingTop: 10,
   },
   line1: {
     flexDirection: "row",
     alignContent: "center",
     // height: 10,
-    marginTop: 10,
   },
   avaImg: {
     height: 40,
@@ -227,6 +318,33 @@ const styles = StyleSheet.create({
   line3: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingTop: 12,
+    paddingTop: 10,
+  },
+  frameParentPosition: {},
+  frameParent4: {
+    height: 80,
+    borderTopWidth: 1,
+    paddingTop: 18,
+    flexWrap: "wrap",
+    alignItems: "center",
+    paddingHorizontal: 18,
+    paddingVertical: 0,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    borderColor: "#bababa",
+    borderStyle: "solid",
+    backgroundColor: "#fff",
+    bottom: 0,
+    position: "relative",
+    width: "100%",
+  },
+  button1: {
+    borderRadius: 7,
+    backgroundColor: "#ed2939",
+    borderColor: "#fff",
+    flexWrap: "wrap",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    overflow: "hidden",
   },
 });
