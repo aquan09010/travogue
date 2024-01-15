@@ -12,9 +12,9 @@ import {
   Animated,
   SectionList,
   VirtualizedList,
-} from 'react-native';
-import React, { useLayoutEffect, useState, useRef } from 'react';
-import { SvgXml } from 'react-native-svg';
+} from "react-native";
+import React, { useLayoutEffect, useState, useRef } from "react";
+import { SvgXml } from "react-native-svg";
 import {
   ParkIcon,
   CentreIcon,
@@ -28,25 +28,26 @@ import {
   MuseumIconActive,
   FireIcon,
   BookIcon,
-} from '@/Assets/Icons/Where';
-import { DATA } from '../Utils/data';
-import AccommodationCard from '@/Components/AccomodationCard';
-import { StarIcon } from '@/Assets/Icons/Card';
-import CityCard from '@/Components/CityCard';
+} from "@/Assets/Icons/Where";
+import { DATA } from "../Utils/data";
+import AccommodationCard from "@/Components/AccomodationCard";
+import { StarIcon } from "@/Assets/Icons/Card";
+import CityCard from "@/Components/CityCard";
+import ModalComment from "./ModalComment";
 
 export default function WhereScreen() {
   const menu = [
-    { name: 'Công viên', svg: ParkIcon, svgActive: ParkIconActive },
-    { name: 'Khu giải trí', svg: CentreIcon, svgActive: CentreIconActive },
-    { name: 'Khu di tích', svg: RelicIcon, svgActive: RelicIconActive },
+    { name: "Công viên", svg: ParkIcon, svgActive: ParkIconActive },
+    { name: "Khu giải trí", svg: CentreIcon, svgActive: CentreIconActive },
+    { name: "Khu di tích", svg: RelicIcon, svgActive: RelicIconActive },
     {
-      name: 'Danh lam thắng cảnh',
+      name: "Danh lam thắng cảnh",
       svg: ScenicIcon,
       svgActive: ScenicIconActive,
     },
-    { name: 'Bảo tàng', svg: MuseumIcon, svgActive: MuseumIconActive },
-    { name: 'Bảo tàng', svg: MuseumIcon, svgActive: MuseumIconActive },
-    { name: 'Bảo tàng', svg: MuseumIcon, svgActive: MuseumIconActive },
+    { name: "Bảo tàng", svg: MuseumIcon, svgActive: MuseumIconActive },
+    { name: "Bảo tàng", svg: MuseumIcon, svgActive: MuseumIconActive },
+    { name: "Bảo tàng", svg: MuseumIcon, svgActive: MuseumIconActive },
   ];
   const [selected, setSelected] = useState(0);
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
@@ -136,7 +137,7 @@ export default function WhereScreen() {
                   style={[
                     styles.titleTab,
                     selected == i && {
-                      color: '#151515',
+                      color: "#151515",
                     },
                   ]}
                   numberOfLines={2}
@@ -173,39 +174,39 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#ED2939',
+    fontWeight: "600",
+    color: "#ED2939",
   },
   titleTab: {
     fontSize: 15,
-    fontWeight: '600',
-    color: '#767676',
+    fontWeight: "600",
+    color: "#767676",
     width: 70,
-    textAlign: 'center',
+    textAlign: "center",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 18,
   },
   flex: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 6,
-    alignItems: 'center',
+    alignItems: "center",
     paddingBottom: 16,
   },
   icon: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: 5,
   },
   cardListContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between', // Evenly distribute cards
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between", // Evenly distribute cards
   },
   categoryItem: {
     width: 85,
-    alignItems: 'center',
+    alignItems: "center",
   },
 });

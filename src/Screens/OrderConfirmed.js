@@ -241,8 +241,8 @@ export default function OrderConfirm() {
           </View>
         </View>
       </ScrollView>
-      <View style={[styles.frameParent4, styles.frameParentPosition]}>
-        <View style={styles.tngThanhTonGroup}>
+      <View style={[styles.frameParent4]}>
+        <View style={{}}>
           <Text style={{}}>Tổng thanh toán</Text>
           <Text style={{ fontWeight: "600", fontSize: 16, color: "#ed2939" }}>
             đ260.000
@@ -340,7 +340,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingTop: 10,
   },
-  frameParentPosition: {},
   frameParent4: {
     height: 80,
     borderTopWidth: 1,
