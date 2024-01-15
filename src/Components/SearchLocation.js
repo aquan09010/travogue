@@ -6,20 +6,22 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-} from "react-native";
-import { SvgXml } from "react-native-svg";
-import { LocationDotIcon } from "@/Assets/Icons/LocationDot";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+} from 'react-native';
+import { SvgXml } from 'react-native-svg';
+import { LocationDotIcon } from '@/Assets/Icons/LocationDot';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SearchLocation() {
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
-      <SvgXml style={styles.icon} xml={LocationDotIcon} />
-      <TextInput
-        style={styles.inputArea}
-        placeholder="Bạn muốn đi đâu ?"
-      ></TextInput>
-    </View>
+    <TouchableOpacity onPress={() => navigation.navigate('SearchCityScreen')}>
+      <View style={styles.container}>
+        <SvgXml style={styles.icon} xml={LocationDotIcon} />
+        <TextInput style={styles.inputArea} placeholder="Bạn muốn đi đâu ?" />
+      </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
@@ -28,12 +30,12 @@ const styles = StyleSheet.create({
   },
   container: {
     borderRadius: 15,
-    borderStyle: "solid",
-    borderColor: "#e8e8e8",
+    borderStyle: 'solid',
+    borderColor: '#e8e8e8',
     borderWidth: 1,
     height: 50,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 30,
     paddingVertical: 15,
   },
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
   },
   inputArea: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
 });

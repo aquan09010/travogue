@@ -23,7 +23,7 @@ export default function CityCard(props) {
       onPress={() => {}}
     >
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={props.imgPath} />
+        <Image style={styles.image} source={{ uri: props.imgPath }} />
         <Text style={styles.imageText}>{props.cardName}</Text>
       </View>
     </TouchableOpacity>

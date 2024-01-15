@@ -22,7 +22,7 @@ export default function AccommodationCard(props) {
       key={props.id}
       onPress={() => {}}
     >
-      <Image style={styles.image} source={props.imgPath} />
+      <Image style={styles.image} source={{ uri: props.imgPath }} />
       <View style={styles.cardDetail}>
         <Text style={styles.cardName} numberOfLines={2}>
           {props.cardName}
@@ -34,7 +34,7 @@ export default function AccommodationCard(props) {
         </View>
         <View style={styles.container}>
           <View style={styles.line}>
-            <Text style={styles.categoryText}>$ {props.price}</Text>
+            <Text style={styles.categoryText}>VNĐ {props.price / 1000}K</Text>
           </View>
           <View style={styles.line}>
             <SvgXml xml={StarIcon} />
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   line: {
     flexDirection: 'row',
-    alignContent: 'center',
+    alignItems: 'center',
     // height: 10,
     marginBottom: 3,
   },

@@ -10,8 +10,7 @@ import {
   Pressable,
   FlatList,
   Animated,
-  SectionList,
-  VirtualizedList,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useLayoutEffect, useState, useRef } from 'react';
 import { SvgXml } from 'react-native-svg';
@@ -33,23 +32,18 @@ import { DATA } from '../Utils/data';
 import AccommodationCard from '@/Components/AccomodationCard';
 import { StarIcon } from '@/Assets/Icons/Card';
 import CityCard from '@/Components/CityCard';
+import { useStateContext } from '@/Context/StateContext';
+import { getChildCategories } from '@/Hooks/TravelActivityHooks';
 
 export default function EatScreen() {
-  const menu = [
-    { name: 'Công viên', svg: ParkIcon, svgActive: ParkIconActive },
-    { name: 'Khu giải trí', svg: CentreIcon, svgActive: CentreIconActive },
-    { name: 'Khu di tích', svg: RelicIcon, svgActive: RelicIconActive },
-    {
-      name: 'Danh lam thắng cảnh',
-      svg: ScenicIcon,
-      svgActive: ScenicIconActive,
-    },
-    { name: 'Bảo tàng', svg: MuseumIcon, svgActive: MuseumIconActive },
-    { name: 'Bảo tàng', svg: MuseumIcon, svgActive: MuseumIconActive },
-    { name: 'Bảo tàng', svg: MuseumIcon, svgActive: MuseumIconActive },
-  ];
   const [selected, setSelected] = useState(0);
-  const scrollOffsetY = useRef(new Animated.Value(0)).current;
+  // const scrollOffsetY = useRef(new Animated.Value(0)).current;
+  const { mainCategories, accessToken } = useStateContext();
+
+  const { childCategories, isLoading, error } = getChildCategories(
+    accessToken,
+    mainCategories.angi.id
+  );
 
   const renderItem = ({ item }) => (
     <AccommodationCard
@@ -118,33 +112,71 @@ export default function EatScreen() {
 
       <View style={styles.mainView}>
         <Text style={styles.title}>Bạn có thể thích những địa điểm này</Text>
-        <View style={styles.header}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {menu.map((e, i) => (
-              <Pressable
-                style={styles.categoryItem}
-                key={i}
-                onPress={() => setSelected(i)}
+
+        {isLoading ? (
+          <>
+            <ActivityIndicator
+              size="large"
+              color="#ED2939"
+              style={{ paddingVertical: 12 }}
+            />
+            <Text
+              style={{
+                color: '#ED2939',
+                textAlign: 'center',
+                paddingBottom: 20,
+                fontSize: 14,
+              }}
+            >
+              Please wait...
+            </Text>
+          </>
+        ) : error ? (
+          <Text
+            style={{
+              color: '#A80027',
+              textAlign: 'center',
+              paddingBottom: 20,
+              fontSize: 16,
+            }}
+          >
+            Something went wrong!
+          </Text>
+        ) : (
+          <>
+            <View style={styles.header}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
               >
-                <SvgXml
-                  style={styles.icon}
-                  xml={selected === i ? e.svgActive : e.svg}
-                />
-                <Text
-                  style={[
-                    styles.titleTab,
-                    selected == i && {
-                      color: '#151515',
-                    },
-                  ]}
-                  numberOfLines={2}
-                >
-                  {e.name}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
-        </View>
+                {childCategories.data.childCategories.map((e, i) => (
+                  <Pressable
+                    style={styles.categoryItem}
+                    key={i}
+                    onPress={() => setSelected(i)}
+                  >
+                    <SvgXml
+                      style={styles.icon}
+                      xml={selected === i ? e.svgActive : e.svg}
+                    />
+                    <Text
+                      style={[
+                        styles.titleTab,
+                        selected == i && {
+                          color: '#151515',
+                        },
+                      ]}
+                      numberOfLines={2}
+                    >
+                      {e.categoryName}
+                    </Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </View>
+          </>
+        )}
+
         <View style={styles.cardListContainer}>
           {DATA.map((item, index) => {
             return (
