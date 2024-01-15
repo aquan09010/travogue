@@ -38,6 +38,7 @@ export default function RegisterScreen ()  {
 
             <View style={styles.title}>
                 <SvgXml xml={LeftArrow} style={styles.arrow} onPress={goToLoginPage}/>
+                
                 <Text style={styles.titleText}>Đăng ký</Text>
             </View>
 
@@ -45,23 +46,28 @@ export default function RegisterScreen ()  {
                 <View style={styles.dividerContainer}>
                     <TouchableOpacity onPress={() => setSelectedOption('Điện thoại')} style={{ alignItems: 'center' }}>
                         <Text style={selectedOption === 'Điện thoại' ? styles.selectedText : styles.unselectedText}>Điện thoại</Text>
+                        
                         {
                             selectedOption === 'Điện thoại' && 
                             <View style={styles.selectedUnderline} /> 
                         }
+
                         {
                             selectedOption === 'Email' && 
                             <View style={styles.unselectedUnderline}/>
                         }
                     </TouchableOpacity>
                 </View >
+
                 <View style={styles.dividerContainer}>
                     <TouchableOpacity onPress={() => setSelectedOption('Email')} style={{ alignItems: 'center' }}>
                         <Text style={selectedOption === 'Email' ? styles.selectedText : styles.unselectedText}>Email</Text>
+                        
                         {
                             selectedOption === 'Email' && 
                             <View style={styles.selectedUnderline} />
                         }
+
                         {
                             selectedOption === 'Điện thoại' && 
                             <View style={styles.unselectedUnderline} />
@@ -79,6 +85,7 @@ export default function RegisterScreen ()  {
                     keyboardType="phone-pad"
                 />
             }
+
             {
                 selectedOption === 'Email' && 
                 <TextInput
@@ -99,94 +106,94 @@ export default function RegisterScreen ()  {
 };
 
 const styles = StyleSheet.create({
-    travogue: {
-        fontSize: 30,
-        textAlign: "center",
-        color: "white",
+    container: {
+        flex: 1,
+        marginTop: '10%',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
     },
     header: {
         width: "95%",
-        backgroundColor: "#151515",
         alignItems: "center",
+        paddingVertical: "2%",
         justifyContent: "center",
-        paddingHorizontal: 19,
-        paddingVertical: 13,
+        backgroundColor: "#151515",
     },
-    container: {
-        flex: 1,
-        marginTop: 8,
-        alignItems: 'center',
-        backgroundColor: '#fff',
+    travogue: {
+        fontWeight: '500',
+        fontSize: 30,
+        color: "#ffffff",
+        textAlign: "center",
     },
     title: {
-        flexDirection: 'row',
-        marginTop: 32,
         width: "100%",
-        justifyContent: 'center',
+        marginTop: '8%',
         alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
     },
     arrow: {
+        left: '7%',
         position: 'absolute',
-        left: 24,
     },
     titleText: {
         center: true,
         fontSize: 22,
-        fontWeight: 'bold',
+        fontWeight: '700',
     },
     formTitle: {
         width: "100%",
-        marginTop: 32,
+        marginTop: '9%',
         flexDirection: 'row',
-        paddingHorizontal: 24,
+        paddingHorizontal: '6%',
         justifyContent: 'space-around',
     },
     dividerContainer: {
-        flexDirection: 'column',
         alignItems: 'center',
+        flexDirection: 'column',
+    },
+    selectedText: {
+        fontSize: 18,
+        fontWeight: '700',
+    },
+    unselectedText: {
+        fontSize: 18,
+        color: '#747474',
+        fontWeight: '400',
     },
     selectedUnderline: {
         height: 2, 
         width: 130,
-        marginTop: 8,
+        marginTop: '6%',
         backgroundColor: '#000000', 
     },
     unselectedUnderline: {
         height: 1, 
         width: 130,
-        marginTop: 8,
+        marginTop: '6%',
         backgroundColor: '#747474', 
-    },
-    selectedText: {
-        fontWeight: 'bold',
-        fontSize: 18,
-    },
-    unselectedText: {
-        fontSize: 18,
-        color: '#747474',
-        fontWeight: 'normal',
     },
     input: {
         height: 65,
         width: "85%",
-        marginTop: 40,
-        borderWidth: 1.5,
-        borderRadius: 20,
+        marginTop: '11%',
+        borderWidth: 1.5, 
+        borderRadius: 20, 
         paddingHorizontal: 24,
         borderColor: '#767676',
     },
     button: {
-        marginTop: 40,
-        width: "85%",
         height: 55,
-        backgroundColor: '#000000', 
+        width: "85%",
+        marginTop: '11%',
         borderRadius: 15, 
         alignItems: 'center', 
         justifyContent: 'center',
+        backgroundColor: '#000000', 
     },
     buttonText: {
-        color: 'white', 
-        fontWeight: 'bold', 
         fontSize: 22,
+        color: '#ffffff', 
+        fontWeight: '800', 
     },
 });

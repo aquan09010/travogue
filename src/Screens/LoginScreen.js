@@ -102,12 +102,13 @@ export default function LoginScreen () {
                 <TouchableOpacity style={styles.button} onPress={goToOnboardingPage}>
                     <Text style={styles.buttonText}>Đăng nhập</Text>
                 </TouchableOpacity>
-
             </View>
             
             <View style={styles.dividerContainer}>
                 <View style={styles.dividerLine} />
+
                 <Text style={styles.dividerText}>OR</Text>
+
                 <View style={styles.dividerLine} />
             </View>
 
@@ -130,11 +131,13 @@ export default function LoginScreen () {
 
             <TouchableOpacity style={styles.buttonGG}>
                 <SvgXml xml={GoogleIcon} style={{marginRight: 16}} />
+
                 <Text style={styles.buttonTextGG}>Đăng nhập bằng Google</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.buttonFB}>
                 <SvgXml xml={FacebookIcon} style={{marginRight: 16}} />
+
                 <Text style={styles.buttonTextFB}>Đăng nhập bằng Facebook</Text>
             </TouchableOpacity>
 
@@ -144,6 +147,7 @@ export default function LoginScreen () {
 
             <View style={styles.signupTextCont}>
                 <Text style={styles.signupText}>Bạn chưa có tài khoản ?</Text>
+                
                 <TouchableOpacity onPress={goToRegisterPage}>
                     <Text style={styles.signupButton}> Đăng ký</Text>
                 </TouchableOpacity>
