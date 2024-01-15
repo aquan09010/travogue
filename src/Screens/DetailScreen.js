@@ -9,6 +9,7 @@ import {
   ImageBackground,
   Pressable,
   ActivityIndicator,
+  Button,
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
@@ -16,17 +17,24 @@ import { ParkIconActive } from '@/Assets/Icons/Where';
 import React, { useLayoutEffect, useState, useRef } from 'react';
 import { SearchIcon, ArrowLeft } from '@/Assets/Icons/Navigation';
 import {
+  CancelIcon,
   CommentIcon,
   DotIcon,
+  FourStarBar,
   HeartIcon,
   LanguageIcon,
   MiniLocation1,
   MiniStar,
+  OneStarBar,
   ShareIcon,
+  TwoStarBar,
 } from '@/Assets/Icons/DetailIcon';
 import { MiniLocation } from '@/Assets/Icons/Card';
 import { useStateContext } from '@/Context/StateContext';
 import { getDetailActivity } from '@/Hooks/TravelActivityHooks';
+import Modal from 'react-native-modal';
+import ModalComment from './ModalComment';
+
 export default function DetailScreen({ route }) {
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -35,6 +43,7 @@ export default function DetailScreen({ route }) {
     });
   }, []);
   const goToOrder = async (e) => {
+    setModalTicketVisible(false);
     e.preventDefault();
     navigation.navigate('OrderConfirm');
   };
@@ -50,6 +59,14 @@ export default function DetailScreen({ route }) {
     route.params.activityId
   );
 
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalTicketVisible, setModalTicketVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  const toggleModalTicket = () => {
+    setModalTicketVisible(!isModalTicketVisible);
+  };
   return (
     <View style={styles.container}>
       {isActivityLoading ? (
@@ -108,7 +125,10 @@ export default function DetailScreen({ route }) {
               <Pressable style={styles.actionPadding}>
                 <SvgXml xml={HeartIcon} />
               </Pressable>
-              <Pressable style={[styles.actionPadding, styles.extraLine]}>
+              <Pressable
+                onPress={toggleModal}
+                style={[styles.actionPadding, styles.extraLine]}
+              >
                 <SvgXml xml={CommentIcon} />
                 <Text style={styles.text}>120</Text>
               </Pressable>
@@ -119,12 +139,15 @@ export default function DetailScreen({ route }) {
             </View>
 
             {route.params.isExperience && (
-              <Pressable style={styles.buttonTicket}>
+              <TouchableOpacity
+                style={styles.buttonTicket}
+                onPress={toggleModalTicket}
+              >
                 <Text style={styles.textDetail}>Từ 12$/người</Text>
-                <Pressable style={styles.button} onPress={goToOrder}>
+                <View style={styles.button}>
                   <Text style={[styles.textDetail]}>Đặt ngay</Text>
-                </Pressable>
-              </Pressable>
+                </View>
+              </TouchableOpacity>
             )}
 
             <View style={styles.detailContainer}>
@@ -177,6 +200,253 @@ export default function DetailScreen({ route }) {
           </ImageBackground>
         </>
       )}
+      <Modal
+        onBackButtonPress={() => setModalVisible(false)}
+        onBackdropPress={() => setModalVisible(false)}
+        swipeDirection="down"
+        onSwipeComplete={toggleModal}
+        isVisible={isModalVisible}
+        style={{
+          justifyContent: 'flex-end',
+          width: '100%',
+          padding: 0,
+          margin: 0,
+        }}
+      >
+        <View
+          style={{
+            bottom: 0,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: '#fff',
+            height: 600,
+            minHeight: 100,
+          }}
+        >
+          <View
+            style={{
+              paddingTop: 20,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingHorizontal: 18,
+              paddingVertical: 8,
+            }}
+          >
+            <Text style={{ fontWeight: '600', fontSize: 20 }}>
+              Bình luận
+              <Text style={{ fontSize: 14 }}> (12)</Text>
+            </Text>
+            <Pressable style={{}} onPress={toggleModal}>
+              <SvgXml xml={CancelIcon} />
+            </Pressable>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingHorizontal: 18,
+              paddingVertical: 12,
+            }}
+          >
+            <Pressable
+              onPress={() => {}}
+              style={[styles.avatar, styles.actionPadding]}
+            >
+              <Image
+                style={[styles.avaImg, { marginRight: 10 }]}
+                resizeMode="cover"
+                source={require('../Assets/ava1.jpg')}
+              />
+            </Pressable>
+            <View style={{}}>
+              <View style={styles.line}>
+                <SvgXml xml={OneStarBar} />
+                <Text> Jordan • 1 giờ trước</Text>
+              </View>
+              <Text>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Vestibulum blandit velit erat ... Xem thêm
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingHorizontal: 18,
+              paddingVertical: 12,
+            }}
+          >
+            <Pressable
+              onPress={() => {}}
+              style={[styles.avatar, styles.actionPadding]}
+            >
+              <Image
+                style={[styles.avaImg, { marginRight: 10 }]}
+                resizeMode="cover"
+                source={require('../Assets/ava1.jpg')}
+              />
+            </Pressable>
+            <View style={{}}>
+              <View style={styles.line}>
+                <SvgXml xml={FourStarBar} />
+                <Text> Jordan • 1 giờ trước</Text>
+              </View>
+              <Text>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Vestibulum blandit velit erat ... Xem thêm
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingHorizontal: 18,
+              paddingVertical: 12,
+            }}
+          >
+            <Pressable
+              onPress={() => {}}
+              style={[styles.avatar, styles.actionPadding]}
+            >
+              <Image
+                style={[styles.avaImg, { marginRight: 10 }]}
+                resizeMode="cover"
+                source={require('../Assets/ava1.jpg')}
+              />
+            </Pressable>
+            <View style={{}}>
+              <View style={styles.line}>
+                <SvgXml xml={TwoStarBar} />
+                <Text> Jordan • 1 giờ trước</Text>
+              </View>
+              <Text>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Vestibulum blandit velit erat ... Xem thêm
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              borderColor: '#bababa',
+              borderTopWidth: 1,
+              paddingHorizontal: 18,
+              paddingTop: 12,
+              paddingBottom: 24,
+              flexDirection: 'row',
+              width: '100%',
+              flex: 1,
+              borderStyle: 'solid',
+              height: 180,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingHorizontal: 18,
+                paddingVertical: 12,
+              }}
+            >
+              <Pressable
+                onPress={() => {}}
+                style={[styles.avatar, styles.actionPadding]}
+              >
+                <Image
+                  style={[styles.avaImg, { marginRight: 10 }]}
+                  resizeMode="cover"
+                  source={require('../Assets/ava1.jpg')}
+                />
+              </Pressable>
+              <View style={{}}>
+                <View style={[styles.line, { paddingBottom: 10 }]}>
+                  <SvgXml xml={TwoStarBar} />
+                </View>
+                <TextInput
+                  style={styles.inputArea}
+                  placeholder="Viết bình luận..."
+                  placeholderTextColor="#1b1b1b"
+                ></TextInput>
+              </View>
+            </View>
+            <View style={{ position: 'absolute', bottom: 20, right: 30 }}>
+              <View style={[styles.button1]}>
+                <Text style={{ color: '#fff' }}>Đăng</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        onBackButtonPress={() => setModalTicketVisible(false)}
+        onBackdropPress={() => setModalTicketVisible(false)}
+        swipeDirection="down"
+        onSwipeComplete={toggleModalTicket}
+        isVisible={isModalTicketVisible}
+        style={{
+          justifyContent: 'flex-end',
+          width: '100%',
+          padding: 0,
+          margin: 0,
+        }}
+      >
+        <View
+          style={{
+            bottom: 0,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: '#fff',
+            height: 600,
+            minHeight: 100,
+          }}
+        >
+          <View
+            style={{
+              paddingTop: 20,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingHorizontal: 18,
+              paddingVertical: 8,
+            }}
+          >
+            <Text style={{ fontWeight: '600', fontSize: 20 }}>Vé và giá</Text>
+            <Pressable style={{}} onPress={toggleModal}>
+              <SvgXml xml={CancelIcon} />
+            </Pressable>
+          </View>
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            borderColor: '#bababa',
+            borderTopWidth: 1,
+            paddingHorizontal: 18,
+            paddingTop: 12,
+            paddingBottom: 24,
+            flexDirection: 'row',
+            width: '100%',
+            flex: 1,
+            borderStyle: 'solid',
+            height: 100,
+            justifyContent: 'space-between',
+          }}
+        >
+          <View style={{}}>
+            <Text style={{}}>Tổng thanh toán</Text>
+            <Text style={{ fontWeight: '600', fontSize: 16, color: '#ed2939' }}>
+              đ260.000
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={goToOrder}
+            style={[styles.button2, { height: 45, alignItems: 'center' }]}
+          >
+            <Text style={{ color: '#fff' }}>Tiếp tục</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -340,5 +610,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     marginTop: 5,
+  },
+  inputArea: {
+    borderRadius: 7,
+    backgroundColor: '#E8E8E8',
+    color: '#1b1b1b',
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    width: 275,
+    height: 50,
+  },
+  button1: {
+    borderRadius: 7,
+    backgroundColor: '#ed2939',
+    borderColor: '#fff',
+    flexWrap: 'wrap',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    overflow: 'hidden',
+    width: 100,
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  button2: {
+    borderRadius: 7,
+    backgroundColor: '#ed2939',
+    borderColor: '#fff',
+    flexWrap: 'wrap',
+    paddingVertical: 14,
+    overflow: 'hidden',
+    width: 100,
+    alignContent: 'center',
+    alignItems: 'center',
   },
 });
