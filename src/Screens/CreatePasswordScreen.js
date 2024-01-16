@@ -77,7 +77,7 @@ export default function CreatePasswordScreen({ route }) {
         Tạo mật khẩu
       </Text>
 
-      <View style={{}}>
+      <View style={{ marginTop: 20 }}>
         {isRegisterLoading ? (
           <>
             <ActivityIndicator size="large" color="#ED2939" style={{}} />
@@ -90,7 +90,9 @@ export default function CreatePasswordScreen({ route }) {
               fontSize: 16,
             }}
           >
-            {registerError.message}
+            {Array.isArray(registerError)
+              ? registerError[0].message
+              : registerError.message}
           </Text>
         ) : (
           <>{console.log(reg)}</>
