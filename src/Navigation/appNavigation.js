@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { getItem } from '@/Utils/asyncStorage.js';
-import OnboardingScreen from '@/Screens/OnBoardingScreen';
-import MainNavigator from './MainNavigation';
-import DetailScreen from '@/Screens/DetailScreen';
-import OrderConfirm from '@/Screens/OrderConfirmed';
-import LoginScreen from '@/Screens/LoginScreen';
-import RegisterScreen from '@/Screens/RegisterScreen';
-import ConfirmPhoneScreen from '@/Screens/ConfirmPhoneScreen';
-import CreatePasswordScreen from '@/Screens/CreatePasswordScreen';
-import HostProfile from '@/Screens/HostProfile';
-import SearchCityScreen from '@/Screens/SearchCityScreen';
+import React, { useEffect, useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { getItem } from "@/Utils/asyncStorage.js";
+import OnboardingScreen from "@/Screens/OnBoardingScreen";
+import MainNavigator from "./MainNavigation";
+import DetailScreen from "@/Screens/DetailScreen";
+import OrderConfirm from "@/Screens/OrderConfirmed";
+import LoginScreen from "@/Screens/LoginScreen";
+import RegisterScreen from "@/Screens/RegisterScreen";
+import ConfirmPhoneScreen from "@/Screens/ConfirmPhoneScreen";
+import CreatePasswordScreen from "@/Screens/CreatePasswordScreen";
+import HostProfile from "@/Screens/HostProfile";
+import SearchCityScreen from "@/Screens/SearchCityScreen";
 import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
@@ -21,7 +21,7 @@ export default function AppNavigation() {
     checkIfAlreadyOnboarded();
   }, []);
   const checkIfAlreadyOnboarded = async () => {
-    let onboarded = await getItem('onboarded');
+    let onboarded = await getItem("onboarded");
     if (onboarded == 1) {
       // hide onboarding
       setShowOnboarding(false);
@@ -36,7 +36,7 @@ export default function AppNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={showOnboarding ? 'Onboarding' : 'Login'}
+        initialRouteName={showOnboarding ? "Onboarding" : "Login"}
       >
         <Stack.Screen
           name="Onboarding"
