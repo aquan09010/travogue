@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 // import * as WebBrowser from 'expo-web-browser';
 // import * as Google from 'expo-auth-session/providers/google';
@@ -12,6 +12,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 
 import { SvgXml } from 'react-native-svg';
@@ -19,6 +20,8 @@ import { GoogleIcon } from '@/Assets/Icons/Google';
 import { FacebookIcon } from '@/Assets/Icons/Facebook';
 
 import { KeyboardAvoidingView, Platform } from 'react-native';
+import { login } from '@/Hooks/authHooks';
+import { useStateContext } from '@/Context/StateContext';
 
 // Web: 373800336352-24ckj1qtr3u74urpb8sm9kb3rsmckq83.apps.googleusercontent.com
 // iOS: 373800336352-qhjib0ej5vg0nv7tkfjsilgla9d00f4v.apps.googleusercontent.com
@@ -28,10 +31,6 @@ import { KeyboardAvoidingView, Platform } from 'react-native';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
-
-  const goToOnboardingPage = () => {
-    navigation.navigate('Onboarding');
-  };
 
   const goToRegisterPage = () => {
     navigation.navigate('Register');
@@ -75,10 +74,49 @@ export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const { setUser, setAccessToken, setRefreshToken } = useStateContext();
+
+  const { loginAPI, loginResponse, isLoginLoading, loginError } = login();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    await loginAPI(username, password);
+  };
+
+  useEffect(() => {
+    if (loginResponse) {
+      setUser(loginResponse.data.user);
+      setAccessToken(loginResponse.data.tokens.access.token);
+      setRefreshToken(loginResponse.data.tokens.refresh.token);
+      navigation.navigate('Onboarding');
+    }
+  }, [loginResponse]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.travogue}>TRAVOGUE</Text>
+      </View>
+
+      <View style={{ marginTop: 30 }}>
+        {isLoginLoading ? (
+          <>
+            <ActivityIndicator size="large" color="#ED2939" style={{}} />
+          </>
+        ) : loginError ? (
+          <Text
+            style={{
+              color: '#A80027',
+              textAlign: 'center',
+              fontSize: 16,
+            }}
+          >
+            Wrong email or password
+          </Text>
+        ) : (
+          <></>
+        )}
       </View>
 
       <View style={styles.detail}>
@@ -99,7 +137,7 @@ export default function LoginScreen() {
           onChangeText={setPassword}
         />
 
-        <TouchableOpacity style={styles.button} onPress={goToOnboardingPage}>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Đăng nhập</Text>
         </TouchableOpacity>
       </View>
@@ -129,13 +167,13 @@ export default function LoginScreen() {
                 </>
             }          */}
 
-      <TouchableOpacity style={styles.buttonGG} onPress={goToOnboardingPage}>
+      <TouchableOpacity style={styles.buttonGG} onPress={{}}>
         <SvgXml xml={GoogleIcon} style={{ marginRight: 16 }} />
 
         <Text style={styles.buttonTextGG}>Đăng nhập bằng Google</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.buttonFB} onPress={goToOnboardingPage}>
+      <TouchableOpacity style={styles.buttonFB} onPress={{}}>
         <SvgXml xml={FacebookIcon} style={{ marginRight: 16 }} />
 
         <Text style={styles.buttonTextFB}>Đăng nhập bằng Facebook</Text>
