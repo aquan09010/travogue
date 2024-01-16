@@ -17,14 +17,8 @@ import {
 import { ProfileIcon, ProfileIconFilled } from '@/Assets/Icons/Proflie.js';
 import HomeScreen from '../Screens/HomeScreen';
 import CommunityScreen from '@/Screens/CommunityScreen.js';
-import tabHeader from '@/Components/TabHeader';
 import TabHeader from '@/Components/TabHeader';
 import SearchCityScreen from '@/Screens/SearchCityScreen';
-} from "@/Assets/Icons/Notification.js";
-import { ProfileIcon, ProfileIconFilled } from "@/Assets/Icons/Proflie.js";
-import HomeScreen from "../Screens/HomeScreen";
-import CommunityScreen from "@/Screens/CommunityScreen.js";
-import TabHeader from "@/Components/TabHeader";
 
 const MainNavigator = () => {
   const Tab = createBottomTabNavigator();
