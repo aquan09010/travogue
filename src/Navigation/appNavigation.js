@@ -11,6 +11,7 @@ import RegisterScreen from "@/Screens/RegisterScreen";
 import ConfirmPhoneScreen from "@/Screens/ConfirmPhoneScreen";
 import CreatePasswordScreen from "@/Screens/CreatePasswordScreen";
 import HostProfile from "@/Screens/HostProfile";
+import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
 export default function AppNavigation() {
@@ -80,6 +81,11 @@ export default function AppNavigation() {
           name="CreatePassword"
           options={{ headerShown: false }}
           component={CreatePasswordScreen}
+        />
+        <Stack.Screen
+          name="WhereaboutSearch"
+          options={{ headerShown: false }}
+          component={WhereaboutSearchScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

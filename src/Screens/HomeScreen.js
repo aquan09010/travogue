@@ -22,6 +22,7 @@ import ExperienceScreen from "./ExperienceScreen";
 import { DATA } from "../Utils/data";
 import AccommodationCard from "@/Components/AccomodationCard";
 import { StarIcon } from "@/Assets/Icons/Card";
+
 export default function HomeScreen() {
   const navigation = useNavigation();
   const tabs = ["Đi đâu", "Ăn gì", "Ở đâu", "Trải Nghiệm"];
