@@ -610,9 +610,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mainView: {
-    padding: 16,
     paddingBottom: 0,
-    paddingTop: "10%",
+    paddingTop: "11%",
   },
   statusBar: {
     width: "100%",
