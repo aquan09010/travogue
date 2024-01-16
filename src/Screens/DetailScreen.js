@@ -285,6 +285,7 @@ export default function DetailScreen({ route }) {
         onSwipeComplete={toggleModal}
         isVisible={isModalVisible}
         avoidKeyboard={true}
+        propagateSwipe={true}
         style={{
           justifyContent: 'flex-end',
           width: '100%',
@@ -445,6 +446,7 @@ export default function DetailScreen({ route }) {
         onSwipeComplete={toggleModalTicket}
         isVisible={isModalTicketVisible}
         avoidKeyboard={true}
+        propagateSwipe={true}
         style={{
           justifyContent: 'flex-end',
           width: '100%',
