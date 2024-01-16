@@ -7,18 +7,18 @@ import {
   TouchableOpacity,
   ScrollView,
   Pressable,
-} from 'react-native';
-import { SearchIcon } from '@/Assets/Icons/Search';
-import { SvgXml } from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
-import { MiniLocation, StarIcon } from '@/Assets/Icons/Card';
-import HeartButton from './HeartButton';
+} from "react-native";
+import { SearchIcon } from "@/Assets/Icons/Search";
+import { SvgXml } from "react-native-svg";
+import { useNavigation } from "@react-navigation/native";
+import { MiniLocation, StarIcon } from "@/Assets/Icons/Card";
+import HeartButton from "./HeartButton";
 
 export default function AccommodationCard(props) {
   const navigation = useNavigation();
   const goToDetail = async (e) => {
     e.preventDefault();
-    navigation.navigate('Detail', {
+    navigation.navigate("Detail", {
       activityId: props.id,
       isExperience: props.isExperience,
     });
@@ -26,7 +26,7 @@ export default function AccommodationCard(props) {
 
   const gotoHost = async (e) => {
     e.preventDefault();
-    navigation.navigate('HostProfile');
+    navigation.navigate("HostProfile");
   };
 
   return (
@@ -41,7 +41,7 @@ export default function AccommodationCard(props) {
           <View style={styles.line}>
             <SvgXml xml={StarIcon} />
             <Text style={styles.categoryText}>
-              {' '}
+              {" "}
               {parseFloat(props.star).toFixed(1)}
             </Text>
           </View>
@@ -56,7 +56,7 @@ export default function AccommodationCard(props) {
         </Text>
 
         <View style={styles.container}>
-          <View style={{ width: '80%' }}>
+          <View style={{ width: "80%" }}>
             <View style={styles.line}>
               <Text style={styles.categoryText}>
                 Từ {props.price / 1000}K/người
@@ -93,42 +93,42 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 7,
-    width: '100%',
+    width: "100%",
     height: 230,
   },
   cardDetail: {
     padding: 8,
   },
   line: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     // height: 10,
     marginBottom: 3,
   },
   location: {
     // marginLeft: 4,
     fontSize: 12,
-    color: '#262626',
-    textTransform: 'capitalize',
+    color: "#262626",
+    textTransform: "capitalize",
   },
   cardName: {
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 3,
   },
   categoryText: {
     fontSize: 12,
-    color: '#262626',
-    fontWeight: 'bold',
+    color: "#262626",
+    fontWeight: "bold",
   },
   imageIcon: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     height: 250,
   },
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   actionPadding: {
     paddingBottom: 15,
