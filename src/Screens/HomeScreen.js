@@ -9,23 +9,23 @@ import {
   SafeAreaView,
   Pressable,
   FlatList,
-} from "react-native";
-import { SvgXml } from "react-native-svg";
-import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect, useState, useRef } from "react";
-import SearchLocation from "@/Components/SearchLocation";
-import CategoryTab from "@/Components/CategoryTab";
-import WhereScreen from "./WhereScreen";
-import EatScreen from "./EatScreen";
-import PlaceScreen from "./PlaceScreen";
-import ExperienceScreen from "./ExperienceScreen";
-import { DATA } from "../Utils/data";
-import AccommodationCard from "@/Components/AccomodationCard";
-import { StarIcon } from "@/Assets/Icons/Card";
+} from 'react-native';
+import { SvgXml } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
+import React, { useLayoutEffect, useState, useRef } from 'react';
+import SearchLocation from '@/Components/SearchLocation';
+import CategoryTab from '@/Components/CategoryTab';
+import WhereScreen from './WhereScreen';
+import EatScreen from './EatScreen';
+import PlaceScreen from './PlaceScreen';
+import ExperienceScreen from './ExperienceScreen';
+import { DATA } from '../Utils/data';
+import AccommodationCard from '@/Components/AccomodationCard';
+import { StarIcon } from '@/Assets/Icons/Card';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-  const tabs = ["Đi đâu", "Ăn gì", "Ở đâu", "Trải Nghiệm"];
+  const tabs = ['Đi đâu', 'Ăn gì', 'Ở đâu', 'Trải Nghiệm'];
   const [selected, setSelected] = useState(0);
 
   return (
@@ -41,7 +41,7 @@ export default function HomeScreen() {
                 style={[
                   styles.titleTab,
                   selected == i && {
-                    color: "#151515",
+                    color: '#151515',
                   },
                 ]}
               >
@@ -64,7 +64,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   mainView: {
     padding: 16,
@@ -73,22 +73,22 @@ const styles = StyleSheet.create({
 
   titleTab: {
     fontSize: 18,
-    fontWeight: "600",
-    color: "#767676",
+    fontWeight: '600',
+    color: '#767676',
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 18,
     paddingTop: 18,
     borderBottomWidth: 0.5,
-    borderColor: "#767676",
+    borderColor: '#767676',
   },
   line: {
     width: 35,
     height: 2,
-    backgroundColor: "#151515",
-    alignSelf: "center",
+    backgroundColor: '#151515',
+    alignSelf: 'center',
     marginTop: 9,
   },
 });
