@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   View,
@@ -11,20 +11,21 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-} from 'react-native';
+} from "react-native";
 
-import { SvgXml } from 'react-native-svg';
-import { GoogleIcon } from '@/Assets/Icons/Google';
-import { FacebookIcon } from '@/Assets/Icons/Facebook';
-import { LeftArrow } from '@/Assets/Icons/LeftArrow';
-import { getOTPCode } from '@/Hooks/authHooks';
+import { SvgXml } from "react-native-svg";
+import { GoogleIcon } from "@/Assets/Icons/Google";
+import { FacebookIcon } from "@/Assets/Icons/Facebook";
+import { LeftArrow } from "@/Assets/Icons/LeftArrow";
+import { getOTPCode } from "@/Hooks/authHooks";
+import { ArrowLeftBlack } from "@/Assets/Icons/Navigation";
 
 export default function RegisterScreen() {
-  const [selectedOption, setSelectedOption] = useState('Điện thoại');
+  const [selectedOption, setSelectedOption] = useState("Điện thoại");
 
   const navigation = useNavigation();
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   const { getOTP, otp, isOTPLoading, otpError } = getOTPCode();
 
@@ -35,11 +36,11 @@ export default function RegisterScreen() {
   };
 
   useEffect(() => {
-    if (otp) navigation.navigate('ConfirmPhone', { email: email });
+    if (otp) navigation.navigate("ConfirmPhone", { email: email });
   }, [otp]);
 
   const goToLoginPage = () => {
-    navigation.navigate('Login');
+    navigation.navigate("Login");
   };
 
   return (
@@ -49,7 +50,11 @@ export default function RegisterScreen() {
       </View>
 
       <View style={styles.title}>
-        <SvgXml xml={LeftArrow} style={styles.arrow} onPress={goToLoginPage} />
+        <SvgXml
+          xml={ArrowLeftBlack}
+          style={styles.arrow}
+          onPress={goToLoginPage}
+        />
 
         <Text style={styles.titleText}>Đăng ký</Text>
       </View>
@@ -57,12 +62,12 @@ export default function RegisterScreen() {
       <View style={styles.formTitle}>
         <View style={styles.dividerContainer}>
           <TouchableOpacity
-            onPress={() => setSelectedOption('Điện thoại')}
-            style={{ alignItems: 'center' }}
+            onPress={() => setSelectedOption("Điện thoại")}
+            style={{ alignItems: "center" }}
           >
             <Text
               style={
-                selectedOption === 'Điện thoại'
+                selectedOption === "Điện thoại"
                   ? styles.selectedText
                   : styles.unselectedText
               }
@@ -70,11 +75,11 @@ export default function RegisterScreen() {
               Điện thoại
             </Text>
 
-            {selectedOption === 'Điện thoại' && (
+            {selectedOption === "Điện thoại" && (
               <View style={styles.selectedUnderline} />
             )}
 
-            {selectedOption === 'Email' && (
+            {selectedOption === "Email" && (
               <View style={styles.unselectedUnderline} />
             )}
           </TouchableOpacity>
@@ -88,8 +93,8 @@ export default function RegisterScreen() {
           ) : otpError ? (
             <Text
               style={{
-                color: '#A80027',
-                textAlign: 'center',
+                color: "#A80027",
+                textAlign: "center",
                 fontSize: 16,
               }}
             >
@@ -102,12 +107,12 @@ export default function RegisterScreen() {
 
         <View style={styles.dividerContainer}>
           <TouchableOpacity
-            onPress={() => setSelectedOption('Email')}
-            style={{ alignItems: 'center' }}
+            onPress={() => setSelectedOption("Email")}
+            style={{ alignItems: "center" }}
           >
             <Text
               style={
-                selectedOption === 'Email'
+                selectedOption === "Email"
                   ? styles.selectedText
                   : styles.unselectedText
               }
@@ -115,29 +120,29 @@ export default function RegisterScreen() {
               Email
             </Text>
 
-            {selectedOption === 'Email' && (
+            {selectedOption === "Email" && (
               <View style={styles.selectedUnderline} />
             )}
 
-            {selectedOption === 'Điện thoại' && (
+            {selectedOption === "Điện thoại" && (
               <View style={styles.unselectedUnderline} />
             )}
           </TouchableOpacity>
         </View>
       </View>
 
-      {selectedOption === 'Điện thoại' && (
+      {selectedOption === "Điện thoại" && (
         <TextInput
-          style={[styles.input, { fontWeight: '200' }, { fontSize: 18 }]}
+          style={[styles.input, { fontWeight: "200" }, { fontSize: 18 }]}
           placeholder="Số điện thoại"
           placeholderTextColor="#767676"
           keyboardType="phone-pad"
         />
       )}
 
-      {selectedOption === 'Email' && (
+      {selectedOption === "Email" && (
         <TextInput
-          style={[styles.input, { fontWeight: '200' }, { fontSize: 18 }]}
+          style={[styles.input, { fontWeight: "200" }, { fontSize: 18 }]}
           placeholder="Email"
           placeholderTextColor="#767676"
           keyboardType="email-address"
@@ -157,92 +162,93 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: '10%',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
+    marginTop: "10%",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
   header: {
-    width: '95%',
-    alignItems: 'center',
-    paddingVertical: '2%',
-    justifyContent: 'center',
-    backgroundColor: '#151515',
+    width: "95%",
+    alignItems: "center",
+    paddingVertical: "2%",
+    justifyContent: "center",
+    backgroundColor: "#151515",
   },
   travogue: {
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: 30,
-    color: '#ffffff',
-    textAlign: 'center',
+    color: "#ffffff",
+    textAlign: "center",
+    fontFamily: "Vogue",
   },
   title: {
-    width: '100%',
-    marginTop: '8%',
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    width: "100%",
+    marginTop: "8%",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   arrow: {
-    left: '7%',
-    position: 'absolute',
+    left: "7%",
+    position: "absolute",
   },
   titleText: {
     center: true,
     fontSize: 22,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   formTitle: {
-    width: '100%',
-    marginTop: '9%',
-    flexDirection: 'row',
-    paddingHorizontal: '6%',
-    justifyContent: 'space-around',
+    width: "100%",
+    marginTop: "9%",
+    flexDirection: "row",
+    paddingHorizontal: "6%",
+    justifyContent: "space-around",
   },
   dividerContainer: {
-    alignItems: 'center',
-    flexDirection: 'column',
+    alignItems: "center",
+    flexDirection: "column",
   },
   selectedText: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   unselectedText: {
     fontSize: 18,
-    color: '#747474',
-    fontWeight: '400',
+    color: "#747474",
+    fontWeight: "400",
   },
   selectedUnderline: {
     height: 2,
     width: 130,
-    marginTop: '6%',
-    backgroundColor: '#000000',
+    marginTop: "6%",
+    backgroundColor: "#000000",
   },
   unselectedUnderline: {
     height: 1,
     width: 130,
-    marginTop: '6%',
-    backgroundColor: '#747474',
+    marginTop: "6%",
+    backgroundColor: "#747474",
   },
   input: {
     height: 65,
-    width: '85%',
-    marginTop: '11%',
+    width: "85%",
+    marginTop: "11%",
     borderWidth: 1.5,
     borderRadius: 20,
     paddingHorizontal: 24,
-    borderColor: '#767676',
+    borderColor: "#767676",
   },
   button: {
     height: 55,
-    width: '85%',
-    marginTop: '11%',
+    width: "85%",
+    marginTop: "11%",
     borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#000000',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#000000",
   },
   buttonText: {
     fontSize: 22,
-    color: '#ffffff',
-    fontWeight: '800',
+    color: "#ffffff",
+    fontWeight: "800",
   },
 });

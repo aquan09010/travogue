@@ -7,17 +7,15 @@ import { SvgXml } from "react-native-svg";
 import { CheckIcon } from "@/Assets/Icons/DetailIcon";
 
 const data = [
-  { label: " Th 2, 14 thg 10, 2023", value: "1" },
-  { label: " Th 3, 15 thg 10, 2023", value: "2" },
-  { label: " Th 4, 16 thg 10, 2023", value: "3" },
-  { label: " Th 5, 17 thg 10, 2023", value: "4" },
-  { label: " Th 6, 18 thg 10, 2023", value: "5" },
-  { label: " Th 7, 19 thg 10, 2023", value: "6" },
-  { label: " Ch Nhat, 20 thg 10, 2023", value: "7" },
-  { label: " Th 2, 21 thg 10, 2023", value: "8" },
+  { label: " 6:30 - 8:30", value: "1" },
+  { label: " 8:30 - 10:30", value: "2" },
+  { label: " 11:30 - 13:30", value: "3" },
+  { label: " 13:30 - 15:30", value: "4" },
+  { label: " 17:30 - 19:30", value: "5" },
+  { label: " 20:30 - 22:30", value: "6" },
 ];
 
-const DropdownComponent = () => {
+const DropdownTime = () => {
   const [value, setValue] = useState(null);
 
   const renderItem = (item) => {
@@ -40,7 +38,7 @@ const DropdownComponent = () => {
       maxHeight={300}
       labelField="label"
       valueField="value"
-      placeholder=" Chọn ngày"
+      placeholder=" Chọn giờ"
       value={value}
       onChange={(item) => {
         setValue(item.value);
@@ -51,11 +49,11 @@ const DropdownComponent = () => {
   );
 };
 
-export default DropdownComponent;
+export default DropdownTime;
 
 const styles = StyleSheet.create({
   dropdown: {
-    width: "60%",
+    width: "40%",
     marginTop: 12,
     height: 50,
     marginRight: 15,

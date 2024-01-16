@@ -42,6 +42,7 @@ import ModalComment from "./ModalComment";
 import DropdownComponent from "@/Components/DropdownComponent";
 import { PeopleIcon } from "@/Assets/Icons/OrderConfirm";
 import { LanguageBlackIcon } from "@/Assets/Icons/Proflie";
+import DropdownTime from "@/Components/DropdownTime";
 
 export default function DetailScreen({ route }) {
   const date = [
@@ -454,7 +455,7 @@ export default function DetailScreen({ route }) {
             </Text>
             <View style={styles.line}>
               <DropdownComponent />
-              <DropdownComponent />
+              <DropdownTime />
             </View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
