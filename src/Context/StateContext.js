@@ -32,6 +32,8 @@ export const StateContext = ({ children }) => {
 
   const [user, setUser] = useState({});
 
+  const [commentList, setCommentList] = useState([]);
+
   return (
     <Context.Provider
       value={{
@@ -42,6 +44,8 @@ export const StateContext = ({ children }) => {
         user,
         setUser,
         mainCategories,
+        commentList,
+        setCommentList,
       }}
     >
       {children}

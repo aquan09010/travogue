@@ -215,26 +215,33 @@ const postCommentsByActivity = () => {
   const [isPostCommentLoading, setIsLoading] = useState(false);
   const [postCommentError, setError] = useState(null);
 
-  const postComments = useCallback(async (accessToken, activityId) => {
-    setIsLoading(true);
+  const postComments = useCallback(
+    async (accessToken, activityId, rating, cmt) => {
+      setIsLoading(true);
 
-    try {
-      const options = {
-        method: 'POST',
-        url: `https://travogue-production.up.railway.app/travogue-service/travel-activities/${activityId}/comments`,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-      const response = await axios.request(options);
-      setComments(response.data);
-      setIsLoading(false);
-    } catch (error) {
-      setError(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+      try {
+        const options = {
+          method: 'POST',
+          url: `https://travogue-production.up.railway.app/travogue-service/travel-activities/${activityId}/comments`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          data: {
+            rating: rating,
+            comment: cmt,
+          },
+        };
+        const response = await axios.request(options);
+        setComments(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   const refetch = () => {
     setIsLoading(true);

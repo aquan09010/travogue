@@ -15,7 +15,7 @@ import {
 import { SvgXml } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { ParkIconActive } from '@/Assets/Icons/Where';
-import React, { useLayoutEffect, useState, useRef } from 'react';
+import React, { useLayoutEffect, useState, useRef, useEffect } from 'react';
 import { SearchIcon, ArrowLeft } from '@/Assets/Icons/Navigation';
 import { Dropdown } from 'react-native-element-dropdown';
 
@@ -40,6 +40,7 @@ import { useStateContext } from '@/Context/StateContext';
 import {
   getCommentsByActivity,
   getDetailActivity,
+  postCommentsByActivity,
 } from '@/Hooks/TravelActivityHooks';
 import Modal from 'react-native-modal';
 import ModalComment from './ModalComment';
@@ -47,6 +48,7 @@ import DropdownComponent from '@/Components/DropdownComponent';
 import { PeopleIcon } from '@/Assets/Icons/OrderConfirm';
 import { LanguageBlackIcon } from '@/Assets/Icons/Proflie';
 import DropdownTime from '@/Components/DropdownTime';
+import StarRating from '@/Components/StarRating';
 
 export default function DetailScreen({ route }) {
   const navigation = useNavigation();
@@ -65,7 +67,7 @@ export default function DetailScreen({ route }) {
     navigation.navigate('HostProfile');
   };
 
-  const { accessToken, user } = useStateContext();
+  const { accessToken, user, commentList, setCommentList } = useStateContext();
 
   const { activity, isActivityLoading, activityError } = getDetailActivity(
     accessToken,
@@ -89,6 +91,27 @@ export default function DetailScreen({ route }) {
   // Call Comment API
   const { getComments, comments, isCommentLoading, commentError } =
     getCommentsByActivity();
+
+  const { postComments, newComment, isPostCommentLoading, postCommentError } =
+    postCommentsByActivity();
+
+  const handlePostComment = async (e) => {
+    e.preventDefault();
+
+    await postComments(accessToken, activity.data.id, currentRating, userCmt);
+    setCurrentRating(0);
+    setUserCmt('');
+  };
+
+  const [currentRating, setCurrentRating] = useState(0);
+  const [userCmt, setUserCmt] = useState('');
+
+  useEffect(() => {
+    if (comments) setCommentList(comments.data);
+    if (newComment) {
+      setCommentList([newComment.data.activityComment, ...commentList]);
+    }
+  }, [comments, newComment]);
 
   const timeAgo = (dateString) => {
     const now = new Date();
@@ -298,29 +321,28 @@ export default function DetailScreen({ route }) {
             </Pressable>
           </View>
 
-          {isCommentLoading ? (
-            <>
-              <ActivityIndicator
-                size="large"
-                color="#ED2939"
-                style={{ paddingVertical: 12 }}
-              />
-            </>
-          ) : commentError ? (
-            <Text
-              style={{
-                color: '#A80027',
-                textAlign: 'center',
-                paddingBottom: 20,
-                fontSize: 16,
-              }}
-            >
-              {commentError.message}
-            </Text>
-          ) : comments ? (
-            <FlatList
-              data={comments.data}
-              renderItem={({ item }) => (
+          <ScrollView>
+            {isCommentLoading ? (
+              <>
+                <ActivityIndicator
+                  size="large"
+                  color="#ED2939"
+                  style={{ paddingVertical: 12 }}
+                />
+              </>
+            ) : commentError ? (
+              <Text
+                style={{
+                  color: '#A80027',
+                  textAlign: 'center',
+                  paddingBottom: 20,
+                  fontSize: 16,
+                }}
+              >
+                {commentError.message}
+              </Text>
+            ) : commentList.length > 0 ? (
+              commentList.map((item) => (
                 <View
                   style={{
                     flexDirection: 'row',
@@ -340,7 +362,7 @@ export default function DetailScreen({ route }) {
                   </Pressable>
                   <View style={{}}>
                     <View style={styles.line}>
-                      <SvgXml xml={OneStarBar} />
+                      <StarRating rating={item.rating} disabled={true} />
                       <Text>
                         {' '}
                         {item.user.email.split('@')[0]} •{' '}
@@ -350,11 +372,11 @@ export default function DetailScreen({ route }) {
                     <Text style={{ paddingRight: 45 }}>{item.comment}</Text>
                   </View>
                 </View>
-              )}
-            />
-          ) : (
-            <></>
-          )}
+              ))
+            ) : (
+              <></>
+            )}
+          </ScrollView>
 
           <View
             style={{
@@ -391,20 +413,29 @@ export default function DetailScreen({ route }) {
               </Pressable>
               <View style={{}}>
                 <View style={[styles.line, { paddingBottom: 10 }]}>
-                  <SvgXml xml={TwoStarBar} />
+                  {/* <SvgXml xml={TwoStarBar} /> */}
+                  <StarRating
+                    rating={currentRating}
+                    onStarPress={setCurrentRating}
+                  />
                 </View>
                 <TextInput
                   style={styles.inputArea}
                   placeholder="Viết bình luận..."
                   placeholderTextColor="#1b1b1b"
+                  value={userCmt}
+                  onChangeText={setUserCmt}
                 ></TextInput>
               </View>
             </View>
-            <View style={{ position: 'absolute', bottom: 20, right: 30 }}>
+            <Pressable
+              style={{ position: 'absolute', bottom: 20, right: 30 }}
+              onPress={handlePostComment}
+            >
               <View style={[styles.button1]}>
                 <Text style={{ color: '#fff' }}>Đăng</Text>
               </View>
-            </View>
+            </Pressable>
           </View>
         </View>
       </Modal>
