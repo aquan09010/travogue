@@ -49,7 +49,7 @@ export default function CreatePasswordScreen({ route }) {
 
       navigation.navigate('Onboarding');
     }
-  }, [registerResponse]);
+  }, [reg]);
 
   return (
     <View style={styles.container}>
