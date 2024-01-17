@@ -3,9 +3,7 @@ import { createContext, useContext, useState } from 'react';
 const Context = createContext();
 
 export const StateContext = ({ children }) => {
-  const [accessToken, setAccessToken] = useState(
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMGQ4MzBjYS1mOWI0LTQxZDQtOGFiYy1lNzhiOTRkNGM5ZDYiLCJlbWFpbCI6ImhocXRoYW5nQGdtYWlsLmNvbSIsInR5cGUiOiJBQ0NFU1MiLCJpYXQiOjE3MDUzNDA1NDEsImV4cCI6MTcwNTQyNjk0MX0.1kDr_FAoEch2lRPobsB_6hzap6UiBW0YCfAyW73UIu8'
-  );
+  const [accessToken, setAccessToken] = useState('');
   const [refreshToken, setRefreshToken] = useState('');
 
   const mainCategories = {
@@ -34,6 +32,8 @@ export const StateContext = ({ children }) => {
 
   const [user, setUser] = useState({});
 
+  const [commentList, setCommentList] = useState([]);
+
   return (
     <Context.Provider
       value={{
@@ -44,6 +44,8 @@ export const StateContext = ({ children }) => {
         user,
         setUser,
         mainCategories,
+        commentList,
+        setCommentList,
       }}
     >
       {children}

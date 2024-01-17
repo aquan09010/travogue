@@ -6,9 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-} from "react-native";
-import { SearchIcon } from "@/Assets/Icons/Search";
-import { SvgXml } from "react-native-svg";
+} from 'react-native';
+import { SearchIcon } from '@/Assets/Icons/Search';
+import { SvgXml } from 'react-native-svg';
 export default function TabHeader() {
   return (
     <View style={styles.header}>
@@ -20,16 +20,17 @@ export default function TabHeader() {
 const styles = StyleSheet.create({
   travogue: {
     fontSize: 30,
-    textAlign: "center",
-    color: "white",
+    textAlign: 'center',
+    color: 'white',
+    fontFamily: 'Vogue',
   },
   header: {
-    width: "110%",
+    width: '110%',
     marginLeft: -20,
-    backgroundColor: "#151515",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    backgroundColor: '#151515',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 19,
     paddingVertical: 13,
   },

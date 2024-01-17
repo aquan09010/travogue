@@ -84,16 +84,6 @@ export default function ExperienceScreen() {
               color="#ED2939"
               style={{ paddingVertical: 12 }}
             />
-            <Text
-              style={{
-                color: '#ED2939',
-                textAlign: 'center',
-                paddingBottom: 20,
-                fontSize: 14,
-              }}
-            >
-              Please wait...
-            </Text>
           </>
         ) : popularError ? (
           <Text
@@ -131,16 +121,6 @@ export default function ExperienceScreen() {
               color="#ED2939"
               style={{ paddingVertical: 12 }}
             />
-            <Text
-              style={{
-                color: '#ED2939',
-                textAlign: 'center',
-                paddingBottom: 20,
-                fontSize: 14,
-              }}
-            >
-              Please wait...
-            </Text>
           </>
         ) : topCitiesError ? (
           <Text
@@ -176,16 +156,6 @@ export default function ExperienceScreen() {
               color="#ED2939"
               style={{ paddingVertical: 12 }}
             />
-            <Text
-              style={{
-                color: '#ED2939',
-                textAlign: 'center',
-                paddingBottom: 20,
-                fontSize: 14,
-              }}
-            >
-              Please wait...
-            </Text>
           </>
         ) : error ? (
           <Text
@@ -240,16 +210,6 @@ export default function ExperienceScreen() {
               color="#ED2939"
               style={{ paddingVertical: 12 }}
             />
-            <Text
-              style={{
-                color: '#ED2939',
-                textAlign: 'center',
-                paddingBottom: 20,
-                fontSize: 14,
-              }}
-            >
-              Please wait...
-            </Text>
           </>
         ) : activitiesError ? (
           <Text

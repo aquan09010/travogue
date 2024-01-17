@@ -9,17 +9,17 @@ import {
   FlatList,
   Pressable,
   ActivityIndicator,
-} from 'react-native';
-import { ArrowLeftBlack, SearchIconBlack } from '@/Assets/Icons/Navigation';
-import { SvgXml } from 'react-native-svg';
-import { LocationDotIcon } from '@/Assets/Icons/LocationDot';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Header } from 'react-native/Libraries/NewAppScreen';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { searchCities } from '@/Hooks/CityHooks';
-import { useStateContext } from '@/Context/StateContext';
-import { useState } from 'react';
+} from "react-native";
+import { ArrowLeftBlack, SearchIconBlack } from "@/Assets/Icons/Navigation";
+import { SvgXml } from "react-native-svg";
+import { LocationDotIcon } from "@/Assets/Icons/LocationDot";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Header } from "react-native/Libraries/NewAppScreen";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { searchCities } from "@/Hooks/CityHooks";
+import { useStateContext } from "@/Context/StateContext";
+import { useState } from "react";
 
 // SearchCityScreen component (implement search functionality and suggestion list)
 export default function SearchCityScreen() {
@@ -27,7 +27,7 @@ export default function SearchCityScreen() {
 
   const { accessToken } = useStateContext();
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { cities, isCitiesLoading, citiesError } = searchCities(
     accessToken,
@@ -35,7 +35,7 @@ export default function SearchCityScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.mainView}>
+    <SafeAreaView style={styles.container1}>
       <View style={styles.statusBar}>
         <Pressable onPress={() => navigation.goBack()}>
           <SvgXml xml={ArrowLeftBlack} />
@@ -45,17 +45,18 @@ export default function SearchCityScreen() {
           {/* <SvgXml xml={SearchIconBlack} /> */}
         </Pressable>
       </View>
-      <View style={styles.container}>
-        <SvgXml style={styles.icon} xml={LocationDotIcon} />
-        <TextInput
-          style={styles.inputArea}
-          placeholder="Bạn muốn đi đâu ?"
-          value={searchQuery}
-          onChangeText={(q) => setSearchQuery(q)}
-          autoFocus={true}
-        />
+      <View style={styles.mainView}>
+        <View style={styles.container}>
+          <SvgXml style={styles.icon} xml={LocationDotIcon} />
+          <TextInput
+            style={styles.inputArea}
+            placeholder="Bạn muốn đi đâu ?"
+            value={searchQuery}
+            onChangeText={(q) => setSearchQuery(q)}
+            autoFocus={true}
+          />
+        </View>
       </View>
-
       {isCitiesLoading ? (
         <>
           <ActivityIndicator
@@ -65,8 +66,8 @@ export default function SearchCityScreen() {
           />
           <Text
             style={{
-              color: '#ED2939',
-              textAlign: 'center',
+              color: "#ED2939",
+              textAlign: "center",
               paddingBottom: 20,
               fontSize: 14,
             }}
@@ -77,8 +78,8 @@ export default function SearchCityScreen() {
       ) : citiesError ? (
         <Text
           style={{
-            color: '#A80027',
-            textAlign: 'center',
+            color: "#A80027",
+            textAlign: "center",
             paddingBottom: 20,
             fontSize: 16,
           }}
@@ -86,17 +87,21 @@ export default function SearchCityScreen() {
           Something went wrong!
         </Text>
       ) : (
-        <FlatList
-          data={cities.data.data}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.suggestionItem}
-              onPress={() => navigation.navigate('CityScreen', { city: item })}
-            >
-              <Text style={styles.suggestionText}>{item.name}</Text>
-            </TouchableOpacity>
-          )}
-        />
+        <View style={styles.mainView}>
+          <FlatList
+            data={cities.data.data}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.suggestionItem}
+                onPress={() =>
+                  navigation.navigate("WhereaboutSearch", { city: item })
+                }
+              >
+                <Text style={styles.suggestionText}>{item.name}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
       )}
     </SafeAreaView>
   );
@@ -112,12 +117,12 @@ const styles = StyleSheet.create({
   },
   container: {
     borderRadius: 15,
-    borderStyle: 'solid',
-    borderColor: '#e8e8e8',
+    borderStyle: "solid",
+    borderColor: "#e8e8e8",
     borderWidth: 1,
     height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 30,
     paddingVertical: 15,
   },
@@ -125,20 +130,19 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
   },
   inputArea: {
-    width: '100%',
-    height: '100%',
+    height: "100%",
   },
   statusBar: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 18,
     paddingVertical: 14,
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   suggestionText: {
     padding: 15,
@@ -146,7 +150,10 @@ const styles = StyleSheet.create({
   },
   suggestionItem: {
     borderBottomWidth: 1,
-    borderColor: '#e8e8e8',
-    borderStyle: 'solid',
+    borderColor: "#e8e8e8",
+    borderStyle: "solid",
+  },
+  container1: {
+    backgroundColor: "#ffffff",
   },
 });

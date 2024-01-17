@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const getChildCategories = (accessToken, categoryId) => {
@@ -170,9 +170,98 @@ const getDetailActivity = (accessToken, activityId) => {
   return { activity, isActivityLoading, activityError, refetch };
 };
 
+const getCommentsByActivity = () => {
+  const [comments, setComments] = useState(null);
+  const [isCommentLoading, setIsLoading] = useState(false);
+  const [commentError, setError] = useState(null);
+
+  const getComments = useCallback(async (accessToken, activityId) => {
+    setIsLoading(true);
+
+    try {
+      const options = {
+        method: 'GET',
+        url: `https://travogue-production.up.railway.app/travogue-service/travel-activities/${activityId}/comments`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const response = await axios.request(options);
+      setComments(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      setError(error.response.data);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const refetch = () => {
+    setIsLoading(true);
+    getComments();
+  };
+
+  return {
+    getComments,
+    comments,
+    isCommentLoading,
+    commentError,
+    refetch,
+  };
+};
+
+const postCommentsByActivity = () => {
+  const [newComment, setComments] = useState(null);
+  const [isPostCommentLoading, setIsLoading] = useState(false);
+  const [postCommentError, setError] = useState(null);
+
+  const postComments = useCallback(
+    async (accessToken, activityId, rating, cmt) => {
+      setIsLoading(true);
+
+      try {
+        const options = {
+          method: 'POST',
+          url: `https://travogue-production.up.railway.app/travogue-service/travel-activities/${activityId}/comments`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          data: {
+            rating: rating,
+            comment: cmt,
+          },
+        };
+        const response = await axios.request(options);
+        setComments(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  const refetch = () => {
+    setIsLoading(true);
+    postComments();
+  };
+
+  return {
+    postComments,
+    newComment,
+    isPostCommentLoading,
+    postCommentError,
+    refetch,
+  };
+};
+
 export {
   getChildCategories,
   getPopularByCategory,
   getActivityByCategory,
   getDetailActivity,
+  getCommentsByActivity,
+  postCommentsByActivity,
 };

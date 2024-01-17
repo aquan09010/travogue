@@ -47,7 +47,7 @@ export default function AccommodationCard(props) {
           </View>
           <View style={styles.line}>
             <SvgXml xml={MiniLocation} />
-            <Text style={styles.categoryText}> {props.location}</Text>
+            <Text style={styles.location}> {props.location}</Text>
           </View>
         </View>
 
