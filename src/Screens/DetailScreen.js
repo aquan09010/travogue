@@ -315,69 +315,71 @@ export default function DetailScreen({ route }) {
           >
             <Text style={{ fontWeight: '600', fontSize: 20 }}>
               Bình luận
-              <Text style={{ fontSize: 14 }}> ({comments?.data.length})</Text>
+              <Text style={{ fontSize: 14 }}> ({commentList.length})</Text>
             </Text>
             <Pressable style={{}} onPress={toggleModal}>
               <SvgXml xml={CancelIcon} />
             </Pressable>
           </View>
 
-          <ScrollView>
-            {isCommentLoading ? (
-              <>
-                <ActivityIndicator
-                  size="large"
-                  color="#ED2939"
-                  style={{ paddingVertical: 12 }}
-                />
-              </>
-            ) : commentError ? (
-              <Text
-                style={{
-                  color: '#A80027',
-                  textAlign: 'center',
-                  paddingBottom: 20,
-                  fontSize: 16,
-                }}
-              >
-                {commentError.message}
-              </Text>
-            ) : commentList.length > 0 ? (
-              commentList.map((item) => (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    paddingHorizontal: 18,
-                    paddingVertical: 12,
-                  }}
-                >
+          {isCommentLoading ? (
+            <>
+              <ActivityIndicator
+                size="large"
+                color="#ED2939"
+                style={{ paddingVertical: 12 }}
+              />
+            </>
+          ) : commentError ? (
+            <Text
+              style={{
+                color: '#A80027',
+                textAlign: 'center',
+                paddingBottom: 20,
+                fontSize: 16,
+              }}
+            >
+              {commentError.message}
+            </Text>
+          ) : commentList.length > 0 ? (
+            <View style={{ height: 270 }}>
+              <ScrollView>
+                {commentList.map((item) => (
                   <Pressable
-                    onPress={() => {}}
-                    style={[styles.avatar, styles.actionPadding]}
+                    style={{
+                      flexDirection: 'row',
+                      paddingHorizontal: 18,
+                      paddingVertical: 12,
+                    }}
                   >
-                    <Image
-                      style={[styles.avaImg, { marginRight: 10 }]}
-                      resizeMode="cover"
-                      source={{ uri: item.user.avatar }}
-                    />
-                  </Pressable>
-                  <View style={{}}>
-                    <View style={styles.line}>
-                      <StarRating rating={item.rating} disabled={true} />
-                      <Text>
-                        {' '}
-                        {item.user.email.split('@')[0]} •{' '}
-                        {timeAgo(item.createdAt)}
-                      </Text>
+                    <Pressable
+                      onPress={() => {}}
+                      style={[styles.avatar, styles.actionPadding]}
+                    >
+                      <Image
+                        style={[styles.avaImg, { marginRight: 10 }]}
+                        resizeMode="cover"
+                        source={{ uri: item.user.avatar }}
+                      />
+                    </Pressable>
+                    <View style={{}}>
+                      <View style={styles.line}>
+                        <StarRating rating={item.rating} disabled={true} />
+                        <Text>
+                          {' '}
+                          {item.user.email.split('@')[0]} •{' '}
+                          {timeAgo(item.createdAt)}
+                        </Text>
+                      </View>
+                      <Text style={{ paddingRight: 45 }}>{item.comment}</Text>
                     </View>
-                    <Text style={{ paddingRight: 45 }}>{item.comment}</Text>
-                  </View>
-                </View>
-              ))
-            ) : (
-              <></>
-            )}
-          </ScrollView>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </View>
+          ) : (
+            <></>
+          )}
 
           <View
             style={{
