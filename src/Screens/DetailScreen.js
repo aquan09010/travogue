@@ -49,7 +49,24 @@ export default function DetailScreen({ route }) {
   const goToOrder = async (e) => {
     setModalTicketVisible(false);
     e.preventDefault();
-    navigation.navigate('OrderConfirm');
+    navigation.navigate('OrderConfirm', {
+      activity: {
+        name: activity.data.activityName,
+        mainImage: activity.data.mainImage,
+        date: selectedDate.date,
+        time: formatTimeRange(selectedTime.startAt, selectedTime.endAt),
+      },
+      host: activity.data.host,
+      data: {
+        notes: userNotes,
+        adultsPrice: selectedTime.adultsPrice,
+        childrenPrice: selectedTime.childrenPrice,
+        babyPrice: selectedTime.babyPrice,
+        numOfAdults: adultQuantity,
+        numOfChildren: childQuantity,
+        numOfBabies: babyQuantity,
+      },
+    });
   };
   const gotoHost = async (e) => {
     e.preventDefault();
@@ -154,6 +171,36 @@ export default function DetailScreen({ route }) {
     const formattedEnd = endAt.slice(11, 16);
 
     return `${formattedStart} - ${formattedEnd}`;
+  };
+
+  const [userNotes, setUserNotes] = useState('');
+
+  const [adultQuantity, setAdultQuantity] = useState(1);
+  const [childQuantity, setChildQuantity] = useState(1);
+  const [babyQuantity, setBabyQuantity] = useState(1);
+
+  const handleAdultDecrease = () => {
+    setAdultQuantity(Math.max(0, adultQuantity - 1));
+  };
+
+  const handleAdultIncrease = () => {
+    setAdultQuantity(adultQuantity + 1);
+  };
+
+  const handleChildDecrease = () => {
+    setChildQuantity(Math.max(0, childQuantity - 1));
+  };
+
+  const handleChildIncrease = () => {
+    setChildQuantity(childQuantity + 1);
+  };
+
+  const handleBabyDecrease = () => {
+    setBabyQuantity(Math.max(0, babyQuantity - 1));
+  };
+
+  const handleBabyIncrease = () => {
+    setBabyQuantity(babyQuantity + 1);
   };
 
   return (
@@ -617,6 +664,8 @@ export default function DetailScreen({ route }) {
                   style={[styles.inputArea, { width: '100%' }]}
                   placeholder="Lời nhắn"
                   placeholderTextColor="#1b1b1b"
+                  value={userNotes}
+                  onChangeText={setUserNotes}
                 ></TextInput>
                 <View
                   style={{
@@ -634,9 +683,13 @@ export default function DetailScreen({ route }) {
                     </Text>
                   </View>
                   <View style={styles.minusParent}>
-                    <SvgXml xml={MinusIcon} />
-                    <Text style={{ color: 'black' }}>2</Text>
-                    <SvgXml xml={PlusIcon} />
+                    <TouchableOpacity onPress={() => handleAdultDecrease()}>
+                      <SvgXml xml={MinusIcon} />
+                    </TouchableOpacity>
+                    <Text style={{ color: 'black' }}>{adultQuantity}</Text>
+                    <TouchableOpacity onPress={() => handleAdultIncrease()}>
+                      <SvgXml xml={PlusIcon} />
+                    </TouchableOpacity>
                   </View>
                 </View>
                 <View
@@ -652,13 +705,17 @@ export default function DetailScreen({ route }) {
                     </Text>
                     <Text style={{ fontWeight: '600', fontSize: 14 }}>
                       {' '}
-                      {selectedTime?.adultsPrice.toLocaleString()} VND
+                      {selectedTime?.childrenPrice.toLocaleString()} VND
                     </Text>
                   </View>
                   <View style={styles.minusParent}>
-                    <SvgXml xml={MinusIcon} />
-                    <Text style={{ color: 'black' }}>1</Text>
-                    <SvgXml xml={PlusIcon} />
+                    <TouchableOpacity onPress={() => handleChildDecrease()}>
+                      <SvgXml xml={MinusIcon} />
+                    </TouchableOpacity>
+                    <Text style={{ color: 'black' }}>{childQuantity}</Text>
+                    <TouchableOpacity onPress={() => handleChildIncrease()}>
+                      <SvgXml xml={PlusIcon} />
+                    </TouchableOpacity>
                   </View>
                 </View>
                 <View
@@ -677,9 +734,13 @@ export default function DetailScreen({ route }) {
                     </Text>
                   </View>
                   <View style={styles.minusParent}>
-                    <SvgXml xml={MinusIcon} />
-                    <Text style={{ color: 'black' }}>1</Text>
-                    <SvgXml xml={PlusIcon} />
+                    <TouchableOpacity onPress={() => handleBabyDecrease()}>
+                      <SvgXml xml={MinusIcon} />
+                    </TouchableOpacity>
+                    <Text style={{ color: 'black' }}>{babyQuantity}</Text>
+                    <TouchableOpacity onPress={() => handleBabyIncrease()}>
+                      <SvgXml xml={PlusIcon} />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -707,7 +768,14 @@ export default function DetailScreen({ route }) {
               <Text
                 style={{ fontWeight: '600', fontSize: 16, color: '#ed2939' }}
               >
-                đ260.000
+                {selectedTime
+                  ? (
+                      adultQuantity * selectedTime.adultsPrice +
+                      childQuantity * selectedTime.childrenPrice +
+                      babyQuantity * selectedTime.babyPrice
+                    ).toLocaleString()
+                  : 0}{' '}
+                VND
               </Text>
             </View>
             <TouchableOpacity
