@@ -244,7 +244,11 @@ export default function DetailScreen({ route }) {
 
                 <View style={[styles.container1]}>
                   <View style={[styles.line]}>
-                    <SvgXml xml={MiniStar} />
+                    <StarRating
+                      disabled={true}
+                      color="white"
+                      rating={activity.data.averageRating}
+                    />
                     <Text style={[styles.text]}>
                       {parseFloat(activity.data.averageRating).toFixed(1)}
                     </Text>

@@ -8,6 +8,7 @@ const StarRating = ({
   onStarPress,
   starSize = 18,
   disabled = false,
+  color = 'black',
 }) => {
   const [currentRating, setCurrentRating] = useState(rating);
 
@@ -29,12 +30,11 @@ const StarRating = ({
           style={{
             width: starSize,
             height: starSize,
-            opacity: disabled ? 0.5 : 1,
           }}
           disabled={disabled}
           onPress={() => handleStarPress(i + 1)}
         >
-          <Icon name={starIconName} size={starSize} color="black" />
+          <Icon name={starIconName} size={starSize} color={color} />
         </TouchableOpacity>
       );
     }
