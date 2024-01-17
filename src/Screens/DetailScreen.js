@@ -1,41 +1,36 @@
+import { ArrowLeft, SearchIcon } from '@/Assets/Icons/Navigation';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
+  ActivityIndicator,
   Image,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
   ImageBackground,
   Pressable,
-  ActivityIndicator,
-  Button,
-  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
-import { SvgXml } from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
-import { ParkIconActive } from '@/Assets/Icons/Where';
-import React, { useLayoutEffect, useState, useRef, useEffect } from 'react';
-import { SearchIcon, ArrowLeft } from '@/Assets/Icons/Navigation';
 import { Dropdown } from 'react-native-element-dropdown';
+import { SvgXml } from 'react-native-svg';
 
 import {
   CancelIcon,
+  CheckIcon,
   CommentIcon,
-  DotIcon,
-  FourStarBar,
   HeartIcon,
   LanguageIcon,
   MiniLocation1,
-  MiniStar,
   MinusIcon,
   NoticeIcon,
-  OneStarBar,
   PlusIcon,
-  ShareIcon,
-  TwoStarBar,
+  ShareIcon
 } from '@/Assets/Icons/DetailIcon';
-import { MiniLocation } from '@/Assets/Icons/Card';
+import { CalendarIcon, PeopleIcon } from '@/Assets/Icons/OrderConfirm';
+import { LanguageBlackIcon } from '@/Assets/Icons/Proflie';
+import StarRating from '@/Components/StarRating';
 import { useStateContext } from '@/Context/StateContext';
 import {
   getCommentsByActivity,
@@ -43,14 +38,6 @@ import {
   postCommentsByActivity,
 } from '@/Hooks/TravelActivityHooks';
 import Modal from 'react-native-modal';
-import ModalComment from './ModalComment';
-import DropdownComponent from '@/Components/DropdownComponent';
-import { PeopleIcon } from '@/Assets/Icons/OrderConfirm';
-import { LanguageBlackIcon } from '@/Assets/Icons/Proflie';
-import DropdownTime from '@/Components/DropdownTime';
-import StarRating from '@/Components/StarRating';
-import { CalendarIcon } from '@/Assets/Icons/OrderConfirm';
-import { CheckIcon } from '@/Assets/Icons/DetailIcon';
 
 export default function DetailScreen({ route }) {
   const navigation = useNavigation();
