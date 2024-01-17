@@ -49,6 +49,8 @@ import { PeopleIcon } from '@/Assets/Icons/OrderConfirm';
 import { LanguageBlackIcon } from '@/Assets/Icons/Proflie';
 import DropdownTime from '@/Components/DropdownTime';
 import StarRating from '@/Components/StarRating';
+import { CalendarIcon } from '@/Assets/Icons/OrderConfirm';
+import { CheckIcon } from '@/Assets/Icons/DetailIcon';
 
 export default function DetailScreen({ route }) {
   const navigation = useNavigation();
@@ -137,6 +139,34 @@ export default function DetailScreen({ route }) {
     }
 
     return 'just now';
+  };
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+
+  const renderDateItem = (item) => {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.textItem}>{item.date}</Text>
+        {item.id === selectedDate?.id && <SvgXml xml={CheckIcon} />}
+      </View>
+    );
+  };
+
+  const renderTimeItem = (item) => {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.textItem}>{item.timeRange}</Text>
+        {item.id === selectedTime?.id && <SvgXml xml={CheckIcon} />}
+      </View>
+    );
+  };
+
+  const formatTimeRange = (startAt, endAt) => {
+    const formattedStart = startAt.slice(11, 16); // Extract "18:22"
+    const formattedEnd = endAt.slice(11, 16);
+
+    return `${formattedStart} - ${formattedEnd}`;
   };
 
   return (
@@ -446,200 +476,262 @@ export default function DetailScreen({ route }) {
           </View>
         </View>
       </Modal>
-      <Modal
-        onBackdropPress={() => setModalTicketVisible(false)}
-        swipeDirection="down"
-        onSwipeComplete={toggleModalTicket}
-        isVisible={isModalTicketVisible}
-        avoidKeyboard={true}
-        propagateSwipe={true}
-        style={{
-          justifyContent: 'flex-end',
-          width: '100%',
-          padding: 0,
-          margin: 0,
-        }}
-      >
-        <View
+
+      {route.params.isExperience && (
+        <Modal
+          onBackdropPress={() => setModalTicketVisible(false)}
+          swipeDirection="down"
+          onSwipeComplete={toggleModalTicket}
+          isVisible={isModalTicketVisible}
+          avoidKeyboard={true}
+          propagateSwipe={true}
           style={{
-            bottom: 0,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            backgroundColor: '#fff',
-            height: 650,
-            minHeight: 100,
+            justifyContent: 'flex-end',
+            width: '100%',
+            padding: 0,
+            margin: 0,
           }}
         >
           <View
             style={{
-              paddingTop: 20,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingHorizontal: 18,
-              paddingVertical: 8,
+              bottom: 0,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              backgroundColor: '#fff',
+              height: 650,
+              minHeight: 100,
             }}
           >
-            <Text style={{ fontWeight: '600', fontSize: 20 }}>Vé và giá</Text>
-            <Pressable style={{}} onPress={toggleModalTicket}>
-              <SvgXml xml={CancelIcon} />
-            </Pressable>
-          </View>
-          <View
-            style={{
-              paddingHorizontal: 18,
-              paddingVertical: 12,
-            }}
-          >
-            <Text style={{ fontWeight: '600', fontSize: 14 }}>
-              Chọn ngày và giờ
-            </Text>
-            <View style={styles.line}>
-              <DropdownComponent />
-              <DropdownTime />
+            <View
+              style={{
+                paddingTop: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: 18,
+                paddingVertical: 8,
+              }}
+            >
+              <Text style={{ fontWeight: '600', fontSize: 20 }}>Vé và giá</Text>
+              <Pressable style={{}} onPress={toggleModalTicket}>
+                <SvgXml xml={CancelIcon} />
+              </Pressable>
             </View>
             <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+              style={{
+                paddingHorizontal: 18,
+                paddingVertical: 12,
+              }}
             >
-              <View style={[styles.line, { paddingTop: 10 }]}>
-                <SvgXml xml={PeopleIcon} />
-                <Text style={{ fontWeight: '600' }}> 3/10</Text>
-              </View>
-              <View style={[styles.line, { paddingTop: 10 }]}>
-                <SvgXml xml={LanguageBlackIcon} />
-                <Text style={{ fontWeight: '600' }}>
-                  {' '}
-                  Tiếng Trung, Tiếng Anh
-                </Text>
-              </View>
-            </View>
-            <View style={[styles.line, { paddingTop: 10 }]}>
-              <SvgXml xml={NoticeIcon} />
-              <Text style={{ fontStyle: 'italic' }}> Lưu ý của Host</Text>
-            </View>
-            <View style={[styles.line, { paddingTop: 10 }]}>
-              <Text style={{}}>
-                Vui lòng mang theo ô, áo khoác mỏng vì thời tiết ban đêm ở đây
-                khá lạnh.
-              </Text>
-            </View>
-            <View style={[styles.line, { paddingTop: 10 }]}>
-              <Text style={{}}>
-                Tiếng Trung và Tiếng Anh được sử dụng trong khung thời gian này.
-                Vui lòng chọn khung thời gian có ngôn ngữ phù hợp để có trải
-                nghiệm tốt nhất.
-              </Text>
-            </View>
-            <View style={{ paddingTop: 10 }}>
               <Text style={{ fontWeight: '600', fontSize: 14 }}>
-                Vé của bạn{' '}
+                Chọn ngày và giờ
               </Text>
-              <Text
-                style={{
-                  fontStyle: 'italic',
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                }}
-              >
-                {' '}
-                Gửi lời nhắn cho Host
-              </Text>
-              <TextInput
-                style={[styles.inputArea, { width: '100%' }]}
-                placeholder="Lời nhắn"
-                placeholderTextColor="#1b1b1b"
-              ></TextInput>
-              <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <View>
-                  <Text style={{ fontWeight: '600', fontSize: 14 }}>
-                    Người lớn
-                  </Text>
-                  <Text style={{ fontWeight: '600', fontSize: 14 }}>$60</Text>
-                </View>
-                <View style={styles.minusParent}>
-                  <SvgXml xml={MinusIcon} />
-                  <Text style={{ color: 'black' }}>2</Text>
-                  <SvgXml xml={PlusIcon} />
-                </View>
+              <View style={styles.line}>
+                <Dropdown
+                  style={styles.dropdown}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={activity.data?.activityDates}
+                  maxHeight={300}
+                  labelField="date"
+                  valueField="id"
+                  placeholder=" Chọn ngày"
+                  value={selectedDate?.date}
+                  onChange={(item) => {
+                    setSelectedDate(item);
+                  }}
+                  renderLeftIcon={() => <SvgXml xml={CalendarIcon} />}
+                  renderItem={renderDateItem}
+                />
+
+                <Dropdown
+                  style={styles.dropdown}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={
+                    selectedDate
+                      ? selectedDate?.activityTimeFrames.map((e) => ({
+                          ...e,
+                          timeRange: formatTimeRange(e.startAt, e.endAt),
+                        }))
+                      : []
+                  }
+                  maxHeight={300}
+                  labelField="timeRange"
+                  valueField="id"
+                  placeholder=" Chọn giờ"
+                  value={
+                    selectedTime
+                      ? formatTimeRange(
+                          selectedTime.startAt,
+                          selectedTime.endAt
+                        )
+                      : 'Chưa có'
+                  }
+                  onChange={(item) => {
+                    setSelectedTime(item);
+                  }}
+                  renderLeftIcon={() => <SvgXml xml={CalendarIcon} />}
+                  renderItem={renderTimeItem}
+                />
               </View>
               <View
                 style={{
-                  paddingTop: 10,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                 }}
               >
-                <View>
-                  <Text style={{ fontWeight: '600', fontSize: 14 }}>
-                    Trẻ em (2 đến dưới 12 tuổi){' '}
+                <View style={[styles.line, { paddingTop: 10 }]}>
+                  <SvgXml xml={PeopleIcon} />
+                  <Text style={{ fontWeight: '600' }}>
+                    {' '}
+                    {selectedTime
+                      ? selectedTime.numOfRegisteredGuests +
+                        '/' +
+                        selectedTime.maximumGuests
+                      : '.../...'}
                   </Text>
-                  <Text style={{ fontWeight: '600', fontSize: 14 }}>$60</Text>
                 </View>
-                <View style={styles.minusParent}>
-                  <SvgXml xml={MinusIcon} />
-                  <Text style={{ color: 'black' }}>1</Text>
-                  <SvgXml xml={PlusIcon} />
+                <View style={[styles.line, { paddingTop: 10 }]}>
+                  <SvgXml xml={LanguageBlackIcon} />
+                  <Text style={{ fontWeight: '600' }}>
+                    {' '}
+                    {selectedTime ? selectedTime.languages : ''}
+                  </Text>
                 </View>
               </View>
-              <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <View>
-                  <Text style={{ fontWeight: '600', fontSize: 14 }}>
-                    Em bé (Dưới 2 tuổi)
-                  </Text>
-                  <Text style={{ fontWeight: '600', fontSize: 14 }}>$60</Text>
+              <View style={[styles.line, { paddingTop: 10 }]}>
+                <SvgXml xml={NoticeIcon} />
+                <Text style={{ fontStyle: 'italic' }}> Lưu ý của Host</Text>
+              </View>
+              <View style={[styles.line, { paddingTop: 10 }]}>
+                <Text style={{}}>{selectedTime?.hostNotes}</Text>
+              </View>
+
+              <View style={{ paddingTop: 10 }}>
+                <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                  Vé của bạn{' '}
+                </Text>
+                <Text
+                  style={{
+                    fontStyle: 'italic',
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                  }}
+                >
+                  {' '}
+                  Gửi lời nhắn cho Host
+                </Text>
+                <TextInput
+                  style={[styles.inputArea, { width: '100%' }]}
+                  placeholder="Lời nhắn"
+                  placeholderTextColor="#1b1b1b"
+                ></TextInput>
+                <View
+                  style={{
+                    paddingTop: 10,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View>
+                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                      Người lớn
+                    </Text>
+                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                      {selectedTime?.adultsPrice.toLocaleString()} VND
+                    </Text>
+                  </View>
+                  <View style={styles.minusParent}>
+                    <SvgXml xml={MinusIcon} />
+                    <Text style={{ color: 'black' }}>2</Text>
+                    <SvgXml xml={PlusIcon} />
+                  </View>
                 </View>
-                <View style={styles.minusParent}>
-                  <SvgXml xml={MinusIcon} />
-                  <Text style={{ color: 'black' }}>1</Text>
-                  <SvgXml xml={PlusIcon} />
+                <View
+                  style={{
+                    paddingTop: 10,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View>
+                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                      Trẻ em (2 đến dưới 12 tuổi){' '}
+                    </Text>
+                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                      {' '}
+                      {selectedTime?.adultsPrice.toLocaleString()} VND
+                    </Text>
+                  </View>
+                  <View style={styles.minusParent}>
+                    <SvgXml xml={MinusIcon} />
+                    <Text style={{ color: 'black' }}>1</Text>
+                    <SvgXml xml={PlusIcon} />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    paddingTop: 10,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View>
+                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                      Em bé (Dưới 2 tuổi)
+                    </Text>
+                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                      {selectedTime?.babyPrice.toLocaleString()} VND
+                    </Text>
+                  </View>
+                  <View style={styles.minusParent}>
+                    <SvgXml xml={MinusIcon} />
+                    <Text style={{ color: 'black' }}>1</Text>
+                    <SvgXml xml={PlusIcon} />
+                  </View>
                 </View>
               </View>
             </View>
           </View>
-        </View>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            borderColor: '#bababa',
-            borderTopWidth: 1,
-            paddingHorizontal: 18,
-            paddingTop: 12,
-            paddingBottom: 24,
-            flexDirection: 'row',
-            width: '100%',
-            flex: 1,
-            borderStyle: 'solid',
-            height: 100,
-            justifyContent: 'space-between',
-          }}
-        >
-          <View style={{}}>
-            <Text style={{}}>Tổng thanh toán</Text>
-            <Text style={{ fontWeight: '600', fontSize: 16, color: '#ed2939' }}>
-              đ260.000
-            </Text>
-          </View>
-          <TouchableOpacity
-            onPress={goToOrder}
-            style={[styles.button2, { height: 45, alignItems: 'center' }]}
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              borderColor: '#bababa',
+              borderTopWidth: 1,
+              paddingHorizontal: 18,
+              paddingTop: 12,
+              paddingBottom: 24,
+              flexDirection: 'row',
+              width: '100%',
+              flex: 1,
+              borderStyle: 'solid',
+              height: 100,
+              justifyContent: 'space-between',
+            }}
           >
-            <Text style={{ color: '#fff' }}>Tiếp tục</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+            <View style={{}}>
+              <Text style={{}}>Tổng thanh toán</Text>
+              <Text
+                style={{ fontWeight: '600', fontSize: 16, color: '#ed2939' }}
+              >
+                đ260.000
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={goToOrder}
+              style={[styles.button2, { height: 45, alignItems: 'center' }]}
+            >
+              <Text style={{ color: '#fff' }}>Tiếp tục</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 }
@@ -848,5 +940,50 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     width: '25%',
+  },
+  dropdown: {
+    width: '48%',
+    marginTop: 12,
+    height: 50,
+    marginRight: 15,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    padding: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  textItem: {
+    flex: 1,
+    fontSize: 16,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });

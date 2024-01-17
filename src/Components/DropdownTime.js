@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { CalendarIcon } from "@/Assets/Icons/OrderConfirm";
-import { SvgXml } from "react-native-svg";
-import { CheckIcon } from "@/Assets/Icons/DetailIcon";
+import React, { useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { CalendarIcon } from '@/Assets/Icons/OrderConfirm';
+import { SvgXml } from 'react-native-svg';
+import { CheckIcon } from '@/Assets/Icons/DetailIcon';
 
 const data = [
-  { label: " 6:30 - 8:30", value: "1" },
-  { label: " 8:30 - 10:30", value: "2" },
-  { label: " 11:30 - 13:30", value: "3" },
-  { label: " 13:30 - 15:30", value: "4" },
-  { label: " 17:30 - 19:30", value: "5" },
-  { label: " 20:30 - 22:30", value: "6" },
+  { label: ' 6:30 - 8:30', value: '1' },
+  { label: ' 8:30 - 10:30', value: '2' },
+  { label: ' 11:30 - 13:30', value: '3' },
+  { label: ' 13:30 - 15:30', value: '4' },
+  { label: ' 17:30 - 19:30', value: '5' },
+  { label: ' 20:30 - 22:30', value: '6' },
 ];
 
 const DropdownTime = () => {
@@ -53,14 +53,14 @@ export default DropdownTime;
 
 const styles = StyleSheet.create({
   dropdown: {
-    width: "40%",
+    width: '40%',
     marginTop: 12,
     height: 50,
     marginRight: 15,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 12,
     padding: 12,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 17,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   textItem: {
     flex: 1,
