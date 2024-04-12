@@ -12,7 +12,7 @@ import ConfirmPhoneScreen from "@/Screens/ConfirmPhoneScreen";
 import CreatePasswordScreen from "@/Screens/CreatePasswordScreen";
 import HostProfile from "@/Screens/HostProfile";
 import SearchCityScreen from "@/Screens/SearchCityScreen";
-import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
+// import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
 export default function AppNavigation() {
@@ -88,11 +88,11 @@ export default function AppNavigation() {
           options={{ headerShown: false }}
           component={SearchCityScreen}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="WhereaboutSearch"
           options={{ headerShown: false }}
           component={WhereaboutSearchScreen}
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
