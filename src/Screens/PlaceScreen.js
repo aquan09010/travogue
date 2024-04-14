@@ -11,24 +11,24 @@ import {
   FlatList,
   Animated,
   ActivityIndicator,
-} from 'react-native';
-import React, { useLayoutEffect, useState, useRef, useEffect } from 'react';
-import { SvgXml } from 'react-native-svg';
-import { FireIcon, BookIcon } from '@/Assets/Icons/Where';
-import AccommodationCard from '@/Components/AccomodationCard';
-import { StarIcon } from '@/Assets/Icons/Card';
-import CityCard from '@/Components/CityCard';
-import { useStateContext } from '@/Context/StateContext';
+} from "react-native";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
+import { SvgXml } from "react-native-svg";
+import { FireIcon, BookIcon } from "@/Assets/Icons/Where";
+import AccommodationCard from "@/Components/AccomodationCard";
+import { StarIcon } from "@/Assets/Icons/Card";
+import CityCard from "@/Components/CityCard";
+import { useStateContext } from "@/Context/StateContext";
 import {
   getActivityByCategory,
   getChildCategories,
   getPopularByCategory,
-} from '@/Hooks/TravelActivityHooks';
-import { getTopCities } from '@/Hooks/CityHooks';
+} from "@/Hooks/TravelActivityHooks";
+import { getTopCities } from "@/Hooks/CityHooks";
 
 export default function PlaceScreen() {
   const [selected, setSelected] = useState(
-    '1eea318b-19b1-48dc-a0e8-0b1404466cf7'
+    "1eea318b-19b1-48dc-a0e8-0b1404466cf7"
   );
   // const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
@@ -65,10 +65,7 @@ export default function PlaceScreen() {
   );
 
   return (
-    <ScrollView
-      style={{ marginBottom: 170 }}
-      showsVerticalScrollIndicator={false}
-    >
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.mainView}>
         <View style={styles.flex}>
           <SvgXml xml={FireIcon} />
@@ -86,8 +83,8 @@ export default function PlaceScreen() {
         ) : popularError ? (
           <Text
             style={{
-              color: '#A80027',
-              textAlign: 'center',
+              color: "#A80027",
+              textAlign: "center",
               paddingBottom: 20,
               fontSize: 16,
             }}
@@ -123,8 +120,8 @@ export default function PlaceScreen() {
         ) : topCitiesError ? (
           <Text
             style={{
-              color: '#A80027',
-              textAlign: 'center',
+              color: "#A80027",
+              textAlign: "center",
               paddingBottom: 20,
               fontSize: 16,
             }}
@@ -158,8 +155,8 @@ export default function PlaceScreen() {
         ) : error ? (
           <Text
             style={{
-              color: '#A80027',
-              textAlign: 'center',
+              color: "#A80027",
+              textAlign: "center",
               paddingBottom: 20,
               fontSize: 16,
             }}
@@ -187,7 +184,7 @@ export default function PlaceScreen() {
                       style={[
                         styles.titleTab,
                         selected == e.id && {
-                          color: '#151515',
+                          color: "#151515",
                         },
                       ]}
                       numberOfLines={2}
@@ -212,8 +209,8 @@ export default function PlaceScreen() {
         ) : activitiesError ? (
           <Text
             style={{
-              color: '#A80027',
-              textAlign: 'center',
+              color: "#A80027",
+              textAlign: "center",
               paddingBottom: 20,
               fontSize: 16,
             }}
@@ -249,40 +246,40 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#ED2939',
+    fontWeight: "600",
+    color: "#ED2939",
     paddingRight: 12,
   },
   titleTab: {
     fontSize: 15,
-    fontWeight: '600',
-    color: '#767676',
+    fontWeight: "600",
+    color: "#767676",
     width: 70,
-    textAlign: 'center',
+    textAlign: "center",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 18,
   },
   flex: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 6,
-    alignItems: 'center',
+    alignItems: "center",
     paddingBottom: 16,
   },
   icon: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: 5,
   },
   cardListContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between', // Evenly distribute cards
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between", // Evenly distribute cards
   },
   categoryItem: {
     width: 85,
-    alignItems: 'center',
+    alignItems: "center",
   },
 });
