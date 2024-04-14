@@ -204,6 +204,7 @@ const getCommentsByActivity = () => {
   return {
     getComments,
     comments,
+    setComments,
     isCommentLoading,
     commentError,
     refetch,
@@ -211,7 +212,7 @@ const getCommentsByActivity = () => {
 };
 
 const postCommentsByActivity = () => {
-  const [newComment, setComments] = useState(null);
+  const [newComment, setNewComments] = useState(null);
   const [isPostCommentLoading, setIsLoading] = useState(false);
   const [postCommentError, setError] = useState(null);
 
@@ -232,7 +233,7 @@ const postCommentsByActivity = () => {
           },
         };
         const response = await axios.request(options);
-        setComments(response.data);
+        setNewComments(response.data);
         setIsLoading(false);
       } catch (error) {
         setError(error.response.data);
@@ -251,6 +252,7 @@ const postCommentsByActivity = () => {
   return {
     postComments,
     newComment,
+    setNewComments,
     isPostCommentLoading,
     postCommentError,
     refetch,
