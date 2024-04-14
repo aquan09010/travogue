@@ -1,6 +1,6 @@
-import { ArrowLeft, SearchIcon } from '@/Assets/Icons/Navigation';
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { ArrowLeft, SearchIcon } from "@/Assets/Icons/Navigation";
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -11,10 +11,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
-} from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
-import { SvgXml } from 'react-native-svg';
+  View,
+} from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import { SvgXml } from "react-native-svg";
 
 import {
   CancelIcon,
@@ -26,18 +26,18 @@ import {
   MinusIcon,
   NoticeIcon,
   PlusIcon,
-  ShareIcon
-} from '@/Assets/Icons/DetailIcon';
-import { CalendarIcon, PeopleIcon } from '@/Assets/Icons/OrderConfirm';
-import { LanguageBlackIcon } from '@/Assets/Icons/Proflie';
-import StarRating from '@/Components/StarRating';
-import { useStateContext } from '@/Context/StateContext';
+  ShareIcon,
+} from "@/Assets/Icons/DetailIcon";
+import { CalendarIcon, PeopleIcon } from "@/Assets/Icons/OrderConfirm";
+import { LanguageBlackIcon } from "@/Assets/Icons/Proflie";
+import StarRating from "@/Components/StarRating";
+import { useStateContext } from "@/Context/StateContext";
 import {
   getCommentsByActivity,
   getDetailActivity,
   postCommentsByActivity,
-} from '@/Hooks/TravelActivityHooks';
-import Modal from 'react-native-modal';
+} from "@/Hooks/TravelActivityHooks";
+import Modal from "react-native-modal";
 
 export default function DetailScreen({ route }) {
   const navigation = useNavigation();
@@ -49,7 +49,7 @@ export default function DetailScreen({ route }) {
   const goToOrder = async (e) => {
     setModalTicketVisible(false);
     e.preventDefault();
-    navigation.navigate('OrderConfirm', {
+    navigation.navigate("OrderConfirm", {
       activity: {
         name: activity.data.activityName,
         mainImage: activity.data.mainImage,
@@ -70,7 +70,7 @@ export default function DetailScreen({ route }) {
   };
   const gotoHost = async (e) => {
     e.preventDefault();
-    navigation.navigate('HostProfile');
+    navigation.navigate("HostProfile");
   };
 
   const { accessToken, user, commentList, setCommentList } = useStateContext();
@@ -106,11 +106,11 @@ export default function DetailScreen({ route }) {
 
     await postComments(accessToken, activity.data.id, currentRating, userCmt);
     setCurrentRating(0);
-    setUserCmt('');
+    setUserCmt("");
   };
 
   const [currentRating, setCurrentRating] = useState(0);
-  const [userCmt, setUserCmt] = useState('');
+  const [userCmt, setUserCmt] = useState("");
 
   useEffect(() => {
     if (comments) setCommentList(comments.data);
@@ -125,24 +125,24 @@ export default function DetailScreen({ route }) {
     const differenceInSeconds = Math.floor((now - createdAt) / 1000);
 
     const intervals = [
-      ['year', 31536000],
-      ['month', 2592000],
-      ['day', 86400],
-      ['hour', 3600],
-      ['minute', 60],
-      ['second', 1],
+      ["year", 31536000],
+      ["month", 2592000],
+      ["day", 86400],
+      ["hour", 3600],
+      ["minute", 60],
+      ["second", 1],
     ];
 
     for (const [name, seconds] of intervals) {
       const intervalCount = Math.floor(differenceInSeconds / seconds);
       if (intervalCount >= 1) {
         return `${intervalCount} ${
-          intervalCount === 1 ? name : name + 's'
+          intervalCount === 1 ? name : name + "s"
         } ago`;
       }
     }
 
-    return 'just now';
+    return "just now";
   };
 
   const [selectedDate, setSelectedDate] = useState(null);
@@ -173,7 +173,7 @@ export default function DetailScreen({ route }) {
     return `${formattedStart} - ${formattedEnd}`;
   };
 
-  const [userNotes, setUserNotes] = useState('');
+  const [userNotes, setUserNotes] = useState("");
 
   const [adultQuantity, setAdultQuantity] = useState(1);
   const [childQuantity, setChildQuantity] = useState(1);
@@ -208,9 +208,9 @@ export default function DetailScreen({ route }) {
       {isActivityLoading ? (
         <View
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             flex: 1,
           }}
         >
@@ -219,8 +219,8 @@ export default function DetailScreen({ route }) {
       ) : activityError ? (
         <Text
           style={{
-            color: '#A80027',
-            textAlign: 'center',
+            color: "#A80027",
+            textAlign: "center",
             paddingBottom: 20,
             fontSize: 16,
           }}
@@ -279,7 +279,7 @@ export default function DetailScreen({ route }) {
                 style={styles.buttonTicket}
                 onPress={toggleModalTicket}
               >
-                <Text style={[styles.textDetail, { color: '#ed2939' }]}>
+                <Text style={[styles.textDetail, { color: "#ed2939" }]}>
                   Từ {activity.data.generalPrice / 1000}K/người
                 </Text>
                 <View onPress={toggleModalTicket} style={styles.button}>
@@ -302,7 +302,7 @@ export default function DetailScreen({ route }) {
               <View>
                 <Text style={[styles.title]} numberOfLines={2}>
                   {activity.data.activityName +
-                    ' - ' +
+                    " - " +
                     activity.data.activityCategory.categoryName}
                 </Text>
 
@@ -325,7 +325,7 @@ export default function DetailScreen({ route }) {
                 <View
                   style={[styles.frameContainer, styles.frameParentShadowBox]}
                 >
-                  {activity.data.tags.split(';').map((tag) => (
+                  {activity.data.tags.split(";").map((tag) => (
                     <View style={styles.wrapperSpaceBlock}>
                       <Text style={[styles.textTag]}>{tag}</Text>
                     </View>
@@ -355,8 +355,8 @@ export default function DetailScreen({ route }) {
         avoidKeyboard={true}
         propagateSwipe={true}
         style={{
-          justifyContent: 'flex-end',
-          width: '100%',
+          justifyContent: "flex-end",
+          width: "100%",
           padding: 0,
           margin: 0,
         }}
@@ -366,7 +366,7 @@ export default function DetailScreen({ route }) {
             bottom: 0,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            backgroundColor: '#fff',
+            backgroundColor: "#fff",
             height: 500,
             minHeight: 100,
           }}
@@ -374,14 +374,14 @@ export default function DetailScreen({ route }) {
           <View
             style={{
               paddingTop: 20,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
               paddingHorizontal: 18,
               paddingVertical: 8,
             }}
           >
-            <Text style={{ fontWeight: '600', fontSize: 20 }}>
+            <Text style={{ fontWeight: "600", fontSize: 20 }}>
               Bình luận
               <Text style={{ fontSize: 14 }}> ({commentList.length})</Text>
             </Text>
@@ -401,8 +401,8 @@ export default function DetailScreen({ route }) {
           ) : commentError ? (
             <Text
               style={{
-                color: '#A80027',
-                textAlign: 'center',
+                color: "#A80027",
+                textAlign: "center",
                 paddingBottom: 20,
                 fontSize: 16,
               }}
@@ -415,7 +415,7 @@ export default function DetailScreen({ route }) {
                 {commentList.map((item) => (
                   <Pressable
                     style={{
-                      flexDirection: 'row',
+                      flexDirection: "row",
                       paddingHorizontal: 18,
                       paddingVertical: 12,
                     }}
@@ -434,8 +434,8 @@ export default function DetailScreen({ route }) {
                       <View style={styles.line}>
                         <StarRating rating={item.rating} disabled={true} />
                         <Text>
-                          {' '}
-                          {item.user.email.split('@')[0]} •{' '}
+                          {" "}
+                          {item.user.email.split("@")[0]} •{" "}
                           {timeAgo(item.createdAt)}
                         </Text>
                       </View>
@@ -451,23 +451,23 @@ export default function DetailScreen({ route }) {
 
           <View
             style={{
-              position: 'absolute',
+              position: "absolute",
               bottom: 0,
-              borderColor: '#bababa',
+              borderColor: "#bababa",
               borderTopWidth: 1,
               paddingHorizontal: 18,
               paddingTop: 12,
               paddingBottom: 24,
-              flexDirection: 'row',
-              width: '100%',
+              flexDirection: "row",
+              width: "100%",
               flex: 1,
-              borderStyle: 'solid',
+              borderStyle: "solid",
               height: 180,
             }}
           >
             <View
               style={{
-                flexDirection: 'row',
+                flexDirection: "row",
                 paddingHorizontal: 18,
                 paddingVertical: 12,
               }}
@@ -500,11 +500,11 @@ export default function DetailScreen({ route }) {
               </View>
             </View>
             <Pressable
-              style={{ position: 'absolute', bottom: 20, right: 30 }}
+              style={{ position: "absolute", bottom: 20, right: 30 }}
               onPress={handlePostComment}
             >
               <View style={[styles.button1]}>
-                <Text style={{ color: '#fff' }}>Đăng</Text>
+                <Text style={{ color: "#fff" }}>Đăng</Text>
               </View>
             </Pressable>
           </View>
@@ -520,8 +520,8 @@ export default function DetailScreen({ route }) {
           avoidKeyboard={true}
           propagateSwipe={true}
           style={{
-            justifyContent: 'flex-end',
-            width: '100%',
+            justifyContent: "flex-end",
+            width: "100%",
             padding: 0,
             margin: 0,
           }}
@@ -531,7 +531,7 @@ export default function DetailScreen({ route }) {
               bottom: 0,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
-              backgroundColor: '#fff',
+              backgroundColor: "#fff",
               height: 650,
               minHeight: 100,
             }}
@@ -539,14 +539,14 @@ export default function DetailScreen({ route }) {
             <View
               style={{
                 paddingTop: 20,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
                 paddingHorizontal: 18,
                 paddingVertical: 8,
               }}
             >
-              <Text style={{ fontWeight: '600', fontSize: 20 }}>Vé và giá</Text>
+              <Text style={{ fontWeight: "600", fontSize: 20 }}>Vé và giá</Text>
               <Pressable style={{}} onPress={toggleModalTicket}>
                 <SvgXml xml={CancelIcon} />
               </Pressable>
@@ -557,7 +557,7 @@ export default function DetailScreen({ route }) {
                 paddingVertical: 12,
               }}
             >
-              <Text style={{ fontWeight: '600', fontSize: 14 }}>
+              <Text style={{ fontWeight: "600", fontSize: 14 }}>
                 Chọn ngày và giờ
               </Text>
               <View style={styles.line}>
@@ -604,7 +604,7 @@ export default function DetailScreen({ route }) {
                           selectedTime.startAt,
                           selectedTime.endAt
                         )
-                      : 'Chưa có'
+                      : "Chưa có"
                   }
                   onChange={(item) => {
                     setSelectedTime(item);
@@ -615,53 +615,53 @@ export default function DetailScreen({ route }) {
               </View>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
               >
                 <View style={[styles.line, { paddingTop: 10 }]}>
                   <SvgXml xml={PeopleIcon} />
-                  <Text style={{ fontWeight: '600' }}>
-                    {' '}
+                  <Text style={{ fontWeight: "600" }}>
+                    {" "}
                     {selectedTime
                       ? selectedTime.numOfRegisteredGuests +
-                        '/' +
+                        "/" +
                         selectedTime.maximumGuests
-                      : '.../...'}
+                      : ".../..."}
                   </Text>
                 </View>
                 <View style={[styles.line, { paddingTop: 10 }]}>
                   <SvgXml xml={LanguageBlackIcon} />
-                  <Text style={{ fontWeight: '600' }}>
-                    {' '}
-                    {selectedTime ? selectedTime.languages : ''}
+                  <Text style={{ fontWeight: "600" }}>
+                    {" "}
+                    {selectedTime ? selectedTime.languages : ""}
                   </Text>
                 </View>
               </View>
               <View style={[styles.line, { paddingTop: 10 }]}>
                 <SvgXml xml={NoticeIcon} />
-                <Text style={{ fontStyle: 'italic' }}> Lưu ý của Host</Text>
+                <Text style={{ fontStyle: "italic" }}> Lưu ý của Host</Text>
               </View>
               <View style={[styles.line, { paddingTop: 10 }]}>
                 <Text style={{}}>{selectedTime?.hostNotes}</Text>
               </View>
 
               <View style={{ paddingTop: 10 }}>
-                <Text style={{ fontWeight: '600', fontSize: 14 }}>
-                  Vé của bạn{' '}
+                <Text style={{ fontWeight: "600", fontSize: 14 }}>
+                  Vé của bạn{" "}
                 </Text>
                 <Text
                   style={{
-                    fontStyle: 'italic',
+                    fontStyle: "italic",
                     paddingTop: 10,
                     paddingBottom: 10,
                   }}
                 >
-                  {' '}
+                  {" "}
                   Gửi lời nhắn cho Host
                 </Text>
                 <TextInput
-                  style={[styles.inputArea, { width: '100%' }]}
+                  style={[styles.inputArea, { width: "100%" }]}
                   placeholder="Lời nhắn"
                   placeholderTextColor="#1b1b1b"
                   value={userNotes}
@@ -670,15 +670,15 @@ export default function DetailScreen({ route }) {
                 <View
                   style={{
                     paddingTop: 10,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
                   <View>
-                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                    <Text style={{ fontWeight: "600", fontSize: 14 }}>
                       Người lớn
                     </Text>
-                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                    <Text style={{ fontWeight: "600", fontSize: 14 }}>
                       {selectedTime?.adultsPrice.toLocaleString()} VND
                     </Text>
                   </View>
@@ -686,7 +686,7 @@ export default function DetailScreen({ route }) {
                     <TouchableOpacity onPress={() => handleAdultDecrease()}>
                       <SvgXml xml={MinusIcon} />
                     </TouchableOpacity>
-                    <Text style={{ color: 'black' }}>{adultQuantity}</Text>
+                    <Text style={{ color: "black" }}>{adultQuantity}</Text>
                     <TouchableOpacity onPress={() => handleAdultIncrease()}>
                       <SvgXml xml={PlusIcon} />
                     </TouchableOpacity>
@@ -695,16 +695,16 @@ export default function DetailScreen({ route }) {
                 <View
                   style={{
                     paddingTop: 10,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
                   <View>
-                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
-                      Trẻ em (2 đến dưới 12 tuổi){' '}
+                    <Text style={{ fontWeight: "600", fontSize: 14 }}>
+                      Trẻ em (2 đến dưới 12 tuổi){" "}
                     </Text>
-                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
-                      {' '}
+                    <Text style={{ fontWeight: "600", fontSize: 14 }}>
+                      {" "}
                       {selectedTime?.childrenPrice.toLocaleString()} VND
                     </Text>
                   </View>
@@ -712,7 +712,7 @@ export default function DetailScreen({ route }) {
                     <TouchableOpacity onPress={() => handleChildDecrease()}>
                       <SvgXml xml={MinusIcon} />
                     </TouchableOpacity>
-                    <Text style={{ color: 'black' }}>{childQuantity}</Text>
+                    <Text style={{ color: "black" }}>{childQuantity}</Text>
                     <TouchableOpacity onPress={() => handleChildIncrease()}>
                       <SvgXml xml={PlusIcon} />
                     </TouchableOpacity>
@@ -721,15 +721,15 @@ export default function DetailScreen({ route }) {
                 <View
                   style={{
                     paddingTop: 10,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
                   <View>
-                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                    <Text style={{ fontWeight: "600", fontSize: 14 }}>
                       Em bé (Dưới 2 tuổi)
                     </Text>
-                    <Text style={{ fontWeight: '600', fontSize: 14 }}>
+                    <Text style={{ fontWeight: "600", fontSize: 14 }}>
                       {selectedTime?.babyPrice.toLocaleString()} VND
                     </Text>
                   </View>
@@ -737,7 +737,7 @@ export default function DetailScreen({ route }) {
                     <TouchableOpacity onPress={() => handleBabyDecrease()}>
                       <SvgXml xml={MinusIcon} />
                     </TouchableOpacity>
-                    <Text style={{ color: 'black' }}>{babyQuantity}</Text>
+                    <Text style={{ color: "black" }}>{babyQuantity}</Text>
                     <TouchableOpacity onPress={() => handleBabyIncrease()}>
                       <SvgXml xml={PlusIcon} />
                     </TouchableOpacity>
@@ -748,25 +748,25 @@ export default function DetailScreen({ route }) {
           </View>
           <View
             style={{
-              position: 'absolute',
+              position: "absolute",
               bottom: 0,
-              borderColor: '#bababa',
+              borderColor: "#bababa",
               borderTopWidth: 1,
               paddingHorizontal: 18,
               paddingTop: 12,
               paddingBottom: 24,
-              flexDirection: 'row',
-              width: '100%',
+              flexDirection: "row",
+              width: "100%",
               flex: 1,
-              borderStyle: 'solid',
+              borderStyle: "solid",
               height: 100,
-              justifyContent: 'space-between',
+              justifyContent: "space-between",
             }}
           >
             <View style={{}}>
               <Text style={{}}>Tổng thanh toán</Text>
               <Text
-                style={{ fontWeight: '600', fontSize: 16, color: '#ed2939' }}
+                style={{ fontWeight: "600", fontSize: 16, color: "#ed2939" }}
               >
                 {selectedTime
                   ? (
@@ -774,15 +774,15 @@ export default function DetailScreen({ route }) {
                       childQuantity * selectedTime.childrenPrice +
                       babyQuantity * selectedTime.babyPrice
                     ).toLocaleString()
-                  : 0}{' '}
+                  : 0}{" "}
                 VND
               </Text>
             </View>
             <TouchableOpacity
               onPress={goToOrder}
-              style={[styles.button2, { height: 45, alignItems: 'center' }]}
+              style={[styles.button2, { height: 45, alignItems: "center" }]}
             >
-              <Text style={{ color: '#fff' }}>Tiếp tục</Text>
+              <Text style={{ color: "#fff" }}>Tiếp tục</Text>
             </TouchableOpacity>
           </View>
         </Modal>
@@ -799,32 +799,32 @@ const styles = StyleSheet.create({
   },
   mainView: {
     paddingBottom: 0,
-    paddingTop: '11%',
+    paddingTop: "11%",
   },
   statusBar: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 18,
     paddingVertical: 14,
   },
   actionContainer: {
     top: 400,
     left: 360,
-    alignItems: 'center',
-    position: 'absolute',
+    alignItems: "center",
+    position: "absolute",
   },
   actionPadding: {
     paddingBottom: 15,
   },
   extraLine: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
-    textAlign: 'center',
-    color: '#fff',
+    textAlign: "center",
+    color: "#fff",
     fontSize: 12,
   },
   avaImg: {
@@ -834,27 +834,27 @@ const styles = StyleSheet.create({
   },
   detailContainer: {
     bottom: 40,
-    left: '50%',
+    left: "50%",
     marginLeft: -187.5,
     width: 375,
-    position: 'absolute',
+    position: "absolute",
   },
   textDetail: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
-    textAlign: 'left',
-    fontWeight: '600',
+    textAlign: "left",
+    fontWeight: "600",
   },
   topWrapper: {
     paddingVertical: 4,
     paddingHorizontal: 5,
-    backgroundColor: '#ed2939',
+    backgroundColor: "#ed2939",
     borderRadius: 7,
-    width: '28%',
-    flexDirection: 'row',
+    width: "28%",
+    flexDirection: "row",
   },
   frameParentShadowBox: {
-    alignItems: 'center',
+    alignItems: "center",
     shadowOpacity: 1,
     elevation: 4,
     shadowRadius: 4,
@@ -862,45 +862,45 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowColor: 'rgba(0, 0, 0, 0.25)',
-    flexDirection: 'row',
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    flexDirection: "row",
     paddingBottom: 8,
   },
   wrapperSpaceBlock: {
     paddingHorizontal: 6,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
     paddingVertical: 2,
-    flexDirection: 'row',
+    flexDirection: "row",
     borderRadius: 7,
   },
   title: {
     fontSize: 20,
-    width: '70%',
+    width: "70%",
     textShadowRadius: 4,
     textShadowOffset: {
       width: 0,
       height: 4,
     },
-    textShadowColor: 'rgba(0, 0, 0, 0.25)',
-    textAlign: 'left',
-    color: '#fff',
-    fontWeight: '600',
+    textShadowColor: "rgba(0, 0, 0, 0.25)",
+    textAlign: "left",
+    color: "#fff",
+    fontWeight: "600",
     paddingTop: 10,
     paddingBottom: 5,
-    textTransform: 'capitalize',
+    textTransform: "capitalize",
   },
 
   text: {
     marginLeft: 4,
-    textAlign: 'left',
-    color: '#fff',
+    textAlign: "left",
+    color: "#fff",
   },
 
   textTag: {
-    color: '#151515',
-    textAlign: 'left',
-    textTransform: 'capitalize',
+    color: "#151515",
+    textAlign: "left",
+    textTransform: "capitalize",
   },
   lchSWrapper: {
     marginLeft: 4,
@@ -908,54 +908,54 @@ const styles = StyleSheet.create({
   frameContainer: {
     marginTop: 8,
     gap: 6,
-    alignSelf: 'stretch',
-    display: 'flex',
-    flexWrap: 'wrap' /* Enable wrapping of tags */,
+    alignSelf: "stretch",
+    display: "flex",
+    flexWrap: "wrap" /* Enable wrapping of tags */,
   },
   languageBorder: {
     width: 210,
     marginLeft: 4,
-    textAlign: 'left',
-    color: '#fff',
-    textTransform: 'capitalize',
+    textAlign: "left",
+    color: "#fff",
+    textTransform: "capitalize",
   },
   line: {
-    flexDirection: 'row',
-    alignContent: 'center',
+    flexDirection: "row",
+    alignContent: "center",
     // height: 10,
     marginRight: 15,
   },
   container1: {
-    alignContent: 'center',
-    flexDirection: 'row',
+    alignContent: "center",
+    flexDirection: "row",
   },
   buttonTicket: {
     top: 550,
     left: 16,
-    alignItems: 'center',
-    position: 'absolute',
+    alignItems: "center",
+    position: "absolute",
   },
   checkout: {
     fontSize: 14,
-    color: '#fff',
+    color: "#fff",
   },
   button: {
     borderRadius: 7,
-    backgroundColor: '#ed2939',
-    borderStyle: 'solid',
-    borderColor: '#fff',
+    backgroundColor: "#ed2939",
+    borderStyle: "solid",
+    borderColor: "#fff",
     borderWidth: 1,
     width: 100,
     height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 10,
     marginTop: 5,
   },
   inputArea: {
     borderRadius: 7,
-    backgroundColor: '#E8E8E8',
-    color: '#1b1b1b',
+    backgroundColor: "#E8E8E8",
+    color: "#1b1b1b",
     paddingVertical: 10,
     paddingHorizontal: 18,
     width: 275,
@@ -963,48 +963,48 @@ const styles = StyleSheet.create({
   },
   button1: {
     borderRadius: 7,
-    backgroundColor: '#ed2939',
-    borderColor: '#fff',
-    flexWrap: 'wrap',
+    backgroundColor: "#ed2939",
+    borderColor: "#fff",
+    flexWrap: "wrap",
     paddingVertical: 12,
     paddingHorizontal: 16,
-    overflow: 'hidden',
+    overflow: "hidden",
     width: 100,
-    alignContent: 'center',
-    alignItems: 'center',
+    alignContent: "center",
+    alignItems: "center",
   },
   button2: {
     borderRadius: 7,
-    backgroundColor: '#ed2939',
-    borderColor: '#fff',
-    flexWrap: 'wrap',
+    backgroundColor: "#ed2939",
+    borderColor: "#fff",
+    flexWrap: "wrap",
     paddingVertical: 14,
-    overflow: 'hidden',
+    overflow: "hidden",
     width: 100,
-    alignContent: 'center',
-    alignItems: 'center',
+    alignContent: "center",
+    alignItems: "center",
   },
   minusParent: {
     borderRadius: 7,
-    borderStyle: 'solid',
-    borderColor: '#1b1b1b',
+    borderStyle: "solid",
+    borderColor: "#1b1b1b",
     borderWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 12,
     paddingVertical: 8,
-    width: '25%',
+    width: "25%",
   },
   dropdown: {
-    width: '48%',
+    width: "48%",
     marginTop: 12,
     height: 50,
     marginRight: 15,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
     padding: 12,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -1019,9 +1019,9 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 17,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   textItem: {
     flex: 1,
