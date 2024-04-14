@@ -220,6 +220,7 @@ export default function EatScreen() {
             {activities.data.data.map((item, index) => {
               return (
                 <AccommodationCard
+                  key={index}
                   id={item.id}
                   cardName={item.activityName}
                   imgPath={item.mainImage}

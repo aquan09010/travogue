@@ -61,6 +61,7 @@ export default function HomeScreen() {
         {selected == 3 && <ExperienceScreen />}
       </View> */}
       <Tab.Navigator
+        style={{ marginBottom: 10 }}
         screenOptions={{
           tabBarIndicatorStyle: {
             height: 2,

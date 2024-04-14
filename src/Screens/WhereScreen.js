@@ -220,6 +220,7 @@ export default function WhereScreen() {
             {activities.data.data.map((item, index) => {
               return (
                 <AccommodationCard
+                  key={index}
                   id={item.id}
                   cardName={item.activityName}
                   imgPath={item.mainImage}
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: "#ED2939",
-    fontFamily: "BeVNSemi",
+    fontFamily: "BeVNBold",
   },
   titleTab: {
     fontSize: 15,

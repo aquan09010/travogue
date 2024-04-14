@@ -222,6 +222,7 @@ export default function PlaceScreen() {
             {activities.data.data.map((item, index) => {
               return (
                 <AccommodationCard
+                  key={index}
                   id={item.id}
                   cardName={item.activityName}
                   imgPath={item.mainImage}
@@ -246,9 +247,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: "600",
     color: "#ED2939",
     paddingRight: 12,
+    fontFamily: "BeVNBold",
   },
   titleTab: {
     fontSize: 15,
