@@ -73,7 +73,7 @@ export default function DetailScreen({ route }) {
     navigation.navigate("HostProfile");
   };
 
-  const { accessToken, user, commentList, setCommentList } = useStateContext();
+  const { accessToken, user } = useStateContext();
 
   const { activity, isActivityLoading, activityError } = getDetailActivity(
     accessToken,
@@ -95,10 +95,10 @@ export default function DetailScreen({ route }) {
   };
 
   // Call Comment API
-  const { getComments, comments, isCommentLoading, commentError } =
+  const { getComments, comments, setComments, isCommentLoading, commentError } =
     getCommentsByActivity();
 
-  const { postComments, newComment, isPostCommentLoading, postCommentError } =
+  const { postComments, newComment, setNewComments, isPostCommentLoading, postCommentError } =
     postCommentsByActivity();
 
   const handlePostComment = async (e) => {
@@ -112,12 +112,17 @@ export default function DetailScreen({ route }) {
   const [currentRating, setCurrentRating] = useState(0);
   const [userCmt, setUserCmt] = useState("");
 
+  const [commentList, setCommentList] = useState([])
+
   useEffect(() => {
-    if (comments) setCommentList(comments.data);
-    if (newComment) {
+    if (comments)
+      setCommentList(comments.data);
+  }, [comments]);
+
+  useEffect(() => {
+    if (newComment)
       setCommentList([newComment.data.activityComment, ...commentList]);
-    }
-  }, [comments, newComment]);
+  }, [newComment]);
 
   const timeAgo = (dateString) => {
     const now = new Date();

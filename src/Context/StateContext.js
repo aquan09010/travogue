@@ -44,8 +44,6 @@ export const StateContext = ({ children }) => {
         user,
         setUser,
         mainCategories,
-        commentList,
-        setCommentList,
       }}
     >
       {children}
