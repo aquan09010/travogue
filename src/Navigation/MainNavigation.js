@@ -20,6 +20,7 @@ import CommunityScreen from "@/Screens/CommunityScreen.js";
 import TabHeader from "@/Components/TabHeader";
 import SearchCityScreen from "@/Screens/SearchCityScreen";
 import ProfileScreen from "@/Screens/ProfileScreen";
+import CloneSceen from "@/Screens/CloneDetail";
 
 const MainNavigator = () => {
   const Tab = createBottomTabNavigator();

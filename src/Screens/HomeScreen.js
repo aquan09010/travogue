@@ -24,12 +24,16 @@ import AccommodationCard from "@/Components/AccomodationCard";
 import { StarIcon } from "@/Assets/Icons/Card";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 const Tab = createMaterialTopTabNavigator();
+import { Animated } from "react-native";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   const tabs = ["Đi đâu", "Ăn gì", "Ở đâu", "Trải Nghiệm"];
   const [selected, setSelected] = useState(0);
-
+  const av = new Animated.Value(0);
+  av.addListener(() => {
+    return;
+  });
   return (
     <SafeAreaView style={styles.container}>
       {/* <View style={styles.mainView}>
@@ -64,7 +68,7 @@ export default function HomeScreen() {
         <SearchLocation />
       </View>
       <Tab.Navigator
-        style={{ marginBottom: 10 }}
+        style={{ marginBottom: 0 }}
         screenOptions={{
           tabBarIndicatorStyle: {
             height: 2,
@@ -78,10 +82,26 @@ export default function HomeScreen() {
           },
         }}
       >
-        <Tab.Screen name="Đi đâu" component={WhereScreen} />
-        <Tab.Screen name="Ăn gì" component={EatScreen} />
-        <Tab.Screen name="Ở đâu" component={PlaceScreen} />
-        <Tab.Screen name="Trải nghiệm" component={ExperienceScreen} />
+        <Tab.Screen
+          name="Đi đâu"
+          component={WhereScreen}
+          options={{ title: "Đi đâu" }}
+        />
+        <Tab.Screen
+          name="Ăn gì"
+          component={EatScreen}
+          options={{ title: "Ăn gì" }}
+        />
+        <Tab.Screen
+          name="Ở đâu"
+          component={PlaceScreen}
+          options={{ title: "Ở đâu" }}
+        />
+        <Tab.Screen
+          name="Trải nghiệm"
+          component={ExperienceScreen}
+          options={{ title: "Trải nghiệm" }}
+        />
       </Tab.Navigator>
     </SafeAreaView>
   );

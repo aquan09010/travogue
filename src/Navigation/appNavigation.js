@@ -14,6 +14,9 @@ import HostProfile from "@/Screens/HostProfile";
 import SearchCityScreen from "@/Screens/SearchCityScreen";
 import CommunityScreen from "@/Screens/CommunityScreen";
 import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
+import CloneSceen from "@/Screens/CloneDetail";
+import CloneDetailScreen from "@/Screens/CloneDetail";
+// import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
 export default function AppNavigation() {
@@ -93,6 +96,11 @@ export default function AppNavigation() {
           name="CommunityScreen"
           options={{ headerShown: false }}
           component={CommunityScreen}
+        />
+        <Stack.Screen
+          name="CloneScreen"
+          options={{ headerShown: false }}
+          component={CloneDetailScreen}
         />
         <Stack.Screen
           name="WhereaboutSearch"
