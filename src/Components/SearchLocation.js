@@ -15,6 +15,8 @@ import { useNavigation } from '@react-navigation/native';
 export default function SearchLocation() {
   const navigation = useNavigation();
 
+  console.log("ABC");
+
   return (
     <TouchableOpacity>
       <View style={styles.container}>

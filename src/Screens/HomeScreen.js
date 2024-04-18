@@ -60,6 +60,9 @@ export default function HomeScreen() {
         {selected == 2 && <PlaceScreen />}
         {selected == 3 && <ExperienceScreen />}
       </View> */}
+      <View style={styles.mainView}>
+        <SearchLocation />
+      </View>
       <Tab.Navigator
         style={{ marginBottom: 10 }}
         screenOptions={{

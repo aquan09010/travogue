@@ -9,13 +9,13 @@ import {
   FlatList,
   Pressable,
   ActivityIndicator,
+  SafeAreaView
 } from "react-native";
 import { ArrowLeftBlack, SearchIconBlack } from "@/Assets/Icons/Navigation";
 import { SvgXml } from "react-native-svg";
 import { LocationDotIcon } from "@/Assets/Icons/LocationDot";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Header } from "react-native/Libraries/NewAppScreen";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { searchCities } from "@/Hooks/CityHooks";
 import { useStateContext } from "@/Context/StateContext";
@@ -41,8 +41,8 @@ export default function SearchCityScreen() {
           <SvgXml xml={ArrowLeftBlack} />
         </Pressable>
         <Text style={styles.title}>Tìm kiếm thành phố</Text>
-        <Pressable onPress={() => {}}>
-          {/* <SvgXml xml={SearchIconBlack} /> */}
+        <Pressable onPress={() => { }}>
+          <SvgXml xml={SearchIconBlack} />
         </Pressable>
       </View>
       <View style={styles.mainView}>
@@ -104,7 +104,7 @@ export default function SearchCityScreen() {
         </View>
       )}
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
