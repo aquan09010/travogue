@@ -99,34 +99,29 @@ export default function DetailScreen({ route }) {
   const { getComments, comments, setComments, isCommentLoading, commentError } =
     getCommentsByActivity();
 
-  const {
-    postComments,
-    newComment,
-    setNewComments,
-    isPostCommentLoading,
-    postCommentError,
-  } = postCommentsByActivity();
+  const { postComments, newComment, isPostCommentLoading, postCommentError } =
+  postCommentsByActivity();
 
   const handlePostComment = async (e) => {
     e.preventDefault();
 
-    await postComments(accessToken, activity.data.id, currentRating, userCmt);
-    setCurrentRating(0);
-    setUserCmt("");
+    await postComments(accessToken, activity.data.id, currentRating, userCmt)
+    // setCurrentRating(4);
+    setUserCmt('');
   };
 
-  const [currentRating, setCurrentRating] = useState(0);
-  const [userCmt, setUserCmt] = useState("");
-
-  const [commentList, setCommentList] = useState([]);
+  const [currentRating, setCurrentRating] = useState(4);
+  const [userCmt, setUserCmt] = useState('');
+  const [commentList, setCommentList] = useState([]); 
 
   useEffect(() => {
     if (comments) setCommentList(comments.data);
   }, [comments]);
 
   useEffect(() => {
-    if (newComment)
+    if (newComment) {
       setCommentList([newComment.data.activityComment, ...commentList]);
+    }
   }, [newComment]);
 
   const timeAgo = (dateString) => {
@@ -423,7 +418,7 @@ export default function DetailScreen({ route }) {
             </Pressable>
           </View>
 
-          {isCommentLoading ? (
+          {isCommentLoading || isPostCommentLoading ? (
             <>
               <ActivityIndicator
                 size="large"
@@ -445,7 +440,7 @@ export default function DetailScreen({ route }) {
           ) : commentList.length > 0 ? (
             <View style={{ height: 270 }}>
               <ScrollView>
-                {commentList.map((item) => (
+                    {commentList.map((item) => (
                   <Pressable
                     style={{
                       flexDirection: "row",
@@ -535,6 +530,7 @@ export default function DetailScreen({ route }) {
             <Pressable
               style={{ position: "absolute", bottom: 20, right: 30 }}
               onPress={handlePostComment}
+              disabled={isPostCommentLoading}
             >
               <View style={[styles.button1]}>
                 <Text style={{ color: "#fff" }}>Đăng</Text>

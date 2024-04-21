@@ -43,7 +43,7 @@ export const StateContext = ({ children }) => {
         setRefreshToken,
         user,
         setUser,
-        mainCategories,
+        mainCategories
       }}
     >
       {children}
