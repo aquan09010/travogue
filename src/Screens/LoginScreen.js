@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 // import * as WebBrowser from 'expo-web-browser';
 // import * as Google from 'expo-auth-session/providers/google';
 
@@ -13,15 +13,16 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-} from 'react-native';
+  SafeAreaView,
+} from "react-native";
 
-import { SvgXml } from 'react-native-svg';
-import { GoogleIcon } from '@/Assets/Icons/Google';
-import { FacebookIcon } from '@/Assets/Icons/Facebook';
+import { SvgXml } from "react-native-svg";
+import { GoogleIcon } from "@/Assets/Icons/Google";
+import { FacebookIcon } from "@/Assets/Icons/Facebook";
 
-import { KeyboardAvoidingView, Platform } from 'react-native';
-import { login } from '@/Hooks/authHooks';
-import { useStateContext } from '@/Context/StateContext';
+import { KeyboardAvoidingView, Platform } from "react-native";
+import { login } from "@/Hooks/authHooks";
+import { useStateContext } from "@/Context/StateContext";
 
 // Web: 373800336352-24ckj1qtr3u74urpb8sm9kb3rsmckq83.apps.googleusercontent.com
 // iOS: 373800336352-qhjib0ej5vg0nv7tkfjsilgla9d00f4v.apps.googleusercontent.com
@@ -33,7 +34,7 @@ export default function LoginScreen() {
   const navigation = useNavigation();
 
   const goToRegisterPage = () => {
-    navigation.navigate('Register');
+    navigation.navigate("Register");
   };
 
   // const [accessToken, setAccessToken] = React.useState(null);
@@ -71,8 +72,8 @@ export default function LoginScreen() {
   //     }
   // }
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const { setUser, setAccessToken, setRefreshToken } = useStateContext();
 
@@ -89,12 +90,12 @@ export default function LoginScreen() {
       setUser(loginResponse.data.user);
       setAccessToken(loginResponse.data.tokens.access.token);
       setRefreshToken(loginResponse.data.tokens.refresh.token);
-      navigation.navigate('Onboarding');
+      navigation.navigate("Onboarding");
     }
   }, [loginResponse]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.travogue}>TRAVOGUE</Text>
       </View>
@@ -107,8 +108,8 @@ export default function LoginScreen() {
         ) : loginError ? (
           <Text
             style={{
-              color: '#A80027',
-              textAlign: 'center',
+              color: "#A80027",
+              textAlign: "center",
               fontSize: 16,
             }}
           >
@@ -121,7 +122,7 @@ export default function LoginScreen() {
 
       <View style={styles.detail}>
         <TextInput
-          style={[styles.input, { fontWeight: '200' }]}
+          style={[styles.input, { fontWeight: "200" }]}
           placeholder="Tài khoản"
           placeholderTextColor="#767676"
           value={username}
@@ -129,7 +130,7 @@ export default function LoginScreen() {
         />
 
         <TextInput
-          style={[styles.input, { fontWeight: '200' }]}
+          style={[styles.input, { fontWeight: "200" }]}
           placeholder="Mật khẩu"
           placeholderTextColor="#767676"
           secureTextEntry
@@ -190,131 +191,131 @@ export default function LoginScreen() {
           <Text style={styles.signupButton}> Đăng ký</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: '10%',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
+    marginTop: "10%",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
   header: {
-    width: '95%',
-    alignItems: 'center',
-    paddingVertical: '2%',
-    justifyContent: 'center',
-    backgroundColor: '#151515',
+    width: "95%",
+    alignItems: "center",
+    paddingVertical: "2%",
+    justifyContent: "center",
+    backgroundColor: "#151515",
   },
   travogue: {
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: 30,
-    color: '#ffffff',
-    textAlign: 'center',
-    fontFamily: 'Vogue',
+    color: "#ffffff",
+    textAlign: "center",
+    fontFamily: "Vogue",
   },
   detail: {
-    width: '100%',
-    alignItems: 'center',
-    paddingVertical: '4%',
-    paddingHorizontal: '6%',
-    justifyContent: 'center',
+    width: "100%",
+    alignItems: "center",
+    paddingVertical: "4%",
+    paddingHorizontal: "6%",
+    justifyContent: "center",
   },
   input: {
     height: 65,
-    width: '100%',
+    width: "100%",
     borderWidth: 1.5,
     borderRadius: 20,
     marginBottom: 24,
-    borderColor: '#767676',
-    paddingHorizontal: '9%',
+    borderColor: "#767676",
+    paddingHorizontal: "9%",
   },
   button: {
     height: 55,
-    width: '100%',
+    width: "100%",
     borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#000000',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#000000",
   },
   buttonText: {
     fontSize: 22,
-    color: '#ffffff',
-    fontWeight: '800',
+    color: "#ffffff",
+    fontWeight: "800",
   },
   dividerContainer: {
-    marginTop: '1%',
-    marginBottom: '4%',
-    alignItems: 'center',
-    flexDirection: 'row',
+    marginTop: "1%",
+    marginBottom: "4%",
+    alignItems: "center",
+    flexDirection: "row",
   },
   dividerLine: {
     height: 1,
-    width: '32%',
-    backgroundColor: '#C7C7CD',
+    width: "32%",
+    backgroundColor: "#C7C7CD",
   },
   dividerText: {
-    marginHorizontal: '9%',
+    marginHorizontal: "9%",
   },
   buttonGG: {
     height: 65,
-    width: '87%',
+    width: "87%",
     borderWidth: 1.5,
     borderRadius: 20,
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderColor: '#767676',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    alignItems: "center",
+    flexDirection: "row",
+    borderColor: "#767676",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
   },
   buttonTextGG: {
     fontSize: 18,
-    color: '#767676',
-    fontWeight: '400',
+    color: "#767676",
+    fontWeight: "400",
   },
   buttonFB: {
     height: 65,
-    width: '87%',
-    marginTop: '7%',
+    width: "87%",
+    marginTop: "7%",
     borderWidth: 1.5,
     borderRadius: 20,
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderColor: '#767676',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    alignItems: "center",
+    flexDirection: "row",
+    borderColor: "#767676",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
   },
   buttonTextFB: {
     fontSize: 18,
-    color: '#767676',
-    fontWeight: '400',
+    color: "#767676",
+    fontWeight: "400",
   },
   dividerContainer1: {
-    marginTop: '9%',
-    marginBottom: '9%',
-    alignItems: 'center',
-    flexDirection: 'row',
+    marginTop: "9%",
+    marginBottom: "9%",
+    alignItems: "center",
+    flexDirection: "row",
   },
   dividerLine1: {
     height: 1,
-    width: '85%',
-    backgroundColor: '#C7C7CD',
+    width: "85%",
+    backgroundColor: "#C7C7CD",
   },
   signupTextCont: {
-    marginTop: '-2%',
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
+    marginTop: "-2%",
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
   },
   signupText: {
     fontSize: 16,
-    color: '#000',
+    color: "#000",
   },
   signupButton: {
     fontSize: 16,
-    color: '#000000',
-    fontWeight: '500',
+    color: "#000000",
+    fontWeight: "500",
   },
 });

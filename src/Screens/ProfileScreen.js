@@ -25,6 +25,7 @@ import {
 import PostCard from "@/Components/PostCard";
 import { useStateContext } from "@/Context/StateContext";
 import { getPostsByUser } from "@/Hooks/PostHooks";
+import TicketCard from "@/Components/TicketCard";
 
 export default function ProfileScreen() {
   const tabs = [
@@ -73,7 +74,7 @@ export default function ProfileScreen() {
                 width: 100,
               }}
               resizeMode="cover"
-              source={{uri: user.avatar}}
+              source={{ uri: user.avatar }}
             />
             <Text
               style={{
@@ -218,22 +219,36 @@ export default function ProfileScreen() {
           ))}
         </View>
         {selected === 1 ? (
-          isPostsLoading ? <>
-          <ActivityIndicator
-            size="large"
-            color="#ED2939"
-            style={{ paddingVertical: 12 }}
-          />
-          </> : posts.data.length == 0 ?
+          isPostsLoading ? (
+            <>
+              <ActivityIndicator
+                size="large"
+                color="#ED2939"
+                style={{ paddingVertical: 12 }}
+              />
+            </>
+          ) : posts.data.length == 0 ? (
             <View>
-              <Text style={{ textAlign: 'center' }}>Chưa có bài viết nào</Text>
-            </View> :
+              <Text style={{ textAlign: "center" }}>Chưa có bài viết nào</Text>
+            </View>
+          ) : (
             <View>
-              {posts.data.map(post => <PostCard data={post} />)}
-            
-          </View>
+              {posts.data.map((post) => (
+                <PostCard data={post} />
+              ))}
+            </View>
+          )
         ) : (
-          <></>
+          <>
+            <View>
+              <TicketCard />
+              <TicketCard />
+              <TicketCard />
+              <TicketCard />
+              <TicketCard />
+              <TicketCard />
+            </View>
+          </>
         )}
       </ScrollView>
     </SafeAreaView>
