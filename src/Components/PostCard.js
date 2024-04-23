@@ -24,7 +24,24 @@ import {
   HeartBlackIcon,
 } from "@/Assets/Icons/Proflie";
 
-export default function PostCard() {
+function formatDate(dateString) {
+  // Parse the date string into a Date object
+  const date = new Date(dateString);
+
+  // Get the current year
+  const currentYear = new Date().getFullYear();
+
+  // Choose the format based on the year
+  const formattedDate = date.toLocaleDateString(undefined, {
+    day: "2-digit",
+    month: "2-digit",
+    year: currentYear === date.getFullYear() ? undefined : "numeric"
+  });
+
+  return formattedDate;
+}
+
+export default function PostCard({data}) {
   const [selectedBookmark, setSelectedBookmark] = useState(false);
   const [liked, setLiked] = useState(false);
 
@@ -47,13 +64,13 @@ export default function PostCard() {
               width: 40,
             }}
             resizeMode="cover"
-            source={require("../Assets/ava1.jpg")}
+            source={{uri: data.user.avatar}}
           />
           <View style={{ marginLeft: 8 }}>
             <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
-              <Text style={styles.boldText}>{`Anh Quan `}</Text>
+              <Text style={styles.boldText}>{data.user.email.split("@")[0]} </Text>
               <Text>{`đang ở`}</Text>
-              <Text style={styles.boldText}> Địa điểm ABC</Text>
+              <Text style={styles.boldText}> { data.travelActivity.activityName}</Text>
             </Text>
             <Text
               style={{
@@ -63,7 +80,7 @@ export default function PostCard() {
                 textAlign: "left",
               }}
             >
-              28 thg 1
+              {formatDate(data.createdAt)}
             </Text>
           </View>
         </View>
@@ -98,26 +115,16 @@ export default function PostCard() {
             />
           }
         >
-          <Image
+          {data.images.split(';').map(image =>
+            <Image
             style={styles.slide1}
             resizeMode="cover"
-            source={require("../Assets/ava1.jpg")}
-          />
-          <Image
-            style={styles.slide1}
-            resizeMode="cover"
-            source={require("../Assets/card1.jpg")}
-          />
-
-          <Image
-            style={styles.slide1}
-            resizeMode="cover"
-            source={require("../Assets/card1.jpg")}
-          />
+            source={{uri: image}}
+          />)}
+          
         </Swiper>
         <Text style={{ paddingBottom: 8 }}>
-          This is a caption. This is a caption. This is a caption. This is a
-          caption. This is a caption
+          {data.caption}
         </Text>
         <View style={styles.frameParent}>
           <View style={{ flexDirection: "row" }}>
@@ -136,8 +143,8 @@ export default function PostCard() {
             />
           </Pressable>
         </View>
-        <Text style={{ marginLeft: 5 }}>3 người đã thích</Text>
-        <Pressable
+        <Text style={{ marginLeft: 5 }}>{data.numOfLikes} lượt thích</Text>
+        {/* <Pressable
           style={{
             flexDirection: "row",
             paddingHorizontal: 18,
@@ -163,19 +170,20 @@ export default function PostCard() {
             </View>
             <Text style={{ paddingRight: 45 }}>{"testabc"}</Text>
           </View>
-        </Pressable>
+        </Pressable> */}
         <Pressable>
-          <Text style={{ marginLeft: 5 }}>View more</Text>
+          <Text style={{ marginLeft: 5, marginVertical: 5 }}>Xem tất cả { data.numOfComments} bình luận</Text>
         </Pressable>
       </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  wrapper: { height: 295 },
+  wrapper: { height: 300 },
   slide1: {
     width: "100%",
-    height: 250,
+    height: 290,
     justifyContent: "center",
     alignItems: "center",
   },

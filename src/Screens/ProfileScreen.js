@@ -23,6 +23,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import PostCard from "@/Components/PostCard";
+import { useStateContext } from "@/Context/StateContext";
+import { getPostsByUser } from "@/Hooks/PostHooks";
 
 export default function ProfileScreen() {
   const tabs = [
@@ -34,6 +36,10 @@ export default function ProfileScreen() {
     },
   ];
   const [selected, setSelected] = useState(1);
+
+  const { accessToken, user } = useStateContext();
+
+  const { posts, isPostsLoading, error } = getPostsByUser(accessToken, user.id);
 
   return (
     <SafeAreaView
@@ -67,7 +73,7 @@ export default function ProfileScreen() {
                 width: 100,
               }}
               resizeMode="cover"
-              source={require("../Assets/ava1.jpg")}
+              source={{uri: user.avatar}}
             />
             <Text
               style={{
@@ -77,7 +83,7 @@ export default function ProfileScreen() {
                 alignSelf: "center",
               }}
             >
-              {"Anh Quann"}
+              {user.email.split("@")[0]}
             </Text>
           </View>
           <View
@@ -102,7 +108,7 @@ export default function ProfileScreen() {
                     marginBottom: 5,
                   }}
                 >
-                  {"8"}
+                  {user.numOfPosts}
                 </Text>
                 <Text
                   style={{
@@ -121,7 +127,7 @@ export default function ProfileScreen() {
                     marginBottom: 5,
                   }}
                 >
-                  {"40"}
+                  {user.numOfFollowers}
                 </Text>
                 <Text
                   style={{
@@ -140,7 +146,7 @@ export default function ProfileScreen() {
                     marginBottom: 5,
                   }}
                 >
-                  {"120"}
+                  {user.numOfFollowing}
                 </Text>
                 <Text
                   style={{
@@ -148,7 +154,7 @@ export default function ProfileScreen() {
                     fontSize: 10,
                   }}
                 >
-                  {"Theo dõi"}
+                  {"Đang theo dõi"}
                 </Text>
               </View>
             </View>
@@ -212,10 +218,19 @@ export default function ProfileScreen() {
           ))}
         </View>
         {selected === 1 ? (
-          <View>
-            <PostCard />
-            <PostCard />
-            <PostCard />
+          isPostsLoading ? <>
+          <ActivityIndicator
+            size="large"
+            color="#ED2939"
+            style={{ paddingVertical: 12 }}
+          />
+          </> : posts.data.length == 0 ?
+            <View>
+              <Text style={{ textAlign: 'center' }}>Chưa có bài viết nào</Text>
+            </View> :
+            <View>
+              {posts.data.map(post => <PostCard data={post} />)}
+            
           </View>
         ) : (
           <></>
