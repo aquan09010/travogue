@@ -85,7 +85,13 @@ const MainNavigator = () => {
       <Tab.Screen name="Cộng đồng" component={CommunityScreen} />
       <Tab.Screen name="Lập kế hoạch" component={HomeScreen} />
       <Tab.Screen name="Thông báo" component={HomeScreen} />
-      <Tab.Screen name="Hồ sơ" component={ProfileScreen} />
+      <Tab.Screen
+        name="Hồ sơ"
+        component={ProfileScreen}
+        options={({}) => ({
+          headerShown: false,
+        })}
+      />
     </Tab.Navigator>
   );
 };

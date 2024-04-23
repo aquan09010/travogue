@@ -14,7 +14,7 @@ import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { MiniLocation, StarIcon } from "@/Assets/Icons/Card";
 import HeartButton from "./HeartButton";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import Swiper from "react-native-swiper";
 import { CommentIcon, HeartIcon } from "@/Assets/Icons/DetailIcon";
 import {
@@ -23,6 +23,7 @@ import {
   CommentBlackIcon,
   HeartBlackIcon,
 } from "@/Assets/Icons/Proflie";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 function formatDate(dateString) {
   // Parse the date string into a Date object
@@ -35,16 +36,20 @@ function formatDate(dateString) {
   const formattedDate = date.toLocaleDateString(undefined, {
     day: "2-digit",
     month: "2-digit",
-    year: currentYear === date.getFullYear() ? undefined : "numeric"
+    year: currentYear === date.getFullYear() ? undefined : "numeric",
   });
 
   return formattedDate;
 }
 
-export default function PostCard({data}) {
+export default function PostCard({ data, handleOpenPress }) {
   const [selectedBookmark, setSelectedBookmark] = useState(false);
   const [liked, setLiked] = useState(false);
-
+  const snapPoints = useMemo(() => ["50%", "90%"]);
+  const bottomSheetRef = useRef < BottomSheet > null;
+  const handleSheetChanges = useCallback((index) => {
+    console.log("handleSheetChanges", index);
+  }, []);
   return (
     <View
       style={{
@@ -64,13 +69,18 @@ export default function PostCard({data}) {
               width: 40,
             }}
             resizeMode="cover"
-            source={{uri: data.user.avatar}}
+            source={{ uri: data.user.avatar }}
           />
           <View style={{ marginLeft: 8 }}>
             <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
-              <Text style={styles.boldText}>{data.user.email.split("@")[0]} </Text>
+              <Text style={styles.boldText}>
+                {data.user.email.split("@")[0]}{" "}
+              </Text>
               <Text>{`đang ở`}</Text>
-              <Text style={styles.boldText}> { data.travelActivity.activityName}</Text>
+              <Text style={styles.boldText}>
+                {" "}
+                {data.travelActivity.activityName}
+              </Text>
             </Text>
             <Text
               style={{
@@ -96,7 +106,7 @@ export default function PostCard({data}) {
                 marginLeft: 3,
                 marginRight: 3,
                 marginTop: 3,
-                marginBottom: 3,
+                marginBottom: -50,
               }}
             />
           }
@@ -110,28 +120,26 @@ export default function PostCard({data}) {
                 marginLeft: 3,
                 marginRight: 3,
                 marginTop: 3,
-                marginBottom: 3,
+                marginBottom: -50,
               }}
             />
           }
         >
-          {data.images.split(';').map(image =>
+          {data.images.split(";").map((image) => (
             <Image
-            style={styles.slide1}
-            resizeMode="cover"
-            source={{uri: image}}
-          />)}
-          
+              style={styles.slide1}
+              resizeMode="cover"
+              source={{ uri: image }}
+            />
+          ))}
         </Swiper>
-        <Text style={{ paddingBottom: 8 }}>
-          {data.caption}
-        </Text>
+        <Text style={{ paddingTop: 8, paddingBottom: 8 }}>{data.caption}</Text>
         <View style={styles.frameParent}>
           <View style={{ flexDirection: "row" }}>
             <Pressable>
               <SvgXml xml={HeartBlackIcon} />
             </Pressable>
-            <Pressable style={{ marginLeft: 15 }}>
+            <Pressable onPress={handleOpenPress} style={{ marginLeft: 15 }}>
               <SvgXml xml={CommentBlackIcon} />
             </Pressable>
           </View>
@@ -172,7 +180,9 @@ export default function PostCard({data}) {
           </View>
         </Pressable> */}
         <Pressable>
-          <Text style={{ marginLeft: 5, marginVertical: 5 }}>Xem tất cả { data.numOfComments} bình luận</Text>
+          <Text style={{ marginLeft: 5, marginVertical: 5 }}>
+            Xem tất cả {data.numOfComments} bình luận
+          </Text>
         </Pressable>
       </View>
     </View>

@@ -1,7 +1,8 @@
 import React from "react";
 import AppNavigation from "./Navigation/appNavigation";
 import { useFonts } from "expo-font";
-
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StateContext } from "./Context/StateContext";
 
 export default function App() {
@@ -15,8 +16,12 @@ export default function App() {
   if (!loaded) return null;
 
   return (
-    <StateContext>
-      <AppNavigation />
-    </StateContext>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <StateContext>
+          <AppNavigation />
+        </StateContext>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }
