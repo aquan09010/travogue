@@ -81,5 +81,45 @@ const postLikeHook = () => {
     refetch,
   };
 };
+
+const deleteLikeHook = () => {
+  const [isDeleteLikeLoading, setIsLoading] = useState(false);
+  const [deletelikeError, setError] = useState(null);
+
+  const deleteLike = useCallback(
+    async (accessToken, postId) => {
+      setIsLoading(true);
+
+      try {
+        const options = {
+          method: 'DELETE',
+          url: `https://travogue-production.up.railway.app/travogue-service/posts/${postId}/likes`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          }
+        };
+        const response = await axios.request(options);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  const refetch = () => {
+    setIsLoading(true);
+    postComments();
+  };
+
+  return {
+    deleteLike,
+    isDeleteLikeLoading,
+    deletelikeError,
+    refetch,
+  };
+};
   
-export { getPostsByUser, postLikeHook };
+export { getPostsByUser, postLikeHook, deleteLikeHook};

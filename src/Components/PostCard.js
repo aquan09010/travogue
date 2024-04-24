@@ -24,7 +24,7 @@ import {
   HeartBlackIcon,
   HeartSeletetedIcon
 } from "@/Assets/Icons/Proflie";
-import { postLikeHook } from "@/Hooks/PostHooks";
+import { deleteLikeHook, postLikeHook } from "@/Hooks/PostHooks";
 import { useStateContext } from "@/Context/StateContext";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
@@ -45,22 +45,27 @@ function formatDate(dateString) {
   return formattedDate;
 }
 
-export default function PostCard({data}) {
+export default function PostCard({data, handleOpenPress}) {
   // const [selectedBookmark, setSelectedBookmark] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(data.liked);
+  const [numOfLikes, setNumOfLikes] = useState(data.numOfLikes);
 
   const { accessToken } = useStateContext();
 
-  const { postLike, isLikeLoading, likeError } = postLikeHook();
+  const { postLike } = postLikeHook();
+  const { deleteLike } = deleteLikeHook();
 
   const handleLike = async (e) => {
     e.preventDefault();
 
     if (!liked) {
       setLiked(true);
+      setNumOfLikes(numOfLikes => numOfLikes + 1);
       await postLike(accessToken, data.id);
     } else {
       setLiked(false);
+      setNumOfLikes(numOfLikes => numOfLikes - 1);
+      await deleteLike(accessToken, data.id);
     }
   }
 
@@ -171,7 +176,7 @@ export default function PostCard({data}) {
             />
           </Pressable> */}
         </View>
-        <Text style={{ marginLeft: 5 }}>{data.numOfLikes} lượt thích</Text>
+        <Text style={{ marginLeft: 5 }}>{numOfLikes} lượt thích</Text>
         {/* <Pressable
           style={{
             flexDirection: "row",
