@@ -121,5 +121,45 @@ const deleteLikeHook = () => {
     refetch,
   };
 };
+
+const getCommentsByPost = () => {
+  const [comments, setComments] = useState(null);
+  const [isCommentLoading, setIsLoading] = useState(false);
+  const [commentError, setError] = useState(null);
+
+  const getComments = useCallback(async (accessToken, postId) => {
+    setIsLoading(true);
+
+    try {
+      const options = {
+        method: 'GET',
+        url: `https://travogue-production.up.railway.app/travogue-service/posts/${postId}/comments`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const response = await axios.request(options);
+      setComments(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      setError(error.response.data);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const refetch = () => {
+    setIsLoading(true);
+    getComments();
+  };
+
+  return {
+    getComments,
+    comments,
+    isCommentLoading,
+    commentError,
+    refetch,
+  };
+};
   
-export { getPostsByUser, postLikeHook, deleteLikeHook};
+export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost};

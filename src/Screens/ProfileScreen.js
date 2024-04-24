@@ -24,19 +24,53 @@ import {
 } from "react-native";
 import PostCard from "@/Components/PostCard";
 import { useStateContext } from "@/Context/StateContext";
-import { getPostsByUser } from "@/Hooks/PostHooks";
+import { getCommentsByPost, getPostsByUser } from "@/Hooks/PostHooks";
 import TicketCard from "@/Components/TicketCard";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+
+const timeAgo = (dateString) => {
+  const now = new Date();
+  const createdAt = new Date(dateString);
+  const differenceInSeconds = Math.floor((now - createdAt) / 1000);
+
+  const intervals = [
+    ["year", 31536000],
+    ["month", 2592000],
+    ["day", 86400],
+    ["hour", 3600],
+    ["minute", 60],
+    ["second", 1],
+  ];
+
+  for (const [name, seconds] of intervals) {
+    const intervalCount = Math.floor(differenceInSeconds / seconds);
+    if (intervalCount >= 1) {
+      return `${intervalCount} ${
+        intervalCount === 1 ? name : name + "s"
+      } ago`;
+    }
+  }
+
+  return "just now";
+};
+
 export default function ProfileScreen() {
   const snapPoints = useMemo(() => ["95%"], []);
   const bottomSheetRef = React.createRef(BottomSheet);
   // const bottomSheetRef = useRef < BottomSheet > null;
   const handleClosePress = () => bottomSheetRef.current?.close();
-  const handleOpenPress = () => bottomSheetRef.current?.expand();
+
+  const handleOpenPress = async (postId) => {
+    bottomSheetRef.current?.expand();
+    await getComments(accessToken, postId);
+  };
+
+  useEffect(() => console.log(comments), [comments]);
+
   const handleCollapsePress = () => bottomSheetRef.current?.collapse();
   const snapToIndex = (index) => bottomSheetRef.current?.snapToIndex(index);
   const [postId, setPostId] = useState("");
@@ -63,6 +97,10 @@ export default function ProfileScreen() {
   const { accessToken, user } = useStateContext();
 
   const { posts, isPostsLoading, error } = getPostsByUser(accessToken, user.id);
+
+  const { getComments, comments, isCommentLoading, commentError } = getCommentsByPost();
+
+  const [activePost, setActivePost] = useState(null);
 
   return (
     <SafeAreaView
@@ -257,7 +295,7 @@ export default function ProfileScreen() {
             <View>
               {posts.data.map((post, index) => (
                 <PostCard
-                  handleOpenPress={handleOpenPress}
+                  handleOpenPress={() => handleOpenPress(post.id)}
                   data={post}
                   key={index}
                 />
@@ -277,6 +315,7 @@ export default function ProfileScreen() {
           </>
         )}
       </ScrollView>
+
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}
@@ -300,45 +339,56 @@ export default function ProfileScreen() {
           >
             <Text style={styles.containerHeadlineModal}>Bình luận</Text>
           </View>
-          <View style={{ height: 270 }}>
-            <Pressable
-              style={{
-                flexDirection: "row",
-                paddingHorizontal: 18,
-                paddingVertical: 12,
-              }}
-            >
+
+          {isCommentLoading ? <>
+              <ActivityIndicator
+                size="large"
+                color="#ED2939"
+                style={{ paddingVertical: 12 }}
+              />
+          </> : comments?.data.length == 0 ?
+            <View>
+            <Text style={{ marginVertical: 20, textAlign: "center" }}>Hãy là người bình luận đầu tiên</Text>
+          </View> : comments?.data.map(item => <View style={{ height: 55 }}>
               <Pressable
-                onPress={() => {}}
-                style={[styles.avatar, styles.actionPadding]}
+                style={{
+                  flexDirection: "row",
+                  paddingHorizontal: 18,
+                  paddingVertical: 12,
+                }}
               >
-                <Image
-                  style={[styles.avaImg, { marginRight: 10 }]}
-                  resizeMode="cover"
-                  source={require("../Assets/ava1.jpg")}
-                />
-              </Pressable>
-              <View style={{}}>
-                <View style={styles.line1}>
-                  <Text>
+                <Pressable
+                  onPress={() => {}}
+                  style={[styles.avatar, styles.actionPadding]}
+                >
+                  <Image
+                    style={[styles.avaImg, { marginRight: 10 }]}
+                    resizeMode="cover"
+                    source={{uri: item.user.avatar}}
+                  />
+                </Pressable>
+                <View style={{}}>
+                  <View style={styles.line1}>
+                    <Text>
+                      {" "}
+                      {item.user.email.split("@")[0]} • {timeAgo(item.updatedAt)}
+                    </Text>
+                  </View>
+                  <Text style={{ paddingTop: 3, paddingRight: 45 }}>
                     {" "}
-                    {"aquan09010"} • {"1 day ago"}
+                    {item.comment}
                   </Text>
                 </View>
-                <Text style={{ paddingTop: 3, paddingRight: 45 }}>
-                  {" "}
-                  {"aaaaaaaaaaaaaaaaaaa"}
-                </Text>
-              </View>
-            </Pressable>
-          </View>
+              </Pressable>
+            </View>) }
+          
         </View>
         <View style={{}}>
           <View style={styles.searchSection}>
             <Image
               style={[styles.avaImg, { marginRight: 10 }]}
               resizeMode="cover"
-              source={require("../Assets/ava1.jpg")}
+              source={{uri: user.avatar}}
             />
             <TextInput
               style={[styles.input, { width: "90%" }]}

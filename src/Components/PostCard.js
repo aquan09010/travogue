@@ -45,10 +45,11 @@ function formatDate(dateString) {
   return formattedDate;
 }
 
-export default function PostCard({data, handleOpenPress}) {
+export default function PostCard({data, handleOpenPress, setActivePost}) {
   // const [selectedBookmark, setSelectedBookmark] = useState(false);
   const [liked, setLiked] = useState(data.liked);
   const [numOfLikes, setNumOfLikes] = useState(data.numOfLikes);
+  const [numOfComments, setNumOfComments] = useState(data.numOfComments);
 
   const { accessToken } = useStateContext();
 
@@ -206,7 +207,7 @@ export default function PostCard({data, handleOpenPress}) {
         </Pressable> */}
         <Pressable>
           <Text style={{ marginLeft: 5, marginVertical: 5 }}>
-            Xem tất cả {data.numOfComments} bình luận
+            Xem tất cả {numOfComments} bình luận
           </Text>
         </Pressable>
       </View>
