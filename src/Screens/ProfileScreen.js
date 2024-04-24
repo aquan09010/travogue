@@ -3,9 +3,8 @@ import {
   PostSelectedIcon,
   TicketIcon,
   TicketIconSelected,
+  sendCommentIcon,
 } from "@/Assets/Icons/Proflie";
-import React from "react";
-import { useState } from "react";
 import { SvgXml } from "react-native-svg";
 
 import {
@@ -20,13 +19,37 @@ import {
   Pressable,
   FlatList,
   Animated,
+  Button,
   ActivityIndicator,
 } from "react-native";
 import PostCard from "@/Components/PostCard";
 import { useStateContext } from "@/Context/StateContext";
 import { getPostsByUser } from "@/Hooks/PostHooks";
-
+import TicketCard from "@/Components/TicketCard";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 export default function ProfileScreen() {
+  const snapPoints = useMemo(() => ["95%"], []);
+  const bottomSheetRef = React.createRef(BottomSheet);
+  // const bottomSheetRef = useRef < BottomSheet > null;
+  const handleClosePress = () => bottomSheetRef.current?.close();
+  const handleOpenPress = () => bottomSheetRef.current?.expand();
+  const handleCollapsePress = () => bottomSheetRef.current?.collapse();
+  const snapToIndex = (index) => bottomSheetRef.current?.snapToIndex(index);
+  const [postId, setPostId] = useState("");
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        {...props}
+      />
+    ),
+    []
+  );
   const tabs = [
     { id: 1, icon: PostIcon, iconSelected: PostSelectedIcon },
     {
@@ -73,7 +96,7 @@ export default function ProfileScreen() {
                 width: 100,
               }}
               resizeMode="cover"
-              source={{uri: user.avatar}}
+              source={{ uri: user.avatar }}
             />
             <Text
               style={{
@@ -218,24 +241,115 @@ export default function ProfileScreen() {
           ))}
         </View>
         {selected === 1 ? (
-          isPostsLoading ? <>
-          <ActivityIndicator
-            size="large"
-            color="#ED2939"
-            style={{ paddingVertical: 12 }}
-          />
-          </> : posts.data.length == 0 ?
+          isPostsLoading ? (
+            <>
+              <ActivityIndicator
+                size="large"
+                color="#ED2939"
+                style={{ paddingVertical: 12 }}
+              />
+            </>
+          ) : posts.data.length == 0 ? (
             <View>
-              <Text style={{ textAlign: 'center' }}>Chưa có bài viết nào</Text>
-            </View> :
+              <Text style={{ textAlign: "center" }}>Chưa có bài viết nào</Text>
+            </View>
+          ) : (
             <View>
-              {posts.data.map(post => <PostCard data={post} />)}
-            
-          </View>
+              {posts.data.map((post, index) => (
+                <PostCard
+                  handleOpenPress={handleOpenPress}
+                  data={post}
+                  key={index}
+                />
+              ))}
+            </View>
+          )
         ) : (
-          <></>
+          <>
+            <View>
+              <TicketCard />
+              <TicketCard />
+              <TicketCard />
+              <TicketCard />
+              <TicketCard />
+              <TicketCard />
+            </View>
+          </>
         )}
       </ScrollView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        handleIndicatorStyle={{ backgroundColor: "black" }}
+        backgroundStyle={{}}
+        backdropComponent={renderBackdrop}
+      >
+        <View>
+          <View
+            style={{
+              height: 40,
+              backgroundColor: "white",
+              width: "100%",
+              borderStyle: "solid",
+              borderColor: "#bababa",
+              borderBottomWidth: 0.5,
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.containerHeadlineModal}>Bình luận</Text>
+          </View>
+          <View style={{ height: 270 }}>
+            <Pressable
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: 18,
+                paddingVertical: 12,
+              }}
+            >
+              <Pressable
+                onPress={() => {}}
+                style={[styles.avatar, styles.actionPadding]}
+              >
+                <Image
+                  style={[styles.avaImg, { marginRight: 10 }]}
+                  resizeMode="cover"
+                  source={require("../Assets/ava1.jpg")}
+                />
+              </Pressable>
+              <View style={{}}>
+                <View style={styles.line1}>
+                  <Text>
+                    {" "}
+                    {"aquan09010"} • {"1 day ago"}
+                  </Text>
+                </View>
+                <Text style={{ paddingTop: 3, paddingRight: 45 }}>
+                  {" "}
+                  {"aaaaaaaaaaaaaaaaaaa"}
+                </Text>
+              </View>
+            </Pressable>
+          </View>
+        </View>
+        <View style={{}}>
+          <View style={styles.searchSection}>
+            <Image
+              style={[styles.avaImg, { marginRight: 10 }]}
+              resizeMode="cover"
+              source={require("../Assets/ava1.jpg")}
+            />
+            <TextInput
+              style={[styles.input, { width: "90%" }]}
+              multiline={true}
+              placeholder="Viết bình luận ..."
+              underlineColorAndroid="transparent"
+            />
+            <SvgXml style={{ marginLeft: 5 }} xml={sendCommentIcon} />
+          </View>
+        </View>
+      </BottomSheet>
     </SafeAreaView>
   );
 }
@@ -257,5 +371,48 @@ const styles = StyleSheet.create({
     backgroundColor: "#151515",
     alignSelf: "center",
     marginTop: 9,
+  },
+  containerModal: {
+    flex: 1,
+    alignItems: "center",
+  },
+  contentContainerModal: {
+    flex: 1,
+    alignItems: "center",
+  },
+  containerHeadlineModal: {
+    fontSize: 16,
+    fontWeight: "600",
+    padding: 5,
+    color: "black",
+  },
+  line1: {
+    flexDirection: "row",
+    alignContent: "center",
+    // height: 10,
+    marginRight: 15,
+  },
+  avaImg: {
+    height: 30,
+    width: 30,
+    borderRadius: 30 / 2,
+  },
+  searchSection: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    padding: 10,
+  },
+  searchIcon: {
+    padding: 10,
+  },
+  input: {
+    backgroundColor: "#F3F3F3",
+    color: "#424242",
+    borderRadius: 7,
+    flex: 1,
+    padding: 10,
+    paddingTop: 10,
   },
 });

@@ -242,6 +242,7 @@ const styles = StyleSheet.create({
   mainView: {
     padding: 16,
     paddingBottom: 0,
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 18,

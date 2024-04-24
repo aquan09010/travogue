@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 
 import { SvgXml } from "react-native-svg";
@@ -44,7 +45,7 @@ export default function RegisterScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.travogue}>TRAVOGUE</Text>
       </View>
@@ -155,7 +156,7 @@ export default function RegisterScreen() {
       <TouchableOpacity style={styles.button} onPress={goToConfirmPage}>
         <Text style={styles.buttonText}>Gửi mã xác nhận</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }
 

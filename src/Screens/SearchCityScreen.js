@@ -9,7 +9,7 @@ import {
   FlatList,
   Pressable,
   ActivityIndicator,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import { ArrowLeftBlack, SearchIconBlack } from "@/Assets/Icons/Navigation";
 import { SvgXml } from "react-native-svg";
@@ -41,7 +41,7 @@ export default function SearchCityScreen() {
           <SvgXml xml={ArrowLeftBlack} />
         </Pressable>
         <Text style={styles.title}>Tìm kiếm thành phố</Text>
-        <Pressable onPress={() => { }}>
+        <Pressable onPress={() => {}}>
           <SvgXml xml={SearchIconBlack} />
         </Pressable>
       </View>
@@ -104,7 +104,7 @@ export default function SearchCityScreen() {
         </View>
       )}
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -155,5 +155,6 @@ const styles = StyleSheet.create({
   },
   container1: {
     backgroundColor: "#ffffff",
+    height: "100%",
   },
 });
