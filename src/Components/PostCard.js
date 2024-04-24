@@ -22,7 +22,10 @@ import {
   BookmarkIconSelected,
   CommentBlackIcon,
   HeartBlackIcon,
+  HeartSeletetedIcon
 } from "@/Assets/Icons/Proflie";
+import { postLikeHook } from "@/Hooks/PostHooks";
+import { useStateContext } from "@/Context/StateContext";
 
 function formatDate(dateString) {
   // Parse the date string into a Date object
@@ -42,8 +45,23 @@ function formatDate(dateString) {
 }
 
 export default function PostCard({data}) {
-  const [selectedBookmark, setSelectedBookmark] = useState(false);
+  // const [selectedBookmark, setSelectedBookmark] = useState(false);
   const [liked, setLiked] = useState(false);
+
+  const { accessToken } = useStateContext();
+
+  const { postLike, isLikeLoading, likeError } = postLikeHook();
+
+  const handleLike = async (e) => {
+    e.preventDefault();
+
+    if (!liked) {
+      setLiked(true);
+      await postLike(accessToken, data.id);
+    } else {
+      setLiked(false);
+    }
+  }
 
   return (
     <View
@@ -127,21 +145,21 @@ export default function PostCard({data}) {
           {data.caption}
         </Text>
         <View style={styles.frameParent}>
-          <View style={{ flexDirection: "row" }}>
-            <Pressable>
-              <SvgXml xml={HeartBlackIcon} />
+          <View style={{ flexDirection: "row" }} >
+            <Pressable onPress={handleLike}>
+              {liked ? <SvgXml xml={HeartSeletetedIcon}/> : <SvgXml xml={HeartBlackIcon} />}
             </Pressable>
             <Pressable style={{ marginLeft: 15 }}>
               <SvgXml xml={CommentBlackIcon} />
             </Pressable>
           </View>
-          <Pressable onPress={() => setSelectedBookmark(!selectedBookmark)}>
+          {/* <Pressable onPress={() => setSelectedBookmark(!selectedBookmark)}>
             <SvgXml
               xml={
                 selectedBookmark === true ? BookmarkIconSelected : BookmarkIcon
               }
             />
-          </Pressable>
+          </Pressable> */}
         </View>
         <Text style={{ marginLeft: 5 }}>{data.numOfLikes} lượt thích</Text>
         {/* <Pressable

@@ -41,5 +41,45 @@ const getPostsByUser = (accessToken, userId) => {
   
     return { posts, isPostsLoading, error, refetch };
 };
+
+const postLikeHook = () => {
+  const [isLikeLoading, setIsLoading] = useState(false);
+  const [likeError, setError] = useState(null);
+
+  const postLike = useCallback(
+    async (accessToken, postId) => {
+      setIsLoading(true);
+
+      try {
+        const options = {
+          method: 'POST',
+          url: `https://travogue-production.up.railway.app/travogue-service/posts/${postId}/likes`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          }
+        };
+        const response = await axios.request(options);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  const refetch = () => {
+    setIsLoading(true);
+    postComments();
+  };
+
+  return {
+    postLike,
+    isLikeLoading,
+    likeError,
+    refetch,
+  };
+};
   
-export { getPostsByUser };
+export { getPostsByUser, postLikeHook };
