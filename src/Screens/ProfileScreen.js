@@ -21,16 +21,28 @@ import {
   Animated,
   Button,
   ActivityIndicator,
+  Modal,
 } from "react-native";
 import PostCard from "@/Components/PostCard";
 import { useStateContext } from "@/Context/StateContext";
-import { getCommentsByPost, getPostsByUser, postCommentsByPost } from "@/Hooks/PostHooks";
+import {
+  getCommentsByPost,
+  getPostsByUser,
+  postCommentsByPost,
+} from "@/Hooks/PostHooks";
 import TicketCard from "@/Components/TicketCard";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { useNavigation } from "@react-navigation/native";
 
 const timeAgo = (dateString) => {
   const now = new Date();
@@ -49,9 +61,7 @@ const timeAgo = (dateString) => {
   for (const [name, seconds] of intervals) {
     const intervalCount = Math.floor(differenceInSeconds / seconds);
     if (intervalCount >= 1) {
-      return `${intervalCount} ${
-        intervalCount === 1 ? name : name + "s"
-      } ago`;
+      return `${intervalCount} ${intervalCount === 1 ? name : name + "s"} ago`;
     }
   }
 
@@ -59,9 +69,15 @@ const timeAgo = (dateString) => {
 };
 
 export default function ProfileScreen() {
+  const navigation = useNavigation();
+
   const snapPoints = useMemo(() => ["95%"], []);
   const bottomSheetRef = React.createRef(BottomSheet);
   // const bottomSheetRef = useRef < BottomSheet > null;
+  const goToFollowingScreen = async (e) => {
+    e.preventDefault();
+    navigation.navigate("FollowingScreen", {});
+  };
   const handleClosePress = () => bottomSheetRef.current?.close();
 
   const handleOpenPress = async (postId) => {
@@ -69,7 +85,7 @@ export default function ProfileScreen() {
     setActivePost(postId);
     await getComments(accessToken, postId);
   };
-
+  const [modalVisible, setModalVisible] = useState(false);
   const handleCollapsePress = () => bottomSheetRef.current?.collapse();
   const snapToIndex = (index) => bottomSheetRef.current?.snapToIndex(index);
   const renderBackdrop = useCallback(
@@ -96,17 +112,19 @@ export default function ProfileScreen() {
 
   const { posts, isPostsLoading, error } = getPostsByUser(accessToken, user.id);
 
-  const { getComments, comments, isCommentLoading, commentError } = getCommentsByPost();
+  const { getComments, comments, isCommentLoading, commentError } =
+    getCommentsByPost();
 
   const [activePost, setActivePost] = useState();
-  const [commentList, setCommentList] = useState([]); 
-  const { postComments, newComment, isPostCommentLoading, postCommentError } = postCommentsByPost();
-  const [userCmt, setUserCmt] = useState('');
+  const [commentList, setCommentList] = useState([]);
+  const { postComments, newComment, isPostCommentLoading, postCommentError } =
+    postCommentsByPost();
+  const [userCmt, setUserCmt] = useState("");
   const handlePostComment = async (e) => {
     e.preventDefault();
-    
+
     await postComments(accessToken, activePost, userCmt);
-    setUserCmt('');
+    setUserCmt("");
   };
 
   useEffect(() => {
@@ -118,7 +136,6 @@ export default function ProfileScreen() {
       setCommentList([newComment.data, ...commentList]);
     }
   }, [newComment]);
-
 
   return (
     <SafeAreaView
@@ -198,7 +215,14 @@ export default function ProfileScreen() {
                   {"Bài viết"}
                 </Text>
               </View>
-              <View style={{ alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("FollowingScreen", {
+                    tab: "theodoi",
+                  });
+                }}
+                style={{ alignItems: "center" }}
+              >
                 <Text
                   style={{
                     color: "#000000",
@@ -216,8 +240,15 @@ export default function ProfileScreen() {
                 >
                   {"Người theo dõi"}
                 </Text>
-              </View>
-              <View style={{ alignItems: "center" }}>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("FollowingScreen", {
+                    tab: "dangtheodoi",
+                  });
+                }}
+                style={{ alignItems: "center" }}
+              >
                 <Text
                   style={{
                     color: "#000000",
@@ -235,7 +266,7 @@ export default function ProfileScreen() {
                 >
                   {"Đang theo dõi"}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
 
             <View
@@ -358,55 +389,64 @@ export default function ProfileScreen() {
             <Text style={styles.containerHeadlineModal}>Bình luận</Text>
           </View>
 
-          {isCommentLoading ? <>
+          {isCommentLoading ? (
+            <>
               <ActivityIndicator
                 size="large"
                 color="#ED2939"
                 style={{ paddingVertical: 12 }}
               />
-          </> : commentList?.length == 0 ?
+            </>
+          ) : commentList?.length == 0 ? (
             <View>
-            <Text style={{ marginVertical: 20, textAlign: "center" }}>Hãy là người bình luận đầu tiên</Text>
-          </View> : commentList?.map(item => <View style={{ height: 55 }}>
-              <Pressable
-                style={{
-                  flexDirection: "row",
-                  paddingHorizontal: 18,
-                  paddingVertical: 12,
-                }}
-              >
+              <Text style={{ marginVertical: 20, textAlign: "center" }}>
+                Hãy là người bình luận đầu tiên
+              </Text>
+            </View>
+          ) : (
+            commentList?.map((item) => (
+              <View style={{ height: 55 }}>
                 <Pressable
-                  onPress={() => {}}
-                  style={[styles.avatar, styles.actionPadding]}
+                  style={{
+                    flexDirection: "row",
+                    paddingHorizontal: 18,
+                    paddingVertical: 12,
+                  }}
                 >
-                  <Image
-                    style={[styles.avaImg, { marginRight: 10 }]}
-                    resizeMode="cover"
-                    source={{uri: item.user.avatar}}
-                  />
-                </Pressable>
-                <View style={{}}>
-                  <View style={styles.line1}>
-                    <Text>
+                  <Pressable
+                    onPress={() => {}}
+                    style={[styles.avatar, styles.actionPadding]}
+                  >
+                    <Image
+                      style={[styles.avaImg, { marginRight: 10 }]}
+                      resizeMode="cover"
+                      source={{ uri: item.user.avatar }}
+                    />
+                  </Pressable>
+                  <View style={{}}>
+                    <View style={styles.line1}>
+                      <Text>
+                        {" "}
+                        {item.user.email.split("@")[0]} •{" "}
+                        {timeAgo(item.updatedAt)}
+                      </Text>
+                    </View>
+                    <Text style={{ paddingTop: 3, paddingRight: 45 }}>
                       {" "}
-                      {item.user.email.split("@")[0]} • {timeAgo(item.updatedAt)}
+                      {item.comment}
                     </Text>
                   </View>
-                  <Text style={{ paddingTop: 3, paddingRight: 45 }}>
-                    {" "}
-                    {item.comment}
-                  </Text>
-                </View>
-              </Pressable>
-            </View>) }
-          
+                </Pressable>
+              </View>
+            ))
+          )}
         </View>
         <View style={{}}>
           <View style={styles.searchSection}>
             <Image
               style={[styles.avaImg, { marginRight: 10 }]}
               resizeMode="cover"
-              source={{uri: user.avatar}}
+              source={{ uri: user.avatar }}
             />
             <TextInput
               style={[styles.input, { width: "90%" }]}
@@ -416,11 +456,12 @@ export default function ProfileScreen() {
               value={userCmt}
               onChangeText={setUserCmt}
             />
-            <Pressable onPress={handlePostComment}
-              disabled={isPostCommentLoading}>
+            <Pressable
+              onPress={handlePostComment}
+              disabled={isPostCommentLoading}
+            >
               <SvgXml style={{ marginLeft: 5 }} xml={sendCommentIcon} />
             </Pressable>
-            
           </View>
         </View>
       </BottomSheet>
