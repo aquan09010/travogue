@@ -24,7 +24,7 @@ import {
 } from "react-native";
 import PostCard from "@/Components/PostCard";
 import { useStateContext } from "@/Context/StateContext";
-import { getCommentsByPost, getPostsByUser } from "@/Hooks/PostHooks";
+import { getCommentsByPost, getPostsByUser, postCommentsByPost } from "@/Hooks/PostHooks";
 import TicketCard from "@/Components/TicketCard";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import BottomSheet, {
@@ -66,14 +66,12 @@ export default function ProfileScreen() {
 
   const handleOpenPress = async (postId) => {
     bottomSheetRef.current?.expand();
+    setActivePost(postId);
     await getComments(accessToken, postId);
   };
 
-  useEffect(() => console.log(comments), [comments]);
-
   const handleCollapsePress = () => bottomSheetRef.current?.collapse();
   const snapToIndex = (index) => bottomSheetRef.current?.snapToIndex(index);
-  const [postId, setPostId] = useState("");
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
@@ -100,7 +98,27 @@ export default function ProfileScreen() {
 
   const { getComments, comments, isCommentLoading, commentError } = getCommentsByPost();
 
-  const [activePost, setActivePost] = useState(null);
+  const [activePost, setActivePost] = useState();
+  const [commentList, setCommentList] = useState([]); 
+  const { postComments, newComment, isPostCommentLoading, postCommentError } = postCommentsByPost();
+  const [userCmt, setUserCmt] = useState('');
+  const handlePostComment = async (e) => {
+    e.preventDefault();
+    
+    await postComments(accessToken, activePost, userCmt);
+    setUserCmt('');
+  };
+
+  useEffect(() => {
+    if (comments) setCommentList(comments.data);
+  }, [comments]);
+
+  useEffect(() => {
+    if (newComment) {
+      setCommentList([newComment.data, ...commentList]);
+    }
+  }, [newComment]);
+
 
   return (
     <SafeAreaView
@@ -346,10 +364,10 @@ export default function ProfileScreen() {
                 color="#ED2939"
                 style={{ paddingVertical: 12 }}
               />
-          </> : comments?.data.length == 0 ?
+          </> : commentList?.length == 0 ?
             <View>
             <Text style={{ marginVertical: 20, textAlign: "center" }}>Hãy là người bình luận đầu tiên</Text>
-          </View> : comments?.data.map(item => <View style={{ height: 55 }}>
+          </View> : commentList?.map(item => <View style={{ height: 55 }}>
               <Pressable
                 style={{
                   flexDirection: "row",
@@ -395,8 +413,14 @@ export default function ProfileScreen() {
               multiline={true}
               placeholder="Viết bình luận ..."
               underlineColorAndroid="transparent"
+              value={userCmt}
+              onChangeText={setUserCmt}
             />
-            <SvgXml style={{ marginLeft: 5 }} xml={sendCommentIcon} />
+            <Pressable onPress={handlePostComment}
+              disabled={isPostCommentLoading}>
+              <SvgXml style={{ marginLeft: 5 }} xml={sendCommentIcon} />
+            </Pressable>
+            
           </View>
         </View>
       </BottomSheet>

@@ -161,5 +161,51 @@ const getCommentsByPost = () => {
     refetch,
   };
 };
+
+const postCommentsByPost = () => {
+  const [newComment, setNewComments] = useState(null);
+  const [isPostCommentLoading, setIsLoading] = useState(false);
+  const [postCommentError, setError] = useState(null);
+
+  const postComments = useCallback(
+    async (accessToken, postId, cmt) => {
+      setIsLoading(true);
+
+      try {
+        const options = {
+          method: 'POST',
+          url: `https://travogue-production.up.railway.app/travogue-service/posts/${postId}/comments`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          data: {
+            comment: cmt,
+          },
+        };
+        const response = await axios.request(options);
+        setNewComments(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  const refetch = () => {
+    setIsLoading(true);
+    postComments();
+  };
+
+  return {
+    postComments,
+    newComment,
+    isPostCommentLoading,
+    postCommentError,
+    refetch,
+  };
+};
   
-export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost};
+export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost, postCommentsByPost};
