@@ -177,10 +177,13 @@ export default function ProfileScreen() {
                 color: "#000000",
                 fontSize: 14,
                 alignSelf: "center",
+                fontWeight: "bold",
+                paddingBottom: 5,
               }}
             >
               {user.email.split("@")[0]}
             </Text>
+            <Text style={{ alignSelf: "center" }}>Young Killua</Text>
           </View>
           <View
             style={{
@@ -193,15 +196,16 @@ export default function ProfileScreen() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 marginBottom: 25,
-                marginHorizontal: 16,
+                marginHorizontal: 8,
               }}
             >
               <View style={{ alignItems: "center" }}>
                 <Text
                   style={{
                     color: "#000000",
-                    fontSize: 12,
+                    fontSize: 14,
                     marginBottom: 5,
+                    fontWeight: "bold",
                   }}
                 >
                   {user.numOfPosts}
@@ -209,7 +213,7 @@ export default function ProfileScreen() {
                 <Text
                   style={{
                     color: "#000000",
-                    fontSize: 10,
+                    fontSize: 12,
                   }}
                 >
                   {"Bài viết"}
@@ -226,8 +230,9 @@ export default function ProfileScreen() {
                 <Text
                   style={{
                     color: "#000000",
-                    fontSize: 12,
+                    fontSize: 14,
                     marginBottom: 5,
+                    fontWeight: "bold",
                   }}
                 >
                   {user.numOfFollowers}
@@ -235,7 +240,7 @@ export default function ProfileScreen() {
                 <Text
                   style={{
                     color: "#000000",
-                    fontSize: 10,
+                    fontSize: 12,
                   }}
                 >
                   {"Người theo dõi"}
@@ -252,7 +257,8 @@ export default function ProfileScreen() {
                 <Text
                   style={{
                     color: "#000000",
-                    fontSize: 12,
+                    fontSize: 14,
+                    fontWeight: "bold",
                     marginBottom: 5,
                   }}
                 >
@@ -261,7 +267,7 @@ export default function ProfileScreen() {
                 <Text
                   style={{
                     color: "#000000",
-                    fontSize: 10,
+                    fontSize: 12,
                   }}
                 >
                   {"Đang theo dõi"}
@@ -288,7 +294,8 @@ export default function ProfileScreen() {
                 <Text
                   style={{
                     color: "#000000",
-                    fontSize: 12,
+                    fontSize: 13,
+                    fontWeight: "500",
                   }}
                 >
                   {"Đăng bài viết"}
@@ -305,8 +312,9 @@ export default function ProfileScreen() {
               >
                 <Text
                   style={{
-                    color: "#151515",
-                    fontSize: 12,
+                    color: "#000000",
+                    fontSize: 13,
+                    fontWeight: "500",
                   }}
                 >
                   {"Chỉnh sửa"}
