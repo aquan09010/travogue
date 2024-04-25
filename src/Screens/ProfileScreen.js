@@ -288,7 +288,9 @@ export default function ProfileScreen() {
                   alignItems: "center",
                   backgroundColor: "#E8E8E8",
                   borderRadius: 7,
-                  paddingVertical: 7,
+                  paddingVertical: 8,
+                  height: 30,
+                  alignItems: "center",
                 }}
               >
                 <Text
@@ -296,6 +298,7 @@ export default function ProfileScreen() {
                     color: "#000000",
                     fontSize: 13,
                     fontWeight: "500",
+                    alignContent: "center",
                   }}
                 >
                   {"Đăng bài viết"}
@@ -307,7 +310,8 @@ export default function ProfileScreen() {
                   alignItems: "center",
                   backgroundColor: "#E8E8E8",
                   borderRadius: 7,
-                  paddingVertical: 5,
+                  paddingVertical: 8,
+                  height: 30,
                 }}
               >
                 <Text
@@ -315,6 +319,7 @@ export default function ProfileScreen() {
                     color: "#000000",
                     fontSize: 13,
                     fontWeight: "500",
+                    alignSelf: "center",
                   }}
                 >
                   {"Chỉnh sửa"}
