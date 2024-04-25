@@ -207,5 +207,46 @@ const postCommentsByPost = () => {
     refetch,
   };
 };
+
+const getFeed = (accessToken) => {
+  const [feed, setFeed] = useState([]);
+  const [isFeedLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const options = {
+    method: 'GET',
+    url: `https://travogue-production.up.railway.app/travogue-service/posts/feeds?pageNumber=0&pageSize=100`,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.request(options);
+
+      setFeed(response.data); // Assuming the response contains the child categories
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []); // No dependencies for initial fetch
+
+  const refetch = () => {
+    setIsLoading(true);
+    fetchData();
+  };
+
+  return { feed, isFeedLoading, error, refetch };
+};
   
-export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost, postCommentsByPost};
+export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost, postCommentsByPost, getFeed};
