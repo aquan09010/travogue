@@ -4,13 +4,14 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useState } from "react";
 import LineProfile from "./LineProfile";
 
-export default function FollowingTab() {
+export default function FollowingTab({route}) {
   const [following, setFollowing] = useState(false);
+
+  const { data } = route.params;
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <LineProfile />
-        <LineProfile />
+        {data.map(profile => <LineProfile data={profile}/>)}
       </ScrollView>
     </View>
   );

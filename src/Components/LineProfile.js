@@ -1,10 +1,16 @@
-import { Text, View, StyleSheet, Pressable, Image } from "react-native";
-import TicketCard from "./TicketCard";
-import { ScrollView } from "react-native-gesture-handler";
+import { useStateContext } from "@/Context/StateContext";
+import { followUserHook, unFollowUserHook } from "@/Hooks/FollowHooks";
 import { useState } from "react";
+import { Text, View, StyleSheet, Pressable, Image } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-export default function LineProfile() {
-  const [following, setFollowing] = useState(false);
+export default function LineProfile({ data }) {
+  const [followStatus, setFollowStatus] = useState(data.followStatus);
+
+  const { accessToken } = useStateContext();
+
+  const { followUser } = followUserHook();
+  const { unFollowUser } = unFollowUserHook();
 
   return (
     <View style={{ height: 55, width: "85%", marginTop: 10 }}>
@@ -22,7 +28,7 @@ export default function LineProfile() {
           <Image
             style={[styles.avaImg, { marginRight: 10 }]}
             resizeMode="cover"
-            source={require("../Assets/ava1.jpg")}
+            source={{uri: data.avatar}}
           />
         </Pressable>
         <View
@@ -34,15 +40,21 @@ export default function LineProfile() {
         >
           <View style={{ width: "65%", marginTop: 5 }}>
             <View style={styles.line1}>
-              <Text style={styles.title}>{"aquan09010"}</Text>
+              <Text style={styles.title}>{data.email.split('@')[0]}</Text>
             </View>
-            <Text style={{ paddingTop: 3, paddingRight: 45 }}>
+            {/* <Text style={{ paddingTop: 3, paddingRight: 45 }}>
               {"Young killua"}
-            </Text>
+            </Text> */}
           </View>
           <Pressable
-            onPress={() => {
-              setFollowing(!following);
+            onPress={async () => {
+              if (data.followStatus) {
+                setFollowStatus(false);
+                await unFollowUser(accessToken, data.id);
+              } else {
+                setFollowStatus(true);
+                await followUser(accessToken, data.id);
+              }
             }}
             style={{
               borderRadius: 15,
@@ -53,7 +65,7 @@ export default function LineProfile() {
               height: 30,
             }}
           >
-            {!following ? (
+            {!followStatus ? (
               <View style={styles.followButton}>
                 <Text style={styles.followText}>Theo dõi</Text>
               </View>

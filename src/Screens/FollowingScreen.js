@@ -34,6 +34,10 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import FollowingTab from "@/Components/FollowingTab";
 const Tab = createMaterialTopTabNavigator();
 import { Animated } from "react-native";
+import { useStateContext } from "@/Context/StateContext";
+import { getFollowers, getFollowing } from "@/Hooks/FollowHooks";
+import { ActivityIndicator } from "react-native";
+import { isAllOf } from "@reduxjs/toolkit";
 
 export default function FollowingScreen({ route }) {
   console.log(route.params);
@@ -51,49 +55,63 @@ export default function FollowingScreen({ route }) {
     navigation.navigate("Main");
   };
 
+  const { accessToken, user } = useStateContext();
+
+  const { followers, isFollowerLoading } = getFollowers(accessToken);
+  const { following, isFollowingLoading } = getFollowing(accessToken);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.statusBar}>
         <Pressable onPress={() => navigation.goBack()}>
           <SvgXml xml={ArrowLeftBlack} />
         </Pressable>
-        <Text style={styles.title}>aquan09010</Text>
+        <Text style={styles.title}>{user.email.split('@')[0]}</Text>
         <Pressable onPress={() => {}}>
           <SvgXml xml={SearchIconBlack} />
         </Pressable>
       </View>
       <View style={{ height: "100%" }}>
+        {isFollowerLoading || isFollowingLoading ? 
+        <ActivityIndicator
+        size="large"
+        color="#ED2939"
+        style={{ paddingVertical: 12 }}
+      /> : 
         <Tab.Navigator
-          initialRouteName={tab}
-          style={{ marginBottom: 0 }}
-          screenOptions={{
-            tabBarIndicatorStyle: {
-              height: 2,
-            },
-            tabBarStyle: {
-              height: 45,
-            },
-            tabBarLabelStyle: {
-              fontSize: 16,
-              fontFamily: "BeVNSemi",
-              textTransform: "none",
-            },
-            tabBarIndicatorStyle: {
-              backgroundColor: "black",
-            },
-          }}
-        >
-          <Tab.Screen
-            name="theodoi"
-            component={FollowingTab}
-            options={{ title: "38 Người Theo Dõi" }}
-          />
-          <Tab.Screen
-            name="dangtheodoi"
-            component={FollowingTab}
-            options={{ title: "167 Đang theo dõi" }}
-          />
-        </Tab.Navigator>
+        initialRouteName={tab}
+        style={{ marginBottom: 0 }}
+        screenOptions={{
+          tabBarIndicatorStyle: {
+            height: 2,
+          },
+          tabBarStyle: {
+            height: 45,
+          },
+          tabBarLabelStyle: {
+            fontSize: 16,
+            fontFamily: "BeVNSemi",
+            textTransform: "none",
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: "black",
+          },
+        }}
+      >
+        <Tab.Screen
+          name="theodoi"
+          component={FollowingTab}
+          options={{ title: user.numOfFollowers + " Follwers" }}
+          initialParams={{ data: followers.data }}
+        />
+        <Tab.Screen
+          name="dangtheodoi"
+          component={FollowingTab}
+          options={{ title: user.numOfFollowing + " Following" }}
+          initialParams={{ data: following.data }}
+        />
+      </Tab.Navigator>
+        }
       </View>
     </SafeAreaView>
   );
