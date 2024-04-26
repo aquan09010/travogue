@@ -6,14 +6,18 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Pressable,
 } from 'react-native';
 import { SearchIcon } from '@/Assets/Icons/Search';
 import { SvgXml } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 export default function TabHeader() {
+  const navigation = useNavigation();
+  
   return (
     <View style={styles.header}>
       <Text style={styles.travogue}>TRAVOGUE</Text>
-      <SvgXml xml={SearchIcon} />
+      <Pressable onPress={() => navigation.navigate('SearchActivitiesScreen')}><SvgXml xml={SearchIcon} /></Pressable>
     </View>
   );
 }

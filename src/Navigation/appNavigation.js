@@ -17,6 +17,7 @@ import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 import CloneSceen from "@/Screens/CloneDetail";
 import CloneDetailScreen from "@/Screens/CloneDetail";
 import FollowingScreen from "@/Screens/FollowingScreen";
+import SearchActivitiesScreen from "@/Screens/SearchActivitiesScreen";
 // import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
@@ -92,6 +93,11 @@ export default function AppNavigation() {
           name="SearchCityScreen"
           options={{ headerShown: false }}
           component={SearchCityScreen}
+        />
+        <Stack.Screen
+          name="SearchActivitiesScreen"
+          options={{ headerShown: false }}
+          component={SearchActivitiesScreen}
         />
         <Stack.Screen
           name="CommunityScreen"
