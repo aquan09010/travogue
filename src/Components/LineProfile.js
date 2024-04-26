@@ -9,8 +9,8 @@ export default function LineProfile({ data }) {
 
   const { accessToken } = useStateContext();
 
-  const { followUser } = followUserHook();
-  const { unFollowUser } = unFollowUserHook();
+  const { followUser, isFollowUserLoading } = followUserHook();
+  const { unFollowUser, isUnFollowUserLoading } = unFollowUserHook();
 
   return (
     <View style={{ height: 55, width: "85%", marginTop: 10 }}>
@@ -48,14 +48,15 @@ export default function LineProfile({ data }) {
           </View>
           <Pressable
             onPress={async () => {
-              if (data.followStatus) {
-                setFollowStatus(false);
+              if (followStatus) {
                 await unFollowUser(accessToken, data.id);
+                setFollowStatus(false);
               } else {
-                setFollowStatus(true);
                 await followUser(accessToken, data.id);
+                setFollowStatus(true);
               }
             }}
+            disabled={isFollowUserLoading || isUnFollowUserLoading}
             style={{
               borderRadius: 15,
               flex: 1,

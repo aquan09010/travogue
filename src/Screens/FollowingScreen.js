@@ -101,13 +101,13 @@ export default function FollowingScreen({ route }) {
         <Tab.Screen
           name="theodoi"
           component={FollowingTab}
-          options={{ title: user.numOfFollowers + " Follwers" }}
+          options={{ title: followers.data.length + " Follwers" }}
           initialParams={{ data: followers.data }}
         />
         <Tab.Screen
           name="dangtheodoi"
           component={FollowingTab}
-          options={{ title: user.numOfFollowing + " Following" }}
+          options={{ title: following.data.length + " Following" }}
           initialParams={{ data: following.data }}
         />
       </Tab.Navigator>
