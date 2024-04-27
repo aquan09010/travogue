@@ -52,7 +52,7 @@ const timeAgo = (dateString) => {
   return "just now";
 };
 
-export default function ProfileScreen() {
+export default function CommunityScreen() {
   const snapPoints = useMemo(() => ["95%"], []);
   const bottomSheetRef = React.createRef(BottomSheet);
   // const bottomSheetRef = useRef < BottomSheet > null;
@@ -143,13 +143,12 @@ export default function ProfileScreen() {
             </View>
           ) : (
             <View>
-              {feed.data.data.map((post, index) => (
-                <PostCard
+                {feed.data.data.map((post, index) =>(<PostCard
                   handleOpenPress={() => handleOpenPress(post.id)}
                   data={post}
                   key={index}
-                />
-              ))}
+                />)
+                )}
             </View>
           )
         }

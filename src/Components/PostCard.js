@@ -202,7 +202,7 @@ export default function PostCard({data, handleOpenPress}) {
           </Pressable> */}
         </View>
         <Text style={{ marginLeft: 5 }}>{numOfLikes} lượt thích</Text>
-        <Pressable
+        {!data.latestComment ? <></> : <Pressable
           style={{
             flexDirection: "row",
             paddingHorizontal: 18,
@@ -227,7 +227,7 @@ export default function PostCard({data, handleOpenPress}) {
             </View>
             <Text style={{ paddingRight: 45 }}>{data.latestComment.comment}</Text>
           </View>
-        </Pressable>
+        </Pressable>}
         <Pressable>
           <Text style={{ marginLeft: 5, color: 'gray' }}>
             Xem tất cả {numOfComments} bình luận
