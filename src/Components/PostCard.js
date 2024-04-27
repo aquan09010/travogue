@@ -45,7 +45,31 @@ function formatDate(dateString) {
   return formattedDate;
 }
 
-export default function PostCard({data, handleOpenPress, setActivePost}) {
+const timeAgo = (dateString) => {
+  const now = new Date();
+  const createdAt = new Date(dateString);
+  const differenceInSeconds = Math.floor((now - createdAt) / 1000);
+
+  const intervals = [
+    ["year", 31536000],
+    ["month", 2592000],
+    ["day", 86400],
+    ["hour", 3600],
+    ["minute", 60],
+    ["second", 1],
+  ];
+
+  for (const [name, seconds] of intervals) {
+    const intervalCount = Math.floor(differenceInSeconds / seconds);
+    if (intervalCount >= 1) {
+      return `${intervalCount} ${intervalCount === 1 ? name : name + "s"} ago`;
+    }
+  }
+
+  return "just now";
+};
+
+export default function PostCard({data, handleOpenPress}) {
   // const [selectedBookmark, setSelectedBookmark] = useState(false);
   const [liked, setLiked] = useState(data.liked);
   const [numOfLikes, setNumOfLikes] = useState(data.numOfLikes);
@@ -178,7 +202,7 @@ export default function PostCard({data, handleOpenPress, setActivePost}) {
           </Pressable> */}
         </View>
         <Text style={{ marginLeft: 5 }}>{numOfLikes} lượt thích</Text>
-        {/* <Pressable
+        <Pressable
           style={{
             flexDirection: "row",
             paddingHorizontal: 18,
@@ -192,21 +216,20 @@ export default function PostCard({data, handleOpenPress, setActivePost}) {
             <Image
               style={[styles.avaImg, { marginRight: 10 }]}
               resizeMode="cover"
-              source={require("../Assets/ava1.jpg")}
+              source={{ uri: data.latestComment.user.avatar}}
             />
           </Pressable>
           <View style={{}}>
             <View style={styles.line}>
-              <Text>
-                {" "}
-                {"aquan09010"} • {"14:30"}
+              <Text style={{color: 'gray'}}>
+                {data.latestComment.user.email.split('@')[0]} • {timeAgo(data.latestComment.updatedAt)}
               </Text>
             </View>
-            <Text style={{ paddingRight: 45 }}>{"testabc"}</Text>
+            <Text style={{ paddingRight: 45 }}>{data.latestComment.comment}</Text>
           </View>
-        </Pressable> */}
+        </Pressable>
         <Pressable>
-          <Text style={{ marginLeft: 5, marginVertical: 5 }}>
+          <Text style={{ marginLeft: 5, color: 'gray' }}>
             Xem tất cả {numOfComments} bình luận
           </Text>
         </Pressable>

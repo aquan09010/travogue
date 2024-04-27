@@ -438,7 +438,7 @@ export default function ProfileScreen() {
                   </Pressable>
                   <View style={{}}>
                     <View style={styles.line1}>
-                      <Text>
+                      <Text style={{color: 'gray'}}>
                         {" "}
                         {item.user.email.split("@")[0]} •{" "}
                         {timeAgo(item.updatedAt)}
