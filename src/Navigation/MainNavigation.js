@@ -21,6 +21,7 @@ import TabHeader from "@/Components/TabHeader";
 import SearchCityScreen from "@/Screens/SearchCityScreen";
 import ProfileScreen from "@/Screens/ProfileScreen";
 import CloneSceen from "@/Screens/CloneDetail";
+import HomePagePlanning from "@/Screens/HomePagePlanning";
 
 const MainNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -83,7 +84,13 @@ const MainNavigator = () => {
         }}
       />
       <Tab.Screen name="Cộng đồng" component={CommunityScreen} />
-      <Tab.Screen name="Lập kế hoạch" component={HomeScreen} />
+      <Tab.Screen 
+        name="Lập kế hoạch" 
+        component={HomePagePlanning}
+        options={{
+          headerTitle: (props) => <TabHeader {...props} />,
+        }} 
+      />
       <Tab.Screen name="Thông báo" component={HomeScreen} />
       <Tab.Screen
         name="Hồ sơ"
