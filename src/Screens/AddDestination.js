@@ -20,7 +20,7 @@ const AddDestination = ({ navigation }) => {
           <Image
             style={styles.arrowLeftIcon}
             contentFit='cover'
-            source={require('../assets/arrowleft@3x.png')}
+            source={require("../Assets/arrowleft.png")}
           />
         </TouchableOpacity>
 
@@ -48,113 +48,113 @@ const AddDestination = ({ navigation }) => {
       <ScrollView style={styles.listDestinations}>
         <SuggestionTicket
           topRate={true}
-          pic={require('../assets/pic29.png')}
+          pic={require('../Assets/pic29.png')}
           name='Tham quan Tòa nhà Bitexco'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
         <SuggestionTicket
           topRate={false}
-          pic={require('../assets/pic28.png')}
+          pic={require('../Assets/pic28.png')}
           name='Tham quan Địa đạo Củ Chi'
           rate='4.98'
           numberOfComments='253'
           address='Củ Chi, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
         <SuggestionTicket
           topRate={false}
-          pic={require('../assets/pic27.png')}
+          pic={require('../Assets/pic27.png')}
           name='Tham quan Bưu điện trung tâm Sài Gòn'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
         <SuggestionTicket
           topRate={false}
-          pic={require('../assets/pic26.png')}
+          pic={require('../Assets/pic26.png')}
           name='Tham quan Thảo Cầm Viên Sài Gòn'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
         <SuggestionTicket
           topRate={false}
-          pic={require('../assets/pic25.png')}
+          pic={require('../Assets/pic25.png')}
           name='Tham quan Nhà thờ Đức Bà Sài Gòn'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
         <SuggestionTicket
           topRate={false}
-          pic={require('../assets/pic24.png')}
+          pic={require('../Assets/pic24.png')}
           name='Tham quan Dinh Độc Lập'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
         <SuggestionTicket
           topRate={false}
-          pic={require('../assets/pic23.png')}
+          pic={require('../Assets/pic23.png')}
           name='Khách sạn Liberty Central Sài Gòn Riverside'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
         <SuggestionTicket
           topRate={false}
-          pic={require('../assets/pic22.png')}
+          pic={require('../Assets/pic22.png')}
           name='The Odys Boutique Hotel'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
         <SuggestionTicket
           topRate={false}
-          pic={require('../assets/pic21.png')}
+          pic={require('../Assets/pic21.png')}
           name='Yuzu Omakase ゆずお任せ Vietnam'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
         <SuggestionTicket
           topRate={false}
-          pic={require('../assets/pic20.png')}
+          pic={require('../Assets/pic20.png')}
           name='Nhà hàng Park Lounge'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
           price='12'
           category='Nghệ thuật, Văn hoá, Lịch sử'
-          admin={require('../assets/admin3.png')}
+          admin={require('../Assets/admin3.png')}
         />
       </ScrollView>
 

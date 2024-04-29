@@ -23,7 +23,7 @@ const SearchDestination = () => {
           <Image
             style={styles.arrowLeftIcon}
             contentFit='cover'
-            source={require('../../assets/arrowleft@3x.png')}
+            source={require("../Assets/arrowleft.png")}
           />
         </TouchableOpacity>
 
