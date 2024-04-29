@@ -18,6 +18,7 @@ import CloneSceen from '@/Screens/CloneDetail'
 import CloneDetailScreen from '@/Screens/CloneDetail'
 import FollowingScreen from '@/Screens/FollowingScreen'
 import SearchActivitiesScreen from '@/Screens/SearchActivitiesScreen'
+import HomePagePlanning from '@/Screens/HomePagePlanning'
 import CreatePlanning from '@/Screens/CreatePlanning'
 import SearchDestination from '@/Screens/SearchDestination'
 import DetailATripPlan from '@/Screens/DetailATripPlan'
@@ -124,24 +125,29 @@ export default function AppNavigation () {
           component={FollowingScreen}
         />
         <Stack.Screen
-          name='CreatePlanning'
-          component={CreatePlanning}
+          name='HomePagePlanning'
+          component={HomePagePlanning}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='CreatePlanning'
+          options={{ headerShown: false }}
+          component={CreatePlanning}
         />
         <Stack.Screen
           name='SearchDestination'
-          component={SearchDestination}
           options={{ headerShown: false }}
+          component={SearchDestination}
         />
         <Stack.Screen
           name='DetailATripPlan'
-          component={DetailATripPlan}
           options={{ headerShown: false }}
+          component={DetailATripPlan}
         />
         <Stack.Screen
           name='AddDestination'
-          component={AddDestination}
           options={{ headerShown: false }}
+          component={AddDestination}
         />
       </Stack.Navigator>
     </NavigationContainer>
