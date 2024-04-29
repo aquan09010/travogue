@@ -32,7 +32,7 @@ const DetailATripPlan = () => {
       <View style={styles.headerContainer}>
         <TouchableOpacity
           style={styles.touchableBack}
-          onPress={() => navigation.navigate('HomePagePlanning')}
+          onPress={() => navigation.navigate('Lập kế hoạch')}
         >
           <Image
             style={styles.arrowLeftIcon}
@@ -306,22 +306,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     alignContent: 'center',
-    alignSelf: 'flex-start',
-    borderWidth: 1
+    alignSelf: 'flex-start'
   },
   icon: {
     width: 30,
     fontSize: 24,
     color: '#000',
-    fontFamily: 'FontAwesome6ProLight',
-    borderWidth: 1
+    fontFamily: 'FontAwesome6ProLight'
   },
   text: {
-    fontSize: 17,
+    fontSize: 19,
     color: '#000',
     marginLeft: '2%',
-    fontFamily: 'BeVN',
-    borderWidth: 1
+    fontFamily: 'BeVN'
   }
 })
 

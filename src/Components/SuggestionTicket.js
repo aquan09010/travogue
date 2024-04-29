@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#fff',
     fontWeight: '600',
-    fontFamily: 'BeVietnamProSemiBold'
+    fontFamily: 'BeVNSemi'
   },
   info: {
     gap: 8,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     width: '95%',
     color: '#000',
     fontWeight: '600',
-    fontFamily: 'BeVietnamProSemiBold'
+    fontFamily: 'BeVNSemi'
   },
   commentAndAddress: {
     gap: 4,
@@ -170,14 +170,14 @@ const styles = StyleSheet.create({
     fontSize: 10,
     opacity: 0.98,
     color: '#151515',
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   },
   address: {
     width: '100%',
     fontSize: 10,
     color: '#151515',
     fontWeight: '300',
-    fontFamily: 'BeVietnamProLight'
+    fontFamily: 'BeVNProLight'
   },
   priceCategoryAdmin: {
     gap: 16,
@@ -197,13 +197,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#000',
     fontWeight: '600',
-    fontFamily: 'BeVietnamProSemiBold'
+    fontFamily: 'BeVNSemi'
   },
   category: {
     fontSize: 9,
     color: '#1b1b1b',
     alignSelf: 'stretch',
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   },
   adminIcon: {
     width: 26,
