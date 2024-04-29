@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#000',
     fontWeight: '500',
-    fontFamily: 'BeVietnamProMedium'
+    fontFamily: 'BeVNProMedium'
   }
 })
 

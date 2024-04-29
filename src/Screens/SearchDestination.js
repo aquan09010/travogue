@@ -23,7 +23,7 @@ const SearchDestination = () => {
           <Image
             style={styles.arrowLeftIcon}
             contentFit='cover'
-            source={require("../Assets/arrowleft.png")}
+            source={require('../Assets/arrowleft.png')}
           />
         </TouchableOpacity>
 
@@ -91,25 +91,25 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    height: 'auto',
     display: 'flex',
-    marginBottom: '3%',
-    flexDirection: 'row'
+    marginVertical: '5%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   touchable: {
-    marginTop: '13%',
-    marginLeft: '6%'
+    width: 30,
+    height: 30
   },
   arrowLeftIcon: {
     width: 30,
     height: 30
   },
   inputArea: {
-    width: '71%',
-    height: '60%',
+    width: 291,
+    height: 50,
     borderWidth: 1,
     display: 'flex',
-    marginTop: '11%',
     marginLeft: '6%',
     borderRadius: 15,
     alignItems: 'center',
@@ -136,17 +136,17 @@ const styles = StyleSheet.create({
   line: {
     height: 1,
     width: '100%',
-    marginTop: '3%',
     borderTopWidth: 1,
     borderStyle: 'solid',
+    marginVertical: '1%',
     borderColor: '#e8e8e8'
   },
   location: {
     fontSize: 17,
     color: '#000',
+    fontFamily: 'BeVN',
     marginVertical: '3%',
-    marginHorizontal: '8%',
-    fontFamily: 'BeVN'
+    marginHorizontal: '11%'
   }
 })
 

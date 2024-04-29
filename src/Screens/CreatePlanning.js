@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     width: 30,
     left: '5%',
     height: 30,
-    marginTop: '15%'
+    marginTop: '5%'
   },
   line: {
     height: 1,
@@ -136,21 +136,20 @@ const styles = StyleSheet.create({
     borderColor: '#bababa'
   },
   title: {
-    left: '5%',
     width: '90%',
     fontSize: 23,
     color: '#000',
     marginTop: '5%',
-    textAlign: 'left',
+    marginLeft: '5%',
     fontWeight: '500',
     fontFamily: 'BeVNProMedium'
   },
   touchableSearch: {
-    height: '6%',
+    height: 50,
     marginTop: '5%'
   },
   searchBar: {
-    width: '88%',
+    width: 361,
     height: '100%',
     borderWidth: 1,
     borderRadius: 15,
@@ -164,8 +163,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   searchBarTime: {
-    width: '88%',
-    height: '6%',
+    width: 361,
+    height: 50,
     borderWidth: 1,
     marginTop: '5%',
     borderRadius: 15,
@@ -227,11 +226,11 @@ const styles = StyleSheet.create({
     fontFamily: 'FontAwesome6ProLight'
   },
   touchableButton: {
-    height: '6%',
+    height: 55,
     marginTop: '65%',
   },
   createButton: {
-    width: '88%',
+    width: 361,
     height: '100%',
     borderWidth: 1,
     borderRadius: 15,
