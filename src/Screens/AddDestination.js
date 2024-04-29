@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     gap: 24,
     display: 'flex',
-    paddingTop: '10%',
+    paddingTop: '5%',
     paddingBottom: '3%',
     alignItems: 'center',
     flexDirection: 'row',
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     gap: 16,
-    width: '70%',
+    width: 291,
     borderWidth: 1,
     borderRadius: 15,
     paddingVertical: 16,
@@ -205,13 +205,13 @@ const styles = StyleSheet.create({
   magnifyingGlass: {
     fontSize: 14,
     color: '#767676',
-    fontFamily: 'FontAwesome6ProLight'
+    fontFamily: 'FontAwesome6ProLight',
   },
   textSearch: {
     fontSize: 14,
     color: '#000',
     letterSpacing: 0.1,
-    fontFamily: 'BeVN'
+    fontFamily: 'BeVN',
   },
   line: {
     height: 1,

@@ -118,7 +118,7 @@ const DetailATripPlan = () => {
 
           <View style={styles.subcontainer}>
             <Text style={styles.icon}>circle-bookmark</Text>
-            <Text style={styles.text}> Ghi chú </Text>
+            <Text style={styles.text}>Ghi chú</Text>
           </View>
 
           <View style={styles.subcontainer}>
