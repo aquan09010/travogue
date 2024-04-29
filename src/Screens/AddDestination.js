@@ -137,7 +137,7 @@ const AddDestination = ({ navigation }) => {
         <SuggestionTicket
           topRate={false}
           pic={require('../Assets/pic21.png')}
-          name='Yuzu Omakase ゆずお任せ Vietnam'
+          name='Yuzu Omakase ゆずお任せ VN'
           rate='4.98'
           numberOfComments='253'
           address='Q1, Hồ Chí Minh'
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     letterSpacing: 0.1,
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   },
   line: {
     height: 1,
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     fontSize: 21,
     color: '#000',
     fontWeight: '500',
-    fontFamily: 'BeVietNamProMedium'
+    fontFamily: 'BeVNProMedium'
   },
   angleDown: {
     fontSize: 21,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     fontWeight: '600',
-    fontFamily: 'BeVietnamProSemiBold'
+    fontFamily: 'BeVNSemi'
   }
 })
 

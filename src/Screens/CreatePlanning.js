@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     textAlign: 'left',
     fontWeight: '500',
-    fontFamily: 'BeVietnamProMedium'
+    fontFamily: 'BeVNProMedium'
   },
   touchableSearch: {
     height: '6%',
@@ -188,13 +188,13 @@ const styles = StyleSheet.create({
     color: '#bababa',
     marginLeft: '7%',
     letterSpacing: 0.1,
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   },
   suggestText: {
     fontSize: 14,
     marginTop: '4%',
     marginLeft: '5%',
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   },
   locationContainer: {
     gap: 8,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     letterSpacing: 0.1,
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   },
   clock: {
     fontSize: 14,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: 'left',
     fontWeight: '500',
-    fontFamily: 'BeVietnamProMedium'
+    fontFamily: 'BeVNProMedium'
   }
 })
 

@@ -22,11 +22,6 @@ const HomePagePlanning = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Logo */}
-      <View style={styles.logo}>
-        <Text style={styles.travogue}>TRAVOGUE</Text>
-        <Text style={styles.searchIcon}>magnifying-glass</Text>
-      </View>
 
       {/* Tiêu đề */}
       <View style={styles.title}>
@@ -139,35 +134,6 @@ const HomePagePlanning = () => {
         </View>
       </Modal>
 
-      {/* Thanh Navbar dưới cùng */}
-      <View style={styles.navbar}>
-        <View style={styles.frameParent}>
-          <View style={styles.eachFrame}>
-            <Text style={styles.tabIcon}>House-blank</Text>
-            <Text style={styles.tabText}>Khám phá</Text>
-          </View>
-
-          <View style={styles.eachFrame}>
-            <Text style={styles.tabIcon}>úusers</Text>
-            <Text style={styles.tabText}>Cộng đồng</Text>
-          </View>
-
-          <View style={styles.eachFrame}>
-            <Text style={styles.tabIconHighlight}>calendar-days</Text>
-            <Text style={styles.tabTextHighlight}>Lập kế hoạch</Text>
-          </View>
-
-          <View style={styles.eachFrame}>
-            <Text style={styles.tabIcon}>bell</Text>
-            <Text style={styles.tabText}>Thông báo</Text>
-          </View>
-
-          <View style={styles.eachFrame}>
-            <Text style={styles.tabIcon}>circle-user</Text>
-            <Text style={styles.tabText}>Hồ sơ</Text>
-          </View>
-        </View>
-      </View>
     </SafeAreaView>
   )
 }
@@ -179,29 +145,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: 'black',
     backgroundColor: '#fff'
-  },
-  logo: {
-    width: '95%',
-    marginTop: '10%',
-    paddingVertical: 14,
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 18,
-    alignContent: 'center',
-    backgroundColor: '#151515',
-    justifyContent: 'space-between'
-  },
-  travogue: {
-    fontSize: 32,
-    color: '#fff',
-    textAlign: 'center',
-    fontFamily: 'VogueRegular'
-  },
-  searchIcon: {
-    fontSize: 24,
-    color: '#fff',
-    textAlign: 'left',
-    fontFamily: 'FontAwesome6ProLight'
   },
   title: {
     width: '85%',
@@ -215,7 +158,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#000',
     fontWeight: '600',
-    fontFamily: 'BeVNProSemiBold'
+    fontFamily: 'BeVNSemi'
   },
   buttonFunction: {
     fontSize: 22,
@@ -241,65 +184,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
     marginLeft: '2%',
-    fontFamily: 'BeVNProRegular'
+    fontFamily: 'BeVN'
   },
-  tabIcon: {
-    fontSize: 24,
-    color: '#1b1b1b',
-    fontWeight: '300',
-    alignItems: 'center',
-    alignContent: 'center',
-    fontFamily: 'FontAwesome6ProLight'
-  },
-  tabIconHighlight: {
-    fontSize: 24,
-    color: '#000',
-    fontWeight: '300',
-    textAlign: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    fontFamily: 'FontAwesome6FreeRegular'
-  },
-  tabText: {
-    fontSize: 8,
-    color: '#151515',
-    fontWeight: '300',
-    textAlign: 'center',
-    fontFamily: 'BeVNProLight'
-  },
-  tabTextHighlight: {
-    fontSize: 8,
-    width: 'auto',
-    color: '#151515',
-    fontWeight: '700',
-    textAlign: 'center',
-    fontFamily: 'BeVNProBold'
-  },
-  eachFrame: {
-    width: 'auto',
-    height: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-    alignContent: 'center',
-    flexDirection: 'column'
-  },
-  frameParent: {
-    width: '100%',
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    justifyContent: 'space-between'
-  },
-  navbar: {
-    width: '95%',
-    bottom: '1%',
-    height: 'auto',
-    paddingTop: '2%',
-    borderTopWidth: 0.5,
-    position: 'absolute',
-    borderStyle: 'solid',
-    borderColor: '#bababa',
-    backgroundColor: '#fff'
-  },
+
 
   function: {
     gap: 24,
@@ -330,7 +217,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#000',
     marginLeft: '5%',
-    fontFamily: 'BeVNProRegular'
+    fontFamily: 'BeVN'
   }
 })
 

@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     fontWeight: '600',
     paddingLeft: '6%',
-    fontFamily: 'BeVietnamProSemiBold'
+    fontFamily: 'BeVNSemi'
   },
   information: {
     color: '#000',
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     paddingLeft: '6%',
     paddingVertical: '1%',
-    fontFamily: 'BeVietnamProLight'
+    fontFamily: 'BeVNProLight'
   },
   mapContainer: {
     gap: 8,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     fontWeight: '600',
-    fontFamily: 'BeVietnamProSemiBold'
+    fontFamily: 'BeVNSemi'
   },
   planContainer: {
     shadowOffset: {
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
     lineHeight: 36,
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   },
   firstDayLine: {
     borderTopWidth: 3,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     color: '#000',
     lineHeight: 36,
     paddingLeft: 24,
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   },
   calendarCirclePlus: {
     width: '10%',
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
     marginLeft: '2%',
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   }
 })
 

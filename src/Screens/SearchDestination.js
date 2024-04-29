@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     marginLeft: '6%',
     letterSpacing: 0.1,
     alignItems: 'center',
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   },
   line: {
     height: 1,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     color: '#000',
     marginVertical: '3%',
     marginHorizontal: '8%',
-    fontFamily: 'BeVietnamProRegular'
+    fontFamily: 'BeVN'
   }
 })
 
