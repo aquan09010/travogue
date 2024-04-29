@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import Button1 from '../Components/Button1'
 import { useNavigation } from '@react-navigation/native'
@@ -13,15 +13,30 @@ import {
 const DetailATripPlan = () => {
   const navigation = useNavigation()
 
+  const [selectedDay, setSelectedDay] = useState(1)
+
+  const DayButton = ({ day }) => (
+    <TouchableOpacity
+      style={styles.dayContainer}
+      onPress={() => setSelectedDay(day)}
+    >
+      <Text style={styles.days}>{`Ngày ${day}`}</Text>
+      {selectedDay === day && <View style={styles.dayLine} />}
+    </TouchableOpacity>
+  )
+
   return (
     <View style={styles.container}>
       {/* Nút quay lại. Nút share. Nút Edit */}
       <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.touchableBack} onPress={() => navigation.navigate('HomePagePlanning')}>
+        <TouchableOpacity
+          style={styles.touchableBack}
+          onPress={() => navigation.navigate('HomePagePlanning')}
+        >
           <Image
             style={styles.arrowLeftIcon}
             contentFit='cover'
-            source={require("../Assets/arrowleft.png")}
+            source={require('../Assets/arrowleft.png')}
           />
         </TouchableOpacity>
 
@@ -55,28 +70,19 @@ const DetailATripPlan = () => {
             showsHorizontalScrollIndicator={false}
             style={styles.listDay}
           >
-            <View style={styles.firstDayContainer}>
-              <Text style={styles.firstDay}>Ngày 1</Text> 
-
-              {/* Đường kẻ chân */}
-              <View style={styles.firstDayLine} />
-            </View>
-
-            <Text style={styles.days}>Ngày 2</Text>
-
-            <Text style={styles.days}>Ngày 3</Text>
-
-            <Text style={styles.days}>Ngày 4</Text>
-
-            <Text style={styles.days}>Ngày 5</Text>
-
-            <Text style={styles.days}>Ngày 6</Text>
-
-            <Text style={styles.days}>Ngày 7</Text>
+            <DayButton day={1} />
+            <DayButton day={2} />
+            <DayButton day={3} />
+            <DayButton day={4} />
+            <DayButton day={5} />
+            <DayButton day={6} />
+            <DayButton day={7} />
           </ScrollView>
 
           {/* Icon thêm ngày vào danh sách ngày */}
-          <Text style={styles.calendarCirclePlus}>calendar-circle-plus</Text>
+          <TouchableOpacity style={styles.touchableCalendar}>
+            <Text style={styles.calendarCirclePlus}>calendar-circle-plus</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Đường kẻ */}
@@ -143,7 +149,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 'auto',
     display: 'flex',
-    paddingTop: '13%',
+    paddingTop: '10%',
     paddingBottom: '3%',
     alignItems: 'center',
     flexDirection: 'row'
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
   },
   title: {
     width: '90%',
-    fontSize: 24,
+    fontSize: 27,
     color: '#000',
     lineHeight: 36,
     fontWeight: '600',
@@ -183,8 +189,8 @@ const styles = StyleSheet.create({
     fontFamily: 'BeVNSemi'
   },
   information: {
+    fontSize: 14,
     color: '#000',
-    fontSize: 12,
     fontWeight: '300',
     paddingLeft: '6%',
     paddingVertical: '1%',
@@ -234,28 +240,23 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0, 0, 0, 1)'
   },
   headerDays: {
-    gap: 16,
+    gap: 8,
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: '1%',
-    paddingHorizontal: '6%'
+    paddingVertical: 8,
+    paddingHorizontal: 16
   },
   listDay: {
     display: 'flex',
     flexDirection: 'row'
   },
-  firstDayContainer: {
+  dayContainer: {
     width: 'auto',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginRight: 24
   },
-  firstDay: {
-    fontSize: 16,
-    color: '#000',
-    lineHeight: 36,
-    fontFamily: 'BeVN'
-  },
-  firstDayLine: {
+  dayLine: {
     borderTopWidth: 3,
     borderColor: '#000',
     borderStyle: 'solid'
@@ -264,12 +265,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
     lineHeight: 36,
-    paddingLeft: 24,
+    // paddingLeft: 24,
     fontFamily: 'BeVN'
   },
-  calendarCirclePlus: {
+  touchableCalendar: {
     width: '10%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  calendarCirclePlus: {
     fontSize: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
     color: '#000',
     lineHeight: 36,
     fontFamily: 'FontAwesome6ProLight'
