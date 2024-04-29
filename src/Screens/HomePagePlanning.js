@@ -22,7 +22,6 @@ const HomePagePlanning = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-
       {/* Tiêu đề */}
       <View style={styles.title}>
         <Text style={styles.titleText}>Chuyến đi của bạn</Text>
@@ -133,7 +132,6 @@ const HomePagePlanning = () => {
           </View>
         </View>
       </Modal>
-
     </SafeAreaView>
   )
 }
@@ -161,7 +159,7 @@ const styles = StyleSheet.create({
     fontFamily: 'BeVNSemi'
   },
   buttonFunction: {
-    fontSize: 22,
+    fontSize: 28,
     fontFamily: 'FontAwesome6FreeRegular'
   },
   subcontainer: {
@@ -169,38 +167,31 @@ const styles = StyleSheet.create({
     height: 'auto',
     display: 'flex',
     marginTop: '5%',
-    marginLeft: '15%',
+    marginLeft: '12%',
     alignItems: 'center',
     flexDirection: 'row',
-    alignContent: 'center',
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
+    justifyContent: 'flex-start'
   },
   icon: {
-    fontSize: 22,
+    width: '13%',
+    fontSize: 30,
     color: '#000',
+    marginRight: '1%',
     fontFamily: 'FontAwesome6ProLight'
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#000',
     marginLeft: '2%',
     fontFamily: 'BeVN'
   },
-
-
   function: {
     gap: 24,
     width: 'auto',
     height: 'auto',
     display: 'flex',
     flexDirection: 'column'
-  },
-
-  icon1: {
-    fontSize: 30,
-    color: '#000',
-    textAlign: 'center',
-    fontFamily: 'FontAwesome6ProLight'
   },
   subcontainer1: {
     width: 'auto',
@@ -212,6 +203,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     alignSelf: 'flex-start'
+  },
+  icon1: {
+    fontSize: 30,
+    color: '#000',
+    textAlign: 'center',
+    fontFamily: 'FontAwesome6ProLight'
   },
   text1: {
     fontSize: 20,
