@@ -9,7 +9,7 @@ const CreatePlanning = () => {
   return (
     <View style={styles.container}>
       {/* Nút quay lại */}
-      <TouchableOpacity onPress={() => navigation.navigate('HomePagePlanning')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Lập kế hoạch')}>
         <Image
           style={styles.arrowLeftIcon}
           contentFit='cover'
