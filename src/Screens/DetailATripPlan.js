@@ -13,6 +13,7 @@ import {
 const DetailATripPlan = () => {
   const navigation = useNavigation()
 
+  // Cập nhật ngày trong Danh sách ngày
   const [selectedDay, setSelectedDay] = useState(1)
 
   const DayButton = ({ day }) => (
@@ -88,51 +89,53 @@ const DetailATripPlan = () => {
         {/* Đường kẻ */}
         <View style={styles.line} />
 
-        {/* Nút thêm điểm dừng chân */}
-        <View style={styles.buttonContainer}>
-          <Button1 navigation={navigation} />
-        </View>
+        <ScrollView style={styles.listDestinations}>
+          {/* Nút thêm điểm dừng chân */}
+          <View style={styles.buttonContainer}>
+            <Button1 navigation={navigation} />
+          </View>
 
-        {/* Nội dung */}
-        <View style={styles.subcontainer}>
-          <Text style={styles.icon}>circle-location-arrow</Text>
-          <Text style={styles.text}>Địa điểm bạn muốn đi</Text>
-        </View>
+          {/* Nội dung */}
+          <View style={styles.subcontainer}>
+            <Text style={styles.icon}>circle-location-arrow</Text>
+            <Text style={styles.text}>Địa điểm bạn muốn đi</Text>
+          </View>
 
-        <View style={styles.subcontainer}>
-          <Text style={styles.icon}>pot-food</Text>
-          <Text style={styles.text}>Món ăn muốn thưởng thức</Text>
-        </View>
+          <View style={styles.subcontainer}>
+            <Text style={styles.icon}>pot-food</Text>
+            <Text style={styles.text}>Món ăn muốn thưởng thức</Text>
+          </View>
 
-        <View style={styles.subcontainer}>
-          <Text style={styles.icon}>hotel</Text>
-          <Text style={styles.text}>Nơi bạn muốn ở</Text>
-        </View>
+          <View style={styles.subcontainer}>
+            <Text style={styles.icon}>hotel</Text>
+            <Text style={styles.text}>Nơi bạn muốn ở</Text>
+          </View>
 
-        <View style={styles.subcontainer}>
-          <Text style={styles.icon}>mountain-sun</Text>
-          <Text style={styles.text}>Trải nghiệm mới mẻ</Text>
-        </View>
+          <View style={styles.subcontainer}>
+            <Text style={styles.icon}>mountain-sun</Text>
+            <Text style={styles.text}>Trải nghiệm mới mẻ</Text>
+          </View>
 
-        <View style={styles.subcontainer}>
-          <Text style={styles.icon}>circle-bookmark</Text>
-          <Text style={styles.text}> Ghi chú </Text>
-        </View>
+          <View style={styles.subcontainer}>
+            <Text style={styles.icon}>circle-bookmark</Text>
+            <Text style={styles.text}> Ghi chú </Text>
+          </View>
 
-        <View style={styles.subcontainer}>
-          <Text style={styles.icon}>circle-camera</Text>
-          <Text style={styles.text}>Thêm những khoảnh khắc đẹp</Text>
-        </View>
+          <View style={styles.subcontainer}>
+            <Text style={styles.icon}>circle-camera</Text>
+            <Text style={styles.text}>Thêm những khoảnh khắc đẹp</Text>
+          </View>
 
-        <View style={styles.subcontainer}>
-          <Text style={styles.icon}>circle-user</Text>
-          <Text style={styles.text}>Mời bạn bè</Text>
-        </View>
+          <View style={styles.subcontainer}>
+            <Text style={styles.icon}>circle-user</Text>
+            <Text style={styles.text}>Mời bạn bè</Text>
+          </View>
 
-        <View style={styles.subcontainer}>
-          <Text style={styles.icon}>user-group</Text>
-          <Text style={styles.text}>Chia sẻ lên cộng đồng</Text>
-        </View>
+          <View style={styles.subcontainer}>
+            <Text style={styles.icon}>user-group</Text>
+            <Text style={styles.text}>Chia sẻ lên cộng đồng</Text>
+          </View>
+        </ScrollView>
       </View>
     </View>
   )
@@ -147,7 +150,6 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    height: 'auto',
     display: 'flex',
     paddingTop: '10%',
     paddingBottom: '3%',
@@ -221,18 +223,17 @@ const styles = StyleSheet.create({
     fontFamily: 'BeVNSemi'
   },
   planContainer: {
+    flex: 1,
     shadowOffset: {
       width: 0,
       height: -20
     },
     elevation: 20,
     width: '100%',
-    height: 'auto',
     display: 'flex',
     marginTop: '3%',
     shadowRadius: 10,
     shadowOpacity: 1,
-    paddingBottom: '10%',
     flexDirection: 'column',
     backgroundColor: '#fff',
     borderTopLeftRadius: 16,
@@ -281,6 +282,11 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     fontFamily: 'FontAwesome6ProLight'
   },
+  listDestinations: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column'
+  },
   line: {
     height: 1,
     borderTopWidth: 1,
@@ -300,18 +306,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     alignContent: 'center',
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
+    borderWidth: 1
   },
   icon: {
-    fontSize: 22,
+    width: 30,
+    fontSize: 24,
     color: '#000',
-    fontFamily: 'FontAwesome6ProLight'
+    fontFamily: 'FontAwesome6ProLight',
+    borderWidth: 1
   },
   text: {
-    fontSize: 16,
+    fontSize: 17,
     color: '#000',
     marginLeft: '2%',
-    fontFamily: 'BeVN'
+    fontFamily: 'BeVN',
+    borderWidth: 1
   }
 })
 
