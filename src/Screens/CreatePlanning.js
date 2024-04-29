@@ -1,10 +1,27 @@
-import * as React from 'react'
+import React, { useState, useRef, useCallback, useMemo } from 'react'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 
+// Danh sách Các Tỉnh/Thành phố gợi ý
+const cities = [
+  'Hồ Chí Minh',
+  'Hà Nội',
+  'Đà Nẵng',
+  'Cần Thơ',
+  'Huế',
+  'Ninh Bình',
+  'Cà Mau',
+  'Khánh Hòa',
+  'Quảng Nam',
+  'Hà Giang'
+]
+
 const CreatePlanning = () => {
   const navigation = useNavigation()
+
+  // Kiểm tra danh sách Loại hoạt động
+  const [selectedCity, setSelectedCity] = useState()
 
   return (
     <View style={styles.container}>
@@ -13,7 +30,7 @@ const CreatePlanning = () => {
         <Image
           style={styles.arrowLeftIcon}
           contentFit='cover'
-          source={require("../Assets/arrowleft.png")}
+          source={require('../Assets/arrowleft.png')}
         />
       </TouchableOpacity>
 
@@ -44,51 +61,36 @@ const CreatePlanning = () => {
 
       {/* Các địa điểm 1*/}
       <View style={styles.locationContainer}>
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Hồ Chí Minh</Text>
-        </View>
+        {cities.map((option, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.item,
+              {
+                borderColor: selectedCity == option ? 'red' : 'black'
+              }
+            ]}
+            onPress={() => {
+              if (selectedCity == option) {
+                setSelectedCity(null)
+              } else {
+                setSelectedCity(option)
+              }
+            }}
+          >
+            <Text
+              style={[
+                styles.textLocation,
+                {
+                  color: selectedCity == option ? 'red' : 'black'
+                }
+              ]}
+            >
+              {option}
+            </Text>
+          </TouchableOpacity>
+        ))}
 
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Hà Nội</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Đà Nẵng</Text>
-        </View>
-      </View>
-
-      {/* Các địa điểm 2*/}
-      <View style={styles.locationContainer}>
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Cần Thơ</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Huế</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Ninh Bình</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Cà Mau</Text>
-        </View>
-      </View>
-
-      {/* Các địa điểm 3*/}
-      <View style={styles.locationContainer}>
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Khánh Hòa</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Quảng Nam</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.textLocation}>Hà Giang</Text>
-        </View>
       </View>
 
       {/* Ô chọn thời gian cho chuyến đi */}
@@ -202,17 +204,19 @@ const styles = StyleSheet.create({
     display: 'flex',
     marginTop: '4%',
     marginLeft: '5%',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
   item: {
-    width: 'auto',
-    height: 'auto',
+    borderWidth: 1,
     borderRadius: 8,
     paddingVertical: 10,
     alignItems: 'center',
+    borderStyle: 'solid',
     paddingHorizontal: 16,
-    justifyContent: 'center',
-    backgroundColor: '#e8e8e8'
+    justifyContent: 'center'
+
+    // backgroundColor: '#e8e8e8'
   },
   textLocation: {
     fontSize: 14,
@@ -227,7 +231,7 @@ const styles = StyleSheet.create({
   },
   touchableButton: {
     height: 55,
-    marginTop: '65%',
+    marginTop: '65%'
   },
   createButton: {
     width: 361,
