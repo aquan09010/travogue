@@ -16,33 +16,39 @@ const AddDestination = ({ navigation }) => {
       {/* Header: Nút quay lại & Thanh Search */}
       <View style={styles.headerContainer}>
         {/* Nút quay lại */}
-        <TouchableOpacity onPress={() => navigation.navigate('DetailATripPlan')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('DetailATripPlan')}
+        >
           <Image
             style={styles.arrowLeftIcon}
             contentFit='cover'
-            source={require("../Assets/arrowleft.png")}
+            source={require('../Assets/arrowleft.png')}
           />
         </TouchableOpacity>
 
         {/* Thanh Search */}
-        <View style={styles.searchContainer}>
-          {/* Icon Search */}
-          <Text style={styles.magnifyingGlass}>magnifying-glass</Text>
+        <TouchableOpacity>
+          <View style={styles.searchContainer}>
+            {/* Icon Search */}
+            <Text style={styles.magnifyingGlass}>magnifying-glass</Text>
 
-          {/* Text mặc định */}
-          <Text style={styles.textSearch}>Tìm kiếm điểm dừng chân</Text>
-        </View>
+            {/* Text mặc định */}
+            <Text style={styles.textSearch}>Tìm kiếm điểm dừng chân</Text>
+          </View>
+        </TouchableOpacity>
       </View>
 
       {/* Dòng kẻ dưới thanh Search */}
       <View style={styles.line} />
 
       {/* Tùy chọn các tỉnh thành */}
-      <View style={styles.provinceContainer}>
-        <Text style={styles.province}>Hồ Chí Minh</Text>
+      <TouchableOpacity style={styles.touchableProvince}>
+        <View style={styles.provinceContainer}>
+          <Text style={styles.province}>Hồ Chí Minh</Text>
 
-        <Text style={styles.angleDown}>angle-down</Text>
-      </View>
+          <Text style={styles.angleDown}>angle-down</Text>
+        </View>
+      </TouchableOpacity>
 
       {/* Danh sách các Gợi ý */}
       <ScrollView style={styles.listDestinations}>
@@ -205,13 +211,13 @@ const styles = StyleSheet.create({
   magnifyingGlass: {
     fontSize: 14,
     color: '#767676',
-    fontFamily: 'FontAwesome6ProLight',
+    fontFamily: 'FontAwesome6ProLight'
   },
   textSearch: {
     fontSize: 14,
     color: '#000',
     letterSpacing: 0.1,
-    fontFamily: 'BeVN',
+    fontFamily: 'BeVN'
   },
   line: {
     height: 1,
@@ -221,11 +227,13 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#e8e8e8'
   },
+  touchableProvince: {
+    marginBottom: '3%'
+  },
   provinceContainer: {
     gap: 8,
     width: '100%',
     display: 'flex',
-    marginBottom: '3%',
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center'

@@ -20,7 +20,7 @@ const cities = [
 const CreatePlanning = () => {
   const navigation = useNavigation()
 
-  // Kiểm tra danh sách Loại hoạt động
+  // Kiểm tra danh sách Thành phố/Tỉnh đã chọn
   const [selectedCity, setSelectedCity] = useState()
 
   return (
@@ -90,15 +90,16 @@ const CreatePlanning = () => {
             </Text>
           </TouchableOpacity>
         ))}
-
       </View>
 
       {/* Ô chọn thời gian cho chuyến đi */}
-      <View style={styles.searchBarTime}>
-        <Text style={styles.clock}>clock</Text>
+      <TouchableOpacity>
+        <View style={styles.searchBarTime}>
+          <Text style={styles.clock}>clock</Text>
 
-        <Text style={styles.textSearchBar}>Thời gian cho Chuyến đi</Text>
-      </View>
+          <Text style={styles.textSearchBar}>Thời gian cho Chuyến đi</Text>
+        </View>
+      </TouchableOpacity>
 
       {/* Nút tạo chuyến đi */}
       <TouchableOpacity

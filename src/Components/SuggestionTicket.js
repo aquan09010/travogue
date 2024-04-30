@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import Checkbox from 'expo-checkbox'
 import { Image } from 'expo-image'
 
@@ -16,8 +16,12 @@ const SuggestionTicket = ({
 }) => {
   const [isChecked, setChecked] = useState(false)
 
+  const handlePress = () => {
+    setChecked(!isChecked)
+  }
+
   return (
-    <View style={styles.suggestContainer}>
+    <TouchableOpacity onPress={handlePress} style={styles.suggestContainer}>
       {/* Icon Check */}
       <Checkbox
         disabled={false}
@@ -80,7 +84,7 @@ const SuggestionTicket = ({
           <Image style={styles.adminIcon} contentFit='cover' source={admin} />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'left',
     marginRight: '3%',
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   pictureContainer: {
     width: '36.6%'

@@ -111,10 +111,12 @@ const HomePagePlanning = () => {
 
           {/* Nội dung các chức năng */}
           <View style={styles.function}>
-            <View style={styles.subcontainer1}>
-              <Text style={styles.icon1}>layer-group</Text>
-              <Text style={styles.text1}>Sắp xếp các Chuyến đi</Text>
-            </View>
+            <TouchableOpacity>
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>layer-group</Text>
+                <Text style={styles.text1}>Sắp xếp các Chuyến đi</Text>
+              </View>
+            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => navigation.navigate('CreatePlanning')}
@@ -125,10 +127,12 @@ const HomePagePlanning = () => {
               </View>
             </TouchableOpacity>
 
-            <View style={styles.subcontainer1}>
-              <Text style={styles.icon1}>trash</Text>
-              <Text style={styles.text1}>Xóa Chuyến đi</Text>
-            </View>
+            <TouchableOpacity>
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>trash</Text>
+                <Text style={styles.text1}>Xóa Chuyến đi</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

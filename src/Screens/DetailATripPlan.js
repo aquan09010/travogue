@@ -41,9 +41,13 @@ const DetailATripPlan = () => {
           />
         </TouchableOpacity>
 
-        <Text style={styles.shareFromSquare}>share-from-square</Text>
+        <TouchableOpacity style={styles.touchableShare}>
+          <Text style={styles.shareFromSquare}>share-from-square</Text>
+        </TouchableOpacity>
 
-        <Text style={styles.penToSquare}>pen-to-square</Text>
+        <TouchableOpacity style={styles.touchableEdit}>
+          <Text style={styles.penToSquare}>pen-to-square</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Tiêu đề chuyến đi */}
@@ -165,18 +169,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  touchableShare: {
+    marginLeft: '60%'
+  },
   shareFromSquare: {
     fontSize: 24,
     color: '#000',
-    marginLeft: '60%',
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: 'FontAwesome6ProLight'
   },
+  touchableEdit: {
+    marginLeft: '6%'
+  },
   penToSquare: {
     fontSize: 24,
     color: '#000',
-    marginLeft: '6%',
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: 'FontAwesome6ProLight'
