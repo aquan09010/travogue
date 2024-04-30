@@ -28,7 +28,7 @@ const SuggestionTicket = ({
         value={isChecked}
         style={styles.iconCheck}
         onValueChange={setChecked}
-        color={isChecked ? '#000' : undefined}
+        color={isChecked ? 'red' : undefined}
       />
 
       <View style={styles.pictureContainer}>
