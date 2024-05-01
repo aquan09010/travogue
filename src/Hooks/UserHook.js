@@ -34,12 +34,12 @@ const getUserProfile = (accessToken, userId) => {
       fetchData();
     }, []); // No dependencies for initial fetch
   
-    const refetch = () => {
+    const refetchUserProfile = () => {
       setIsLoading(true);
       fetchData();
     };
   
-    return { userProfile, isUserLoading, error, refetch };
+    return { userProfile, isUserLoading, error, refetchUserProfile };
 };
 
 export {getUserProfile}

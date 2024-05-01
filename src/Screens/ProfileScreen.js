@@ -76,6 +76,11 @@ const timeAgo = (dateString) => {
 export default function ProfileScreen({route}) {
   const navigation = useNavigation();
 
+  const onRefresh = () => {
+    refetchUserProfile();
+    refetchPostsByUser();
+  }
+
   const snapPoints = useMemo(() => ["95%"], []);
   const bottomSheetRef = React.createRef(BottomSheet);
   // const bottomSheetRef = useRef < BottomSheet > null;
@@ -119,9 +124,9 @@ export default function ProfileScreen({route}) {
   const currentUser = !userId || userId == user.id;
   if (!userId) userId = user.id;
   
-  const { userProfile, isUserLoading } = getUserProfile(accessToken, userId);
+  const { userProfile, isUserLoading, refetchUserProfile } = getUserProfile(accessToken, userId);
 
-  const { posts, isPostsLoading, error } = getPostsByUser(accessToken, userId);
+  const { posts, isPostsLoading, error, refetchPostsByUser } = getPostsByUser(accessToken, userId);
 
   const { getComments, comments, isCommentLoading, commentError } =
     getCommentsByPost();
@@ -183,7 +188,7 @@ export default function ProfileScreen({route}) {
           paddingBottom: 60,
           }}
           refreshControl={
-            <RefreshControl refreshing={{} } onRefresh={{}}/>
+            <RefreshControl refreshing={isUserLoading} onRefresh={onRefresh}/>
           }
       >
         <View

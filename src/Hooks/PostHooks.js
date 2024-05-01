@@ -34,12 +34,12 @@ const getPostsByUser = (accessToken, userId) => {
       fetchData();
     }, []); // No dependencies for initial fetch
   
-    const refetch = () => {
+    const refetchPostsByUser = () => {
       setIsLoading(true);
       fetchData();
     };
   
-    return { posts, isPostsLoading, error, refetch };
+    return { posts, isPostsLoading, error, refetchPostsByUser };
 };
 
 const postLikeHook = () => {
