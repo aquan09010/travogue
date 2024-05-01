@@ -46,6 +46,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { ArrowLeftBlack } from "@/Assets/Icons/Navigation";
 import { getUserProfile } from "@/Hooks/UserHook";
+import { followUserHook, unFollowUserHook } from "@/Hooks/FollowHooks";
 
 const timeAgo = (dateString) => {
   const now = new Date();
@@ -146,6 +147,16 @@ export default function ProfileScreen({route}) {
     }
   }, [newComment]);
 
+  const [followStatus, setFollowStatus] = useState(false);
+
+  useEffect(() => {
+    if (!isUserLoading)
+      setFollowStatus(userProfile.followStatus)
+  }, [isUserLoading])
+
+  const { followUser, isFollowUserLoading } = followUserHook();
+  const { unFollowUser, isUnFollowUserLoading } = unFollowUserHook();
+
   return (
     <SafeAreaView
       style={{
@@ -164,7 +175,7 @@ export default function ProfileScreen({route}) {
         </Pressable>
       </View>}
       {isUserLoading ? <></> : 
-        <ScrollView
+      <ScrollView
         style={{
           flex: 1,
           backgroundColor: "#FFFFFF",
@@ -303,8 +314,10 @@ export default function ProfileScreen({route}) {
                 justifyContent: "space-between",
                 alignItems: "center",
               }}
-            >
-              <View
+              >
+                {currentUser ?
+                  <>
+                  <View
                 style={{
                   width: 108,
                   alignItems: "center",
@@ -347,6 +360,61 @@ export default function ProfileScreen({route}) {
                   {"Chỉnh sửa"}
                 </Text>
               </View>
+                  </>:
+                  <>
+                  <Pressable
+                    onPress={async () => {
+                      if (followStatus) {
+                        await unFollowUser(accessToken, userProfile.id);
+                        setFollowStatus(false);
+                      } else {
+                        await followUser(accessToken, userProfile.id);
+                        setFollowStatus(true);
+                      }
+                    }}
+                    disabled={isFollowUserLoading || isUnFollowUserLoading}
+                    style={{
+                      borderRadius: 15,
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: 30,
+                    }}
+                  >
+                    {!followStatus ? (
+                      <View style={styles.followButton}>
+                        <Text style={styles.followText}>Theo dõi</Text>
+                      </View>
+                    ) : (
+                      <View style={styles.followingButton}>
+                        <Text style={styles.followingText}>Đang theo dõi</Text>
+                      </View>
+                    )}
+                  </Pressable>
+                  <View
+                    style={{
+                      width: 108,
+                      alignItems: "center",
+                      backgroundColor: "#E8E8E8",
+                      borderRadius: 7,
+                      paddingVertical: 8,
+                      height: 30,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#000000",
+                        fontSize: 13,
+                        fontWeight: "500",
+                        alignSelf: "center",
+                      }}
+                    >
+                      {"Nhắn tin"}
+                    </Text>
+                  </View>
+                  </>}
+              
             </View>
           </View>
         </View>
@@ -577,5 +645,35 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "600",
+  },
+  followText: {
+    color: "#fff",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  followingText: {
+    color: "black",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  followButton: {
+    borderRadius: 15,
+    backgroundColor: "#418dff",
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 30,
+  },
+  followingButton: {
+    borderRadius: 15,
+    backgroundColor: "#e8e8e8",
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 30,
   },
 });
