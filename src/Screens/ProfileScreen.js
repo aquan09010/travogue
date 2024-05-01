@@ -22,6 +22,7 @@ import {
   Button,
   ActivityIndicator,
   Modal,
+  RefreshControl,
 } from "react-native";
 import PostCard from "@/Components/PostCard";
 import { useStateContext } from "@/Context/StateContext";
@@ -180,7 +181,10 @@ export default function ProfileScreen({route}) {
           flex: 1,
           backgroundColor: "#FFFFFF",
           paddingBottom: 60,
-        }}
+          }}
+          refreshControl={
+            <RefreshControl refreshing={{} } onRefresh={{}}/>
+          }
       >
         <View
           style={{
