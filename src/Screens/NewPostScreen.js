@@ -57,7 +57,7 @@ export default function NewPostScreen({ route }) {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
       allowsMultipleSelection: true,
     });
@@ -65,7 +65,7 @@ export default function NewPostScreen({ route }) {
     console.log(result);
 
     if (!result.canceled) {
-      setImages(result.assets.map(asset => asset.uri));
+      setImages(result.assets.map((asset) => asset.uri));
     }
   };
   const { followers, isFollowerLoading } = getFollowers(accessToken);
@@ -87,132 +87,132 @@ export default function NewPostScreen({ route }) {
     return formattedDate;
   }
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.statusBar}>
-          <Pressable onPress={() => navigation.goBack()}>
-            <SvgXml xml={ArrowLeftBlack} />
-          </Pressable>
-          <Text style={styles.title}>Đăng bài viết</Text>
-          <Pressable style={styles.button} onPress={() => {}}>
-            <Text style={styles.checkout}>Đăng</Text>
-          </Pressable>
-        </View>
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View style={styles.status}>
-            <Image
-              style={{
-                height: 40,
-                width: 40,
-                borderRadius: 40 / 2,
-                width: 40,
-              }}
-              resizeMode="cover"
-              source={require("../Assets/ava1.jpg")}
-            />
-            <View style={{ marginLeft: 8 }}>
-              <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
-                <Text style={styles.boldText}>aquan09010</Text>
-                <Text>{` đang ở `}</Text>
-                <Text style={styles.boldText}>Quốc Học Huế</Text>
-              </Text>
-              <Text
-                style={{
-                  fontSize: 10,
-                  color: "#767676",
-                  marginTop: 6,
-                  textAlign: "left",
-                }}
-              >
-                {formatDate(new Date())}
-              </Text>
-            </View>
-          </View>
-          <TextInput
-            multiline={true}
-            autoFocus={false}
+    <SafeAreaView style={styles.container}>
+      <View style={styles.statusBar}>
+        <Pressable onPress={() => navigation.goBack()}>
+          <SvgXml xml={ArrowLeftBlack} />
+        </Pressable>
+        <Text style={styles.title}>Đăng bài viết</Text>
+        <Pressable style={styles.button} onPress={() => {}}>
+          <Text style={styles.checkout}>Đăng</Text>
+        </Pressable>
+      </View>
+      <ScrollView
+        style={{ height: "100%" }}
+        keyboardShouldPersistTaps="always"
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={styles.status}>
+          <Image
             style={{
-              paddingHorizontal: 14,
-              paddingVertical: 10,
-              minHeight: 350,
-              maxHeight: 350,
-              textAlignVertical: "top",
-              fontSize: 18,
+              height: 40,
+              width: 40,
+              borderRadius: 40 / 2,
+              width: 40,
             }}
-            placeholder="Bạn đang ở đâu đấy? "
-            placeholderTextColor="grey"
+            resizeMode="cover"
+            source={require("../Assets/ava1.jpg")}
           />
-          <View>
-            {images &&
-              images.map(
-                image =>
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 200, height: 200 }}
-                  />
-              )}
-          </View>
-          <Pressable
-            style={{
-              flexDirection: "row",
-            }}
-            onPress={pickImage}
-          >
-            <View
+          <View style={{ marginLeft: 8 }}>
+            <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
+              <Text style={styles.boldText}>aquan09010</Text>
+              <Text>{` đang ở `}</Text>
+              <Text style={styles.boldText}>Quốc Học Huế</Text>
+            </Text>
+            <Text
               style={{
-                margin: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                height: 25,
-                width: 30,
+                fontSize: 10,
+                color: "#767676",
+                marginTop: 6,
+                textAlign: "left",
               }}
             >
-              <SvgXml xml={ImagePostIcon} />
-            </View>
-            <Text style={{ alignSelf: "center", fontSize: 18 }}>Ảnh/Video</Text>
-          </Pressable>
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <View
-              style={{
-                margin: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                height: 25,
-                width: 30,
-              }}
-            >
-              <SvgXml xml={LocationPostIcon} />
-            </View>
-            <Text style={{ alignSelf: "center", fontSize: 18 }}>Địa điểm</Text>
+              {formatDate(new Date())}
+            </Text>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <View
-              style={{
-                margin: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                height: 25,
-                width: 30,
-              }}
-            >
-              <SvgXml xml={PeoplePostIcon} />
-            </View>
-            <Text style={{ alignSelf: "center", fontSize: 18 }}>Gắn thẻ</Text>
-          </View>
+        </View>
+        <TextInput
+          multiline={true}
+          autoFocus={false}
+          style={{
+            paddingHorizontal: 14,
+            paddingVertical: 10,
+            height: "auto",
+            textAlignVertical: "top",
+            fontSize: 18,
+          }}
+          placeholder="Bạn đang ở đâu đấy? "
+          placeholderTextColor="grey"
+        />
+        <ScrollView style={{ height: "auto" }}>
+          {images ? (
+            images.map((image) => (
+              <Image
+                source={{ uri: image }}
+                style={{ width: "50%", height: 200 }}
+              />
+            ))
+          ) : (
+            <></>
+          )}
         </ScrollView>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+        <Pressable
+          style={{
+            flexDirection: "row",
+          }}
+          onPress={pickImage}
+        >
+          <View
+            style={{
+              margin: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              height: 25,
+              width: 30,
+            }}
+          >
+            <SvgXml xml={ImagePostIcon} />
+          </View>
+          <Text style={{ alignSelf: "center", fontSize: 18 }}>Ảnh/Video</Text>
+        </Pressable>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              margin: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              height: 25,
+              width: 30,
+            }}
+          >
+            <SvgXml xml={LocationPostIcon} />
+          </View>
+          <Text style={{ alignSelf: "center", fontSize: 18 }}>Địa điểm</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              margin: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              height: 25,
+              width: 30,
+            }}
+          >
+            <SvgXml xml={PeoplePostIcon} />
+          </View>
+          <Text style={{ alignSelf: "center", fontSize: 18 }}>Gắn thẻ</Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
@@ -223,6 +223,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     height: "100%",
+    flex: 1,
   },
   statusBar: {
     width: "100%",
