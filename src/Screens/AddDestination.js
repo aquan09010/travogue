@@ -165,11 +165,16 @@ const AddDestination = ({ navigation }) => {
       </ScrollView>
 
       {/* Nút xác nhận */}
-      <View style={styles.buttonContainer}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>{`Thêm vào Ngày 1 `}</Text>
+      <TouchableOpacity
+        style={styles.touchableButton}
+        onPress={() => navigation.navigate('DetailATripADay')}
+      >
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>{`Thêm vào Ngày 1 `}</Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </SafeAreaView>
   )
 }
@@ -255,10 +260,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#e8e8e8'
   },
-  buttonContainer: {
+  touchableButton: {
     height: '8%',
-    alignItems: 'center',
     justifyContent: 'center'
+  },
+  buttonContainer: {
+    alignItems: 'center'
   },
   button: {
     height: 45,

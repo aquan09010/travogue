@@ -24,6 +24,7 @@ import SearchDestination from '@/Screens/SearchDestination'
 import DetailATripPlan from '@/Screens/DetailATripPlan'
 import AddDestination from '@/Screens/AddDestination'
 import ProfileScreen from '@/Screens/ProfileScreen'
+import DetailATripADay from '@/Screens/DetailATripADay'
 // import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator()
@@ -154,6 +155,11 @@ export default function AppNavigation () {
           name='AddDestination'
           options={{ headerShown: false }}
           component={AddDestination}
+        />
+        <Stack.Screen
+          name='DetailATripADay'
+          options={{ headerShown: false }}
+          component={DetailATripADay}
         />
       </Stack.Navigator>
     </NavigationContainer>
