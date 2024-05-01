@@ -1,167 +1,173 @@
-import React, { useEffect, useState } from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { getItem } from '@/Utils/asyncStorage.js'
-import OnboardingScreen from '@/Screens/OnBoardingScreen'
-import MainNavigator from './MainNavigation'
-import DetailScreen from '@/Screens/DetailScreen'
-import OrderConfirm from '@/Screens/OrderConfirmed'
-import LoginScreen from '@/Screens/LoginScreen'
-import RegisterScreen from '@/Screens/RegisterScreen'
-import ConfirmPhoneScreen from '@/Screens/ConfirmPhoneScreen'
-import CreatePasswordScreen from '@/Screens/CreatePasswordScreen'
-import HostProfile from '@/Screens/HostProfile'
-import SearchCityScreen from '@/Screens/SearchCityScreen'
-import CommunityScreen from '@/Screens/CommunityScreen'
-import WhereaboutSearchScreen from '@/Screens/WhereaboutSearchScreen'
-import CloneSceen from '@/Screens/CloneDetail'
-import CloneDetailScreen from '@/Screens/CloneDetail'
-import FollowingScreen from '@/Screens/FollowingScreen'
-import SearchActivitiesScreen from '@/Screens/SearchActivitiesScreen'
-import HomePagePlanning from '@/Screens/HomePagePlanning'
-import CreatePlanning from '@/Screens/CreatePlanning'
-import SearchDestination from '@/Screens/SearchDestination'
-import DetailATripPlan from '@/Screens/DetailATripPlan'
-import AddDestination from '@/Screens/AddDestination'
-import ProfileScreen from '@/Screens/ProfileScreen'
-import DetailATripADay from '@/Screens/DetailATripADay'
+import React, { useEffect, useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { getItem } from "@/Utils/asyncStorage.js";
+import OnboardingScreen from "@/Screens/OnBoardingScreen";
+import MainNavigator from "./MainNavigation";
+import DetailScreen from "@/Screens/DetailScreen";
+import OrderConfirm from "@/Screens/OrderConfirmed";
+import LoginScreen from "@/Screens/LoginScreen";
+import RegisterScreen from "@/Screens/RegisterScreen";
+import ConfirmPhoneScreen from "@/Screens/ConfirmPhoneScreen";
+import CreatePasswordScreen from "@/Screens/CreatePasswordScreen";
+import HostProfile from "@/Screens/HostProfile";
+import SearchCityScreen from "@/Screens/SearchCityScreen";
+import CommunityScreen from "@/Screens/CommunityScreen";
+import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
+import CloneSceen from "@/Screens/CloneDetail";
+import CloneDetailScreen from "@/Screens/CloneDetail";
+import FollowingScreen from "@/Screens/FollowingScreen";
+import SearchActivitiesScreen from "@/Screens/SearchActivitiesScreen";
+import HomePagePlanning from "@/Screens/HomePagePlanning";
+import CreatePlanning from "@/Screens/CreatePlanning";
+import SearchDestination from "@/Screens/SearchDestination";
+import DetailATripPlan from "@/Screens/DetailATripPlan";
+import AddDestination from "@/Screens/AddDestination";
+import ProfileScreen from "@/Screens/ProfileScreen";
+import DetailATripADay from "@/Screens/DetailATripADay";
+import NewPostScreen from "@/Screens/NewPostScreen";
 // import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
-const Stack = createNativeStackNavigator()
-export default function AppNavigation () {
-  const [showOnboarding, setShowOnboarding] = useState(null)
+const Stack = createNativeStackNavigator();
+export default function AppNavigation() {
+  const [showOnboarding, setShowOnboarding] = useState(null);
   useEffect(() => {
-    checkIfAlreadyOnboarded()
-  }, [])
+    checkIfAlreadyOnboarded();
+  }, []);
   const checkIfAlreadyOnboarded = async () => {
-    let onboarded = await getItem('onboarded')
+    let onboarded = await getItem("onboarded");
     if (onboarded == 1) {
       // hide onboarding
-      setShowOnboarding(false)
+      setShowOnboarding(false);
     } else {
       // show onboarding
-      setShowOnboarding(true)
+      setShowOnboarding(true);
     }
-  }
+  };
   if (showOnboarding == null) {
-    return null
+    return null;
   }
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={showOnboarding ? 'Onboarding' : 'Login'}
+        initialRouteName={showOnboarding ? "Onboarding" : "Login"}
       >
         <Stack.Screen
-          name='Onboarding'
+          name="Onboarding"
           options={{ headerShown: false }}
           component={OnboardingScreen}
         />
         <Stack.Screen
-          name='Main'
+          name="Main"
           options={{ headerShown: false }}
           component={MainNavigator}
         />
         <Stack.Screen
-          name='Detail'
+          name="Detail"
           options={{ headerShown: false }}
           component={DetailScreen}
         />
         <Stack.Screen
-          name='OrderConfirm'
+          name="OrderConfirm"
           options={{ headerShown: false }}
           component={OrderConfirm}
         />
         <Stack.Screen
-          name='HostProfile'
+          name="HostProfile"
           options={{ headerShown: false }}
           component={HostProfile}
         />
         <Stack.Screen
-          name='Login'
+          name="Login"
           options={{ headerShown: false }}
           component={LoginScreen}
         />
         <Stack.Screen
-          name='Register'
+          name="Register"
           options={{ headerShown: false }}
           component={RegisterScreen}
         />
         <Stack.Screen
-          name='ConfirmPhone'
+          name="ConfirmPhone"
           options={{ headerShown: false }}
           component={ConfirmPhoneScreen}
         />
         <Stack.Screen
-          name='CreatePassword'
+          name="CreatePassword"
           options={{ headerShown: false }}
           component={CreatePasswordScreen}
         />
         <Stack.Screen
-          name='SearchCityScreen'
+          name="SearchCityScreen"
           options={{ headerShown: false }}
           component={SearchCityScreen}
         />
         <Stack.Screen
-          name='SearchActivitiesScreen'
+          name="SearchActivitiesScreen"
           options={{ headerShown: false }}
           component={SearchActivitiesScreen}
         />
         <Stack.Screen
-          name='CommunityScreen'
+          name="CommunityScreen"
           options={{ headerShown: false }}
           component={CommunityScreen}
         />
         <Stack.Screen
-          name='CloneScreen'
+          name="CloneScreen"
           options={{ headerShown: false }}
           component={CloneDetailScreen}
         />
         <Stack.Screen
-          name='WhereaboutSearch'
+          name="WhereaboutSearch"
           options={{ headerShown: false }}
           component={WhereaboutSearchScreen}
         />
         <Stack.Screen
-          name='ProfileScreen'
+          name="ProfileScreen"
           options={{ headerShown: false }}
           component={ProfileScreen}
         />
         <Stack.Screen
-          name='FollowingScreen'
+          name="FollowingScreen"
           options={{ headerShown: false }}
           component={FollowingScreen}
         />
         <Stack.Screen
-          name='HomePagePlanning'
+          name="HomePagePlanning"
           component={HomePagePlanning}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='CreatePlanning'
+          name="CreatePlanning"
           options={{ headerShown: false }}
           component={CreatePlanning}
         />
         <Stack.Screen
-          name='SearchDestination'
+          name="SearchDestination"
           options={{ headerShown: false }}
           component={SearchDestination}
         />
         <Stack.Screen
-          name='DetailATripPlan'
+          name="DetailATripPlan"
           options={{ headerShown: false }}
           component={DetailATripPlan}
         />
         <Stack.Screen
-          name='AddDestination'
+          name="AddDestination"
           options={{ headerShown: false }}
           component={AddDestination}
         />
         <Stack.Screen
-          name='DetailATripADay'
+          name="DetailATripADay"
           options={{ headerShown: false }}
           component={DetailATripADay}
         />
+        <Stack.Screen
+          name="NewPostScreen"
+          options={{ headerShown: false }}
+          component={NewPostScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }

@@ -73,13 +73,13 @@ const timeAgo = (dateString) => {
   return "just now";
 };
 
-export default function ProfileScreen({route}) {
+export default function ProfileScreen({ route }) {
   const navigation = useNavigation();
 
   const onRefresh = () => {
     refetchUserProfile();
     refetchPostsByUser();
-  }
+  };
 
   const snapPoints = useMemo(() => ["95%"], []);
   const bottomSheetRef = React.createRef(BottomSheet);
@@ -123,10 +123,16 @@ export default function ProfileScreen({route}) {
   let { userId } = route.params;
   const currentUser = !userId || userId == user.id;
   if (!userId) userId = user.id;
-  
-  const { userProfile, isUserLoading, refetchUserProfile } = getUserProfile(accessToken, userId);
 
-  const { posts, isPostsLoading, error, refetchPostsByUser } = getPostsByUser(accessToken, userId);
+  const { userProfile, isUserLoading, refetchUserProfile } = getUserProfile(
+    accessToken,
+    userId
+  );
+
+  const { posts, isPostsLoading, error, refetchPostsByUser } = getPostsByUser(
+    accessToken,
+    userId
+  );
 
   const { getComments, comments, isCommentLoading, commentError } =
     getCommentsByPost();
@@ -156,9 +162,8 @@ export default function ProfileScreen({route}) {
   const [followStatus, setFollowStatus] = useState(false);
 
   useEffect(() => {
-    if (!isUserLoading)
-      setFollowStatus(userProfile.followStatus)
-  }, [isUserLoading])
+    if (!isUserLoading) setFollowStatus(userProfile.followStatus);
+  }, [isUserLoading]);
 
   const { followUser, isFollowUserLoading } = followUserHook();
   const { unFollowUser, isUnFollowUserLoading } = unFollowUserHook();
@@ -170,313 +175,326 @@ export default function ProfileScreen({route}) {
         backgroundColor: "#FFFFFF",
       }}
     >
-      {!currentUser && 
-      <View style={styles.statusBar}>
-        <Pressable onPress={() => navigation.goBack()}>
-          <SvgXml xml={ArrowLeftBlack} />
+      {!currentUser && (
+        <View style={styles.statusBar}>
+          <Pressable onPress={() => navigation.goBack()}>
+            <SvgXml xml={ArrowLeftBlack} />
           </Pressable>
-          {!isUserLoading && <Text style={styles.title}>{userProfile.email.split('@')[0]}</Text>}
-        <Pressable onPress={() => {}}>
-          {/* <SvgXml xml={SearchIconBlack} /> */}
-        </Pressable>
-      </View>}
-      {isUserLoading ? <></> : 
-      <ScrollView
-        style={{
-          flex: 1,
-          backgroundColor: "#FFFFFF",
-          paddingBottom: 60,
+          {!isUserLoading && (
+            <Text style={styles.title}>{userProfile.email.split("@")[0]}</Text>
+          )}
+          <Pressable onPress={() => {}}>
+            {/* <SvgXml xml={SearchIconBlack} /> */}
+          </Pressable>
+        </View>
+      )}
+      {isUserLoading ? (
+        <></>
+      ) : (
+        <ScrollView
+          style={{
+            flex: 1,
+            backgroundColor: "#FFFFFF",
+            paddingBottom: 60,
           }}
           refreshControl={
-            <RefreshControl refreshing={isUserLoading} onRefresh={onRefresh}/>
+            <RefreshControl refreshing={isUserLoading} onRefresh={onRefresh} />
           }
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginHorizontal: 17,
-            paddingTop: 10,
-          }}
         >
-          <View style={{ paddingBottom: 10 }}>
-            <Image
-              style={{
-                height: 100,
-                width: 100,
-                borderRadius: 100 / 2,
-                width: 100,
-              }}
-              resizeMode="cover"
-              source={{ uri: userProfile.avatar }}
-            />
-            <Text
-              style={{
-                paddingTop: 10,
-                color: "#000000",
-                fontSize: 14,
-                alignSelf: "center",
-                fontWeight: "bold",
-                paddingBottom: 5,
-              }}
-            >
-              {userProfile.email.split("@")[0]}
-            </Text>
-            <Text style={{ alignSelf: "center" }}>Young Killua</Text>
-          </View>
           <View
             style={{
-              width: 223,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginHorizontal: 17,
+              paddingTop: 10,
             }}
           >
+            <View style={{ paddingBottom: 10 }}>
+              <Image
+                style={{
+                  height: 100,
+                  width: 100,
+                  borderRadius: 100 / 2,
+                  width: 100,
+                }}
+                resizeMode="cover"
+                source={{ uri: userProfile.avatar }}
+              />
+              <Text
+                style={{
+                  paddingTop: 10,
+                  color: "#000000",
+                  fontSize: 14,
+                  alignSelf: "center",
+                  fontWeight: "bold",
+                  paddingBottom: 5,
+                }}
+              >
+                {userProfile.email.split("@")[0]}
+              </Text>
+              <Text style={{ alignSelf: "center" }}>Young Killua</Text>
+            </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: 25,
-                marginHorizontal: 8,
+                width: 223,
               }}
             >
-              <View style={{ alignItems: "center" }}>
-                <Text
-                  style={{
-                    color: "#000000",
-                    fontSize: 14,
-                    marginBottom: 5,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {userProfile.numOfPosts}
-                </Text>
-                <Text
-                  style={{
-                    color: "#000000",
-                    fontSize: 12,
-                  }}
-                >
-                  {"Bài viết"}
-                </Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("FollowingScreen", {
-                    tab: "theodoi",
-                    userProfile: userProfile
-                  });
-                }}
-                style={{ alignItems: "center" }}
-              >
-                <Text
-                  style={{
-                    color: "#000000",
-                    fontSize: 14,
-                    marginBottom: 5,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {userProfile.numOfFollowers}
-                </Text>
-                <Text
-                  style={{
-                    color: "#000000",
-                    fontSize: 12,
-                  }}
-                >
-                  {"Người theo dõi"}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("FollowingScreen", {
-                    tab: "dangtheodoi",
-                    userProfile: userProfile
-                  });
-                }}
-                style={{ alignItems: "center" }}
-              >
-                <Text
-                  style={{
-                    color: "#000000",
-                    fontSize: 14,
-                    fontWeight: "bold",
-                    marginBottom: 5,
-                  }}
-                >
-                  {userProfile.numOfFollowing}
-                </Text>
-                <Text
-                  style={{
-                    color: "#000000",
-                    fontSize: 12,
-                  }}
-                >
-                  {"Đang theo dõi"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-              >
-                {currentUser ?
-                  <>
-                  <View
-                style={{
-                  width: 108,
-                  alignItems: "center",
-                  backgroundColor: "#E8E8E8",
-                  borderRadius: 7,
-                  paddingVertical: 8,
-                  height: 30,
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#000000",
-                    fontSize: 13,
-                    fontWeight: "500",
-                    alignContent: "center",
-                  }}
-                >
-                  {"Đăng bài viết"}
-                </Text>
-              </View>
               <View
                 style={{
-                  width: 108,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  backgroundColor: "#E8E8E8",
-                  borderRadius: 7,
-                  paddingVertical: 8,
-                  height: 30,
+                  marginBottom: 25,
+                  marginHorizontal: 8,
                 }}
               >
-                <Text
-                  style={{
-                    color: "#000000",
-                    fontSize: 13,
-                    fontWeight: "500",
-                    alignSelf: "center",
+                <View style={{ alignItems: "center" }}>
+                  <Text
+                    style={{
+                      color: "#000000",
+                      fontSize: 14,
+                      marginBottom: 5,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {userProfile.numOfPosts}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "#000000",
+                      fontSize: 12,
+                    }}
+                  >
+                    {"Bài viết"}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("FollowingScreen", {
+                      tab: "theodoi",
+                      userProfile: userProfile,
+                    });
                   }}
+                  style={{ alignItems: "center" }}
                 >
-                  {"Chỉnh sửa"}
-                </Text>
+                  <Text
+                    style={{
+                      color: "#000000",
+                      fontSize: 14,
+                      marginBottom: 5,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {userProfile.numOfFollowers}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "#000000",
+                      fontSize: 12,
+                    }}
+                  >
+                    {"Người theo dõi"}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("FollowingScreen", {
+                      tab: "dangtheodoi",
+                      userProfile: userProfile,
+                    });
+                  }}
+                  style={{ alignItems: "center" }}
+                >
+                  <Text
+                    style={{
+                      color: "#000000",
+                      fontSize: 14,
+                      fontWeight: "bold",
+                      marginBottom: 5,
+                    }}
+                  >
+                    {userProfile.numOfFollowing}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "#000000",
+                      fontSize: 12,
+                    }}
+                  >
+                    {"Đang theo dõi"}
+                  </Text>
+                </TouchableOpacity>
               </View>
-                  </>:
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {currentUser ? (
                   <>
-                  <Pressable
-                    onPress={async () => {
-                      if (followStatus) {
-                        await unFollowUser(accessToken, userProfile.id);
-                        setFollowStatus(false);
-                      } else {
-                        await followUser(accessToken, userProfile.id);
-                        setFollowStatus(true);
-                      }
-                    }}
-                    disabled={isFollowUserLoading || isUnFollowUserLoading}
-                    style={{
-                      borderRadius: 15,
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: 30,
-                    }}
-                  >
-                    {!followStatus ? (
-                      <View style={styles.followButton}>
-                        <Text style={styles.followText}>Theo dõi</Text>
-                      </View>
-                    ) : (
-                      <View style={styles.followingButton}>
-                        <Text style={styles.followingText}>Đang theo dõi</Text>
-                      </View>
-                    )}
-                  </Pressable>
-                  <View
-                    style={{
-                      width: 108,
-                      alignItems: "center",
-                      backgroundColor: "#E8E8E8",
-                      borderRadius: 7,
-                      paddingVertical: 8,
-                      height: 30,
-                    }}
-                  >
-                    <Text
+                    <TouchableOpacity
+                      onPress={(e) => {
+                        navigation.navigate("NewPostScreen", {});
+                      }}
                       style={{
-                        color: "#000000",
-                        fontSize: 13,
-                        fontWeight: "500",
-                        alignSelf: "center",
+                        width: 108,
+                        alignItems: "center",
+                        backgroundColor: "#E8E8E8",
+                        borderRadius: 7,
+                        paddingVertical: 8,
+                        height: 30,
+                        alignItems: "center",
                       }}
                     >
-                      {"Nhắn tin"}
-                    </Text>
-                  </View>
-                  </>}
-              
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 13,
+                          fontWeight: "500",
+                          alignContent: "center",
+                        }}
+                      >
+                        {"Đăng bài viết"}
+                      </Text>
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        width: 108,
+                        alignItems: "center",
+                        backgroundColor: "#E8E8E8",
+                        borderRadius: 7,
+                        paddingVertical: 8,
+                        height: 30,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 13,
+                          fontWeight: "500",
+                          alignSelf: "center",
+                        }}
+                      >
+                        {"Chỉnh sửa"}
+                      </Text>
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <Pressable
+                      onPress={async () => {
+                        if (followStatus) {
+                          await unFollowUser(accessToken, userProfile.id);
+                          setFollowStatus(false);
+                        } else {
+                          await followUser(accessToken, userProfile.id);
+                          setFollowStatus(true);
+                        }
+                      }}
+                      disabled={isFollowUserLoading || isUnFollowUserLoading}
+                      style={{
+                        borderRadius: 15,
+                        flex: 1,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: 30,
+                      }}
+                    >
+                      {!followStatus ? (
+                        <View style={styles.followButton}>
+                          <Text style={styles.followText}>Theo dõi</Text>
+                        </View>
+                      ) : (
+                        <View style={styles.followingButton}>
+                          <Text style={styles.followingText}>
+                            Đang theo dõi
+                          </Text>
+                        </View>
+                      )}
+                    </Pressable>
+                    <View
+                      style={{
+                        width: 108,
+                        alignItems: "center",
+                        backgroundColor: "#E8E8E8",
+                        borderRadius: 7,
+                        paddingVertical: 8,
+                        height: 30,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 13,
+                          fontWeight: "500",
+                          alignSelf: "center",
+                        }}
+                      >
+                        {"Nhắn tin"}
+                      </Text>
+                    </View>
+                  </>
+                )}
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.header}>
-          {tabs.map((e, i) => (
-            <Pressable
-              style={styles.categoryItem}
-              key={e.id}
-              onPress={() => setSelected(e.id)}
-            >
-              <SvgXml xml={selected === e.id ? e.iconSelected : e.icon} />
-              {selected == e.id && <View style={styles.line}></View>}
-            </Pressable>
-          ))}
-        </View>
-        {selected === 1 ? (
-          isPostsLoading ? (
-            <>
-              <ActivityIndicator
-                size="large"
-                color="#ED2939"
-                style={{ paddingVertical: 12 }}
-              />
-            </>
-          ) : posts.data.length == 0 ? (
-            <View>
-              <Text style={{ textAlign: "center" }}>Chưa có bài viết nào</Text>
-            </View>
-          ) : (
-            <View>
-              {posts.data.map((post, index) => (
-                <PostCard
-                  handleOpenPress={() => handleOpenPress(post.id)}
-                  data={post}
-                  key={index}
+          <View style={styles.header}>
+            {tabs.map((e, i) => (
+              <Pressable
+                style={styles.categoryItem}
+                key={e.id}
+                onPress={() => setSelected(e.id)}
+              >
+                <SvgXml xml={selected === e.id ? e.iconSelected : e.icon} />
+                {selected == e.id && <View style={styles.line}></View>}
+              </Pressable>
+            ))}
+          </View>
+          {selected === 1 ? (
+            isPostsLoading ? (
+              <>
+                <ActivityIndicator
+                  size="large"
+                  color="#ED2939"
+                  style={{ paddingVertical: 12 }}
                 />
-              ))}
-            </View>
-          )
-        ) : (
-          <>
-            <View>
-              <TicketCard />
-              <TicketCard />
-              <TicketCard />
-              <TicketCard />
-              <TicketCard />
-              <TicketCard />
-            </View>
-          </>
-        )}
-      </ScrollView>}
-      
+              </>
+            ) : posts.data.length == 0 ? (
+              <View>
+                <Text style={{ textAlign: "center" }}>
+                  Chưa có bài viết nào
+                </Text>
+              </View>
+            ) : (
+              <View>
+                {posts.data.map((post, index) => (
+                  <PostCard
+                    handleOpenPress={() => handleOpenPress(post.id)}
+                    data={post}
+                    key={index}
+                  />
+                ))}
+              </View>
+            )
+          ) : (
+            <>
+              <View>
+                <TicketCard />
+                <TicketCard />
+                <TicketCard />
+                <TicketCard />
+                <TicketCard />
+                <TicketCard />
+              </View>
+            </>
+          )}
+        </ScrollView>
+      )}
 
       <BottomSheet
         ref={bottomSheetRef}
@@ -538,7 +556,7 @@ export default function ProfileScreen({route}) {
                   </Pressable>
                   <View style={{}}>
                     <View style={styles.line1}>
-                      <Text style={{color: 'gray'}}>
+                      <Text style={{ color: "gray" }}>
                         {" "}
                         {item.user.email.split("@")[0]} •{" "}
                         {timeAgo(item.updatedAt)}
