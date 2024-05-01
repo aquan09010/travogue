@@ -44,6 +44,9 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 
+import { ArrowLeftBlack } from "@/Assets/Icons/Navigation";
+import { getUserProfile } from "@/Hooks/UserHook";
+
 const timeAgo = (dateString) => {
   const now = new Date();
   const createdAt = new Date(dateString);
@@ -68,7 +71,7 @@ const timeAgo = (dateString) => {
   return "just now";
 };
 
-export default function ProfileScreen() {
+export default function ProfileScreen({route}) {
   const navigation = useNavigation();
 
   const snapPoints = useMemo(() => ["95%"], []);
@@ -110,7 +113,13 @@ export default function ProfileScreen() {
 
   const { accessToken, user } = useStateContext();
 
-  const { posts, isPostsLoading, error } = getPostsByUser(accessToken, user.id);
+  let { userId } = route.params;
+  const currentUser = !userId || userId == user.id;
+  if (!userId) userId = user.id;
+  
+  const { userProfile, isUserLoading } = getUserProfile(accessToken, userId);
+
+  const { posts, isPostsLoading, error } = getPostsByUser(accessToken, userId);
 
   const { getComments, comments, isCommentLoading, commentError } =
     getCommentsByPost();
@@ -144,7 +153,18 @@ export default function ProfileScreen() {
         backgroundColor: "#FFFFFF",
       }}
     >
-      <ScrollView
+      {!currentUser && 
+      <View style={styles.statusBar}>
+        <Pressable onPress={() => navigation.goBack()}>
+          <SvgXml xml={ArrowLeftBlack} />
+          </Pressable>
+          {!isUserLoading && <Text style={styles.title}>{userProfile.email.split('@')[0]}</Text>}
+        <Pressable onPress={() => {}}>
+          {/* <SvgXml xml={SearchIconBlack} /> */}
+        </Pressable>
+      </View>}
+      {isUserLoading ? <></> : 
+        <ScrollView
         style={{
           flex: 1,
           backgroundColor: "#FFFFFF",
@@ -169,7 +189,7 @@ export default function ProfileScreen() {
                 width: 100,
               }}
               resizeMode="cover"
-              source={{ uri: user.avatar }}
+              source={{ uri: userProfile.avatar }}
             />
             <Text
               style={{
@@ -181,7 +201,7 @@ export default function ProfileScreen() {
                 paddingBottom: 5,
               }}
             >
-              {user.email.split("@")[0]}
+              {userProfile.email.split("@")[0]}
             </Text>
             <Text style={{ alignSelf: "center" }}>Young Killua</Text>
           </View>
@@ -208,7 +228,7 @@ export default function ProfileScreen() {
                     fontWeight: "bold",
                   }}
                 >
-                  {user.numOfPosts}
+                  {userProfile.numOfPosts}
                 </Text>
                 <Text
                   style={{
@@ -223,6 +243,7 @@ export default function ProfileScreen() {
                 onPress={() => {
                   navigation.navigate("FollowingScreen", {
                     tab: "theodoi",
+                    userProfile: userProfile
                   });
                 }}
                 style={{ alignItems: "center" }}
@@ -235,7 +256,7 @@ export default function ProfileScreen() {
                     fontWeight: "bold",
                   }}
                 >
-                  {user.numOfFollowers}
+                  {userProfile.numOfFollowers}
                 </Text>
                 <Text
                   style={{
@@ -250,6 +271,7 @@ export default function ProfileScreen() {
                 onPress={() => {
                   navigation.navigate("FollowingScreen", {
                     tab: "dangtheodoi",
+                    userProfile: userProfile
                   });
                 }}
                 style={{ alignItems: "center" }}
@@ -262,7 +284,7 @@ export default function ProfileScreen() {
                     marginBottom: 5,
                   }}
                 >
-                  {user.numOfFollowing}
+                  {userProfile.numOfFollowing}
                 </Text>
                 <Text
                   style={{
@@ -376,7 +398,8 @@ export default function ProfileScreen() {
             </View>
           </>
         )}
-      </ScrollView>
+      </ScrollView>}
+      
 
       <BottomSheet
         ref={bottomSheetRef}
@@ -542,5 +565,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     paddingTop: 10,
+  },
+  statusBar: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "600",
   },
 });

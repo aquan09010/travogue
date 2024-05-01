@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
-const getFollowers = (accessToken) => {
+const getFollowers = (accessToken, userId) => {
     const [followers, setFollowers] = useState([]);
     const [isFollowerLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
   
     const options = {
       method: 'GET',
-      url: `https://travogue-production.up.railway.app/travogue-service/follow/followers`,
+      url: `https://travogue-production.up.railway.app/travogue-service/follow/${userId}/followers`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -32,7 +32,7 @@ const getFollowers = (accessToken) => {
   
     useEffect(() => {
       fetchData();
-    }, []); // No dependencies for initial fetch
+    }, [userId]); // No dependencies for initial fetch
   
     const refetch = () => {
       setIsLoading(true);
@@ -42,14 +42,14 @@ const getFollowers = (accessToken) => {
     return { followers, isFollowerLoading, error, refetch };
 };
 
-const getFollowing = (accessToken) => {
+const getFollowing = (accessToken, userId) => {
     const [following, setFollowing] = useState([]);
     const [isFollowingLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
   
     const options = {
       method: 'GET',
-      url: `https://travogue-production.up.railway.app/travogue-service/follow/following`,
+      url: `https://travogue-production.up.railway.app/travogue-service/follow/${userId}/following`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -73,7 +73,7 @@ const getFollowing = (accessToken) => {
   
     useEffect(() => {
       fetchData();
-    }, []); // No dependencies for initial fetch
+    }, [userId]); // No dependencies for initial fetch
   
     const refetch = () => {
       setIsLoading(true);

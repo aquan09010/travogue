@@ -100,6 +100,9 @@ export default function PostCard({data, handleOpenPress}) {
   const handleSheetChanges = useCallback((index) => {
     console.log("handleSheetChanges", index);
   }, []);
+
+  const navigation = useNavigation();
+
   return (
     <View
       style={{
@@ -111,7 +114,8 @@ export default function PostCard({data, handleOpenPress}) {
     >
       <View style={{ paddingHorizontal: 10 }}>
         <View style={styles.status}>
-          <Image
+          <Pressable onPress={() => navigation.navigate("ProfileScreen", {userId: data.user.id})}>
+            <Image
             style={{
               height: 40,
               width: 40,
@@ -120,7 +124,9 @@ export default function PostCard({data, handleOpenPress}) {
             }}
             resizeMode="cover"
             source={{ uri: data.user.avatar }}
-          />
+            />
+          </Pressable>
+          
           <View style={{ marginLeft: 8 }}>
             <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
               <Text style={styles.boldText}>

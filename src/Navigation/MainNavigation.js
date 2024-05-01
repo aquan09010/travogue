@@ -98,6 +98,7 @@ const MainNavigator = () => {
         options={({}) => ({
           headerShown: false,
         })}
+        initialParams={{userId: null}}
       />
     </Tab.Navigator>
   );

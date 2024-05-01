@@ -41,7 +41,7 @@ import { isAllOf } from "@reduxjs/toolkit";
 
 export default function FollowingScreen({ route }) {
   console.log(route.params);
-  const { tab } = route.params;
+  const { tab, userProfile } = route.params;
   const navigation = useNavigation();
   const gotoHost = async (e) => {
     e.preventDefault();
@@ -55,10 +55,10 @@ export default function FollowingScreen({ route }) {
     navigation.navigate("Main");
   };
 
-  const { accessToken, user } = useStateContext();
+  const { accessToken } = useStateContext();
 
-  const { followers, isFollowerLoading } = getFollowers(accessToken);
-  const { following, isFollowingLoading } = getFollowing(accessToken);
+  const { followers, isFollowerLoading } = getFollowers(accessToken, userProfile.id);
+  const { following, isFollowingLoading } = getFollowing(accessToken, userProfile.id);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,7 +66,7 @@ export default function FollowingScreen({ route }) {
         <Pressable onPress={() => navigation.goBack()}>
           <SvgXml xml={ArrowLeftBlack} />
         </Pressable>
-        <Text style={styles.title}>{user.email.split('@')[0]}</Text>
+        <Text style={styles.title}>{userProfile.email.split('@')[0]}</Text>
         <Pressable onPress={() => {}}>
           <SvgXml xml={SearchIconBlack} />
         </Pressable>

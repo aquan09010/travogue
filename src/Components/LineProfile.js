@@ -1,13 +1,14 @@
 import { useStateContext } from "@/Context/StateContext";
 import { followUserHook, unFollowUserHook } from "@/Hooks/FollowHooks";
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { Text, View, StyleSheet, Pressable, Image } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Text, View, StyleSheet, Pressable, Image, SafeAreaView } from "react-native";
 
 export default function LineProfile({ data }) {
+  const navigation = useNavigation();
   const [followStatus, setFollowStatus] = useState(data.followStatus);
 
-  const { accessToken } = useStateContext();
+  const { accessToken, user } = useStateContext();
 
   const { followUser, isFollowUserLoading } = followUserHook();
   const { unFollowUser, isUnFollowUserLoading } = unFollowUserHook();
@@ -22,7 +23,7 @@ export default function LineProfile({ data }) {
         }}
       >
         <Pressable
-          onPress={() => {}}
+          onPress={() => navigation.navigate("ProfileScreen", {userId: data.id})}
           style={[styles.avatar, styles.actionPadding]}
         >
           <Image
@@ -66,7 +67,8 @@ export default function LineProfile({ data }) {
               height: 30,
             }}
           >
-            {!followStatus ? (
+            {user.id == data.id ? <></> :
+              !followStatus ? (
               <View style={styles.followButton}>
                 <Text style={styles.followText}>Theo dõi</Text>
               </View>
