@@ -52,7 +52,7 @@ export default function NewPostScreen({ route }) {
   };
 
   const { accessToken, user } = useStateContext();
-  const [image, setImage] = useState();
+  const [images, setImages] = useState([]);
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -65,7 +65,7 @@ export default function NewPostScreen({ route }) {
     console.log(result);
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImages(result.assets.map(asset => asset.uri));
     }
   };
   const { followers, isFollowerLoading } = getFollowers(accessToken);
@@ -146,13 +146,14 @@ export default function NewPostScreen({ route }) {
             placeholderTextColor="grey"
           />
           <View>
-            {image &&
-              image?.assets?.map((e, i) => (
-                <Image
-                  source={{ uri: e }}
-                  style={{ width: 200, height: 200 }}
-                />
-              ))}
+            {images &&
+              images.map(
+                image =>
+                  <Image
+                    source={{ uri: image }}
+                    style={{ width: 200, height: 200 }}
+                  />
+              )}
           </View>
           <Pressable
             style={{
