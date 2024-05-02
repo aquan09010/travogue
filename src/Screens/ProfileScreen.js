@@ -338,6 +338,7 @@ export default function ProfileScreen({ route }) {
                   <>
                     <TouchableOpacity
                       onPress={(e) => {
+                        e.preventDefault();
                         navigation.navigate("NewPostScreen", {});
                       }}
                       style={{
