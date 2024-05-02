@@ -28,6 +28,7 @@ import PostCard from "@/Components/PostCard";
 import { useStateContext } from "@/Context/StateContext";
 import {
   getCommentsByPost,
+  getLikesListByPost,
   getPostsByUser,
   postCommentsByPost,
 } from "@/Hooks/PostHooks";
@@ -84,6 +85,8 @@ export default function ProfileScreen({ route }) {
 
   const snapPoints = useMemo(() => ["95%"], []);
   const bottomSheetRef = React.createRef(BottomSheet);
+  const bottomSheetRef1 = React.createRef(BottomSheet);
+
   // const bottomSheetRef = useRef < BottomSheet > null;
   const goToFollowingScreen = async (e) => {
     e.preventDefault();
@@ -96,7 +99,15 @@ export default function ProfileScreen({ route }) {
     setActivePost(postId);
     await getComments(accessToken, postId);
   };
-  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleClosePress1 = () =>
+    bottomSheetRef1.current?.close();
+
+  const handleOpenPress1 = async (postId) => {
+    bottomSheetRef1.current?.expand();
+    await getLikeListByPost(accessToken, postId);
+  };
+
   const handleCollapsePress = () => bottomSheetRef.current?.collapse();
   const snapToIndex = (index) => bottomSheetRef.current?.snapToIndex(index);
   const renderBackdrop = useCallback(
@@ -137,6 +148,7 @@ export default function ProfileScreen({ route }) {
 
   const { getComments, comments, isCommentLoading, commentError } =
     getCommentsByPost();
+  const { getLikeListByPost, likeList, isLikeListLoading, likeListError } = getLikesListByPost();
 
   const [activePost, setActivePost] = useState();
   const [commentList, setCommentList] = useState([]);
@@ -477,6 +489,7 @@ export default function ProfileScreen({ route }) {
                 {posts.data.map((post, index) => (
                   <PostCard
                     handleOpenPress={() => handleOpenPress(post.id)}
+                    handleOpenPress1={() => handleOpenPress1(post.id)}
                     data={post}
                     key={index}
                   />
@@ -549,7 +562,7 @@ export default function ProfileScreen({ route }) {
                     }}
                   >
                     <Pressable
-                      onPress={() => {}}
+                      onPress={() => navigation.navigate("ProfileScreen", {userId: item.user.id})}
                       style={[styles.avatar, styles.actionPadding]}
                     >
                       <Image
@@ -599,6 +612,83 @@ export default function ProfileScreen({ route }) {
               </Pressable>
             </View>
           </View>
+        </View>
+      </BottomSheet>
+
+      <BottomSheet
+        ref={bottomSheetRef1}
+        index={-1}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        handleIndicatorStyle={{ backgroundColor: "black" }}
+        backgroundStyle={{}}
+        backdropComponent={renderBackdrop}
+      >
+        <View style={{ paddingTop: 18 }}>
+          <View
+            style={{
+              height: 40,
+              backgroundColor: "white",
+              width: "100%",
+              borderStyle: "solid",
+              borderColor: "#bababa",
+              borderBottomWidth: 0.5,
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.containerHeadlineModal}>Lượt thích</Text>
+          </View>
+        </View>
+        <View style={{ display: "flex", alignContent: "space-between" }}>
+          <ScrollView style={{ height: "75%" }}>
+            {isLikeListLoading ? (
+              <>
+                <ActivityIndicator
+                  size="large"
+                  color="#ED2939"
+                  style={{ paddingVertical: 12 }}
+                />
+              </>
+            ) : likeList?.data.length == 0 ? (
+              <View>
+                <Text style={{ marginVertical: 20, textAlign: "center" }}>
+                  Chưa có lượt thích nào
+                </Text>
+              </View>
+            ) : (
+              likeList?.data.map((item) => (
+                <View style={{ height: 55 }}>
+                  <Pressable
+                    style={{
+                      flexDirection: "row",
+                      paddingHorizontal: 18,
+                      paddingVertical: 12,
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Pressable
+                      onPress={() => navigation.navigate("ProfileScreen", {userId: item.user.id})}
+                      style={[styles.avatar, styles.actionPadding]}
+                    >
+                      <Image
+                        style={[styles.avaImg, { marginRight: 10 }]}
+                        resizeMode="cover"
+                        source={{ uri: item.user.avatar }}
+                      />
+                    </Pressable>
+                    <View style={{}}>
+                      <View>
+                        <Text style={{ fontWeight: '500' }}>
+                          {" "}
+                          {item.user.email.split("@")[0]}
+                        </Text>
+                      </View>
+                    </View>
+                  </Pressable>
+                </View>
+              ))
+            )}
+          </ScrollView>
         </View>
       </BottomSheet>
     </SafeAreaView>

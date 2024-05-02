@@ -162,6 +162,46 @@ const getCommentsByPost = () => {
   };
 };
 
+const getLikesListByPost = () => {
+  const [likeList, setLikeList] = useState(null);
+  const [isLikeListLoading, setIsLoading] = useState(false);
+  const [likeListError, setError] = useState(null);
+
+  const getLikeListByPost = useCallback(async (accessToken, postId) => {
+    setIsLoading(true);
+
+    try {
+      const options = {
+        method: 'GET',
+        url: `https://travogue-production.up.railway.app/travogue-service/posts/${postId}/likes`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const response = await axios.request(options);
+      setLikeList(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      setError(error.response.data);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const refetch = () => {
+    setIsLoading(true);
+    getLikeListByPost();
+  };
+
+  return {
+    getLikeListByPost,
+    likeList,
+    isLikeListLoading,
+    likeListError,
+    refetch,
+  };
+};
+
 const postCommentsByPost = () => {
   const [newComment, setNewComments] = useState(null);
   const [isPostCommentLoading, setIsLoading] = useState(false);
@@ -249,4 +289,4 @@ const getFeed = (accessToken) => {
   return { feed, isFeedLoading, error, refetchFeed };
 };
   
-export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost, postCommentsByPost, getFeed};
+export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost, postCommentsByPost, getLikesListByPost, getFeed};
