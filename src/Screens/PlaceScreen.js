@@ -11,6 +11,7 @@ import {
   FlatList,
   Animated,
   ActivityIndicator,
+  RefreshControl
 } from "react-native";
 import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import { SvgXml } from "react-native-svg";
@@ -34,18 +35,18 @@ export default function PlaceScreen() {
 
   const { mainCategories, accessToken } = useStateContext();
 
-  const { childCategories, isLoading, error } = getChildCategories(
+  const { childCategories, isLoading, error, refetchChildCategories } = getChildCategories(
     accessToken,
     mainCategories.odau.id
   );
 
-  const { popularActivities, isPopularLoading, popularError } =
+  const { popularActivities, isPopularLoading, popularError, refetchPopularByCategory } =
     getPopularByCategory(accessToken, mainCategories.odau.id);
 
-  const { activities, isActivitiesLoading, activitiesError } =
+  const { activities, isActivitiesLoading, activitiesError, refetchActivityByCategory } =
     getActivityByCategory(accessToken, selected);
 
-  const { topCities, isTopCitiesLoading, topCitiesError } =
+  const { topCities, isTopCitiesLoading, topCitiesError, refetchTopCities } =
     getTopCities(accessToken);
 
   const renderItem = ({ item }) => (
@@ -64,9 +65,23 @@ export default function PlaceScreen() {
     <CityCard cardName={item.name} imgPath={item.images} />
   );
 
+  const onRefresh = () => {
+    refetchChildCategories();
+    refetchActivityByCategory();
+    refetchPopularByCategory();
+    refetchTopCities();
+  }
+
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading || isPopularLoading || isActivitiesLoading || isTopCitiesLoading} 
+            onRefresh={onRefresh}
+          />
+        }
+      >
         <View style={styles.mainView}>
           <View style={styles.flex}>
             <SvgXml xml={FireIcon} />
