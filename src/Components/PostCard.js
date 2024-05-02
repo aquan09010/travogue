@@ -133,10 +133,13 @@ export default function PostCard({data, handleOpenPress}) {
                 {data.user.email.split("@")[0]}{" "}
               </Text>
               <Text>{`đang ở`}</Text>
-              <Text style={styles.boldText}>
-                {" "}
-                {data.travelActivity.activityName}
-              </Text>
+              <Pressable onPress={() => navigation.navigate("Detail", {activityId: data.travelActivity.id})}>
+                <Text style={styles.boldText}>
+                  {" "}
+                  {data.travelActivity.activityName}
+                </Text>
+              </Pressable>
+              
             </Text>
             <Text
               style={{
