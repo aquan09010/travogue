@@ -94,6 +94,10 @@ const DetailATripADay = () => {
         <View style={styles.line} />
 
         <ScrollView style={styles.listDestinations}>
+          <View style={styles.filterAndDelete}>
+
+          </View>
+
           <ChosenTicket
             topRate={true}
             pic={require('../Assets/pic29.png')}
@@ -559,7 +563,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
     lineHeight: 36,
-    // paddingLeft: 24,
     fontFamily: 'BeVN'
   },
   touchableCalendar: {
@@ -587,7 +590,16 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#e8e8e8',
-  }
+  },
+  filterAndDelete: {
+    width: '100%',
+    height: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
+    borderWidth: 1,
+  },
 })
 
 export default DetailATripADay
