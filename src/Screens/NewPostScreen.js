@@ -11,7 +11,7 @@ import {
   SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
-  FlatList
+  FlatList,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -70,7 +70,8 @@ export default function NewPostScreen({ route }) {
   const { accessToken, user } = useStateContext();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const { activities, isSearchActivitiesLoading, searchActivitiesError } = searchActivities(accessToken, searchQuery);
+  const { activities, isSearchActivitiesLoading, searchActivitiesError } =
+    searchActivities(accessToken, searchQuery);
 
   const [images, setImages] = useState([]);
   const [place, setPlace] = useState();
@@ -158,21 +159,26 @@ export default function NewPostScreen({ route }) {
               width: 40,
             }}
             resizeMode="cover"
-            source={{uri: user.avatar}}
+            source={{ uri: user.avatar }}
           />
           <View style={{ marginLeft: 8 }}>
             <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
-              <Text style={styles.boldText}>{user.email.split('@')[0]}</Text>
-              {place ? 
+              <Text style={styles.boldText}>{user.email.split("@")[0]}</Text>
+              {place ? (
                 <>
                   <Text>{` đang ở `}</Text>
-                  <Pressable onPress={() => navigation.navigate("Detail", {activityId: place.id})}>
-                    <Text style={styles.boldText}>{place?.activityName}</Text>
-                  </Pressable>
-                  
+                  <Text
+                    onPress={() =>
+                      navigation.navigate("Detail", { activityId: place.id })
+                    }
+                    style={styles.boldText}
+                  >
+                    {place?.activityName}
+                  </Text>
                 </>
-                : <></>}
-              
+              ) : (
+                <></>
+              )}
             </Text>
             <Text
               style={{
@@ -357,13 +363,17 @@ export default function NewPostScreen({ route }) {
                   >
                     {/* <Text style={styles.suggestionText}>{item.activityName}</Text> */}
                     <View style={styles.container2}>
-          <Image source={{uri: item.mainImage}} style={styles.image} />
-          <View style={styles.textContainer}>
-            <Text style={[styles.text, styles.textStyle1]}>{item.activityName}</Text>
-            <Text style={styles.text}>{item.categoryName}</Text>
-          </View>
-        </View>
-
+                      <Image
+                        source={{ uri: item.mainImage }}
+                        style={styles.image}
+                      />
+                      <View style={styles.textContainer}>
+                        <Text style={[styles.text, styles.textStyle1]}>
+                          {item.activityName}
+                        </Text>
+                        <Text style={styles.text}>{item.categoryName}</Text>
+                      </View>
+                    </View>
                   </TouchableOpacity>
                 )}
               />
@@ -474,8 +484,8 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
   },
   container2: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   textContainer: {
     flex: 1,
@@ -484,7 +494,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textStyle1: {
-    fontWeight: '500'
+    fontWeight: "500",
   },
   image: {
     width: 50,
