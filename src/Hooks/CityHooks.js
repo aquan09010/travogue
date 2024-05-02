@@ -34,12 +34,12 @@ const getTopCities = (accessToken) => {
     fetchData();
   }, []); // No dependencies for initial fetch
 
-  const refetch = () => {
+  const refetchTopCities = () => {
     setIsLoading(true);
     fetchData();
   };
 
-  return { topCities, isTopCitiesLoading, topCitiesError, refetch };
+  return { topCities, isTopCitiesLoading, topCitiesError, refetchTopCities };
 };
 
 const searchCities = (accessToken, keyword) => {

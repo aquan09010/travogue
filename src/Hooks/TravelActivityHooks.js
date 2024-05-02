@@ -34,12 +34,12 @@ const getChildCategories = (accessToken, categoryId) => {
     fetchData();
   }, []); // No dependencies for initial fetch
 
-  const refetch = () => {
+  const refetchChildCategories = () => {
     setIsLoading(true);
     fetchData();
   };
 
-  return { childCategories, isLoading, error, refetch };
+  return { childCategories, isLoading, error, refetchChildCategories };
 };
 
 const getPopularByCategory = (accessToken, categoryId) => {
@@ -75,12 +75,12 @@ const getPopularByCategory = (accessToken, categoryId) => {
     fetchData();
   }, []); // No dependencies for initial fetch
 
-  const refetch = () => {
+  const refetchPopularByCategory = () => {
     setIsLoading(true);
     fetchData();
   };
 
-  return { popularActivities, isPopularLoading, popularError, refetch };
+  return { popularActivities, isPopularLoading, popularError, refetchPopularByCategory };
 };
 
 const getActivityByCategory = (accessToken, categoryId) => {
@@ -121,12 +121,12 @@ const getActivityByCategory = (accessToken, categoryId) => {
     fetchData();
   }, [categoryId]);
 
-  const refetch = () => {
+  const refetchActivityByCategory = () => {
     setIsLoading(true);
     fetchData();
   };
 
-  return { activities, isActivitiesLoading, activitiesError, refetch };
+  return { activities, isActivitiesLoading, activitiesError, refetchActivityByCategory };
 };
 
 const getDetailActivity = (accessToken, activityId) => {
