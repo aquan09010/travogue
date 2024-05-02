@@ -15,7 +15,13 @@ import {
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { ParkIconActive } from "@/Assets/Icons/Where";
-import React, { useLayoutEffect, useState, useRef } from "react";
+import React, {
+  useLayoutEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   SearchIcon,
   ArrowLeft,
@@ -38,9 +44,18 @@ import {
   LocationPostIcon,
   PeoplePostIcon,
 } from "@/Assets/Icons/Proflie";
-
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetTextInput,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
+import { CancelIcon } from "@/Assets/Icons/DetailIcon";
+import { searchActivities } from "@/Hooks/TravelActivityHooks";
 export default function NewPostScreen({ route }) {
   const { tab } = route.params;
+  const { activities, isSearchActivitiesLoading, searchActivitiesError } =
+    searchActivities(accessToken, searchQuery);
+
   const navigation = useNavigation();
   const gotoHost = async (e) => {
     e.preventDefault();
@@ -50,9 +65,12 @@ export default function NewPostScreen({ route }) {
   const handleCheckout = () => {
     navigation.navigate("Main");
   };
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { accessToken, user } = useStateContext();
   const [images, setImages] = useState([]);
+  const [place, setPlace] = useState();
+  const [taggedUsers, setTaggedUsers] = useState([]);
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -60,16 +78,39 @@ export default function NewPostScreen({ route }) {
       aspect: [1, 1],
       quality: 1,
       allowsMultipleSelection: true,
+      orderedSelection: true,
     });
-
     console.log(result);
-
     if (!result.canceled) {
       setImages(result.assets.map((asset) => asset.uri));
     }
   };
-  const { followers, isFollowerLoading } = getFollowers(accessToken);
-  const { following, isFollowingLoading } = getFollowing(accessToken);
+  const snapPoints = useMemo(() => ["95%"], []);
+  const bottomSheetRef = React.createRef(BottomSheet);
+  const bottomSheetRef1 = React.createRef(BottomSheet);
+
+  const handleClosePress = () =>
+    bottomSheetRef.current?.close(Keyboard.dismiss());
+
+  const handleOpenPress = () => {
+    bottomSheetRef.current?.expand();
+  };
+  const handleClosePress1 = () =>
+    bottomSheetRef1.current?.close(Keyboard.dismiss());
+
+  const handleOpenPress1 = () => {
+    bottomSheetRef1.current?.expand();
+  };
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        {...props}
+      />
+    ),
+    []
+  );
   function formatDate(dateString) {
     // Parse the date string into a Date object
     const date = new Date(dateString);
@@ -144,12 +185,17 @@ export default function NewPostScreen({ route }) {
           placeholder="Bạn đang ở đâu đấy? "
           placeholderTextColor="grey"
         />
-        <ScrollView style={{ height: "auto" }}>
+        <ScrollView style={{ height: "auto", flexDirection: "row" }}>
           {images ? (
             images.map((image) => (
               <Image
                 source={{ uri: image }}
-                style={{ width: "50%", height: 200 }}
+                style={{
+                  width: 300,
+                  height: 300,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               />
             ))
           ) : (
@@ -175,10 +221,11 @@ export default function NewPostScreen({ route }) {
           </View>
           <Text style={{ alignSelf: "center", fontSize: 18 }}>Ảnh/Video</Text>
         </Pressable>
-        <View
+        <Pressable
           style={{
             flexDirection: "row",
           }}
+          onPress={handleOpenPress}
         >
           <View
             style={{
@@ -192,11 +239,12 @@ export default function NewPostScreen({ route }) {
             <SvgXml xml={LocationPostIcon} />
           </View>
           <Text style={{ alignSelf: "center", fontSize: 18 }}>Địa điểm</Text>
-        </View>
-        <View
+        </Pressable>
+        <Pressable
           style={{
             flexDirection: "row",
           }}
+          onPress={handleOpenPress1}
         >
           <View
             style={{
@@ -209,21 +257,104 @@ export default function NewPostScreen({ route }) {
           >
             <SvgXml xml={PeoplePostIcon} />
           </View>
-          <Text style={{ alignSelf: "center", fontSize: 18 }}>Gắn thẻ</Text>
-        </View>
+          <Text style={{ alignSelf: "center", fontSize: 18 }}>
+            Gắn thẻ người khác
+          </Text>
+        </Pressable>
       </ScrollView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+        handleIndicatorStyle={{ backgroundColor: "black" }}
+        backgroundStyle={{}}
+        backdropComponent={renderBackdrop}
+      >
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 10,
+            width: 25,
+            height: 25,
+            flexDirection: "row",
+            justifyContent: "center",
+            paddingBottom: 10,
+          }}
+          onPress={handleClosePress}
+        >
+          <SvgXml style={{ alignSelf: "center" }} xml={CancelIcon} />
+        </TouchableOpacity>
+        <ScrollView style={{ marginTop: 25 }}>
+          <View keyboardShouldPersistTaps="always">
+            <View style={styles.mainView}>
+              <View style={styles.containerInput}>
+                <TextInput
+                  style={styles.inputArea}
+                  placeholder="Tìm kiếm"
+                  value={searchQuery}
+                  onChangeText={(q) => setSearchQuery(q)}
+                  autoFocus={true}
+                />
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </BottomSheet>
+      <BottomSheet
+        ref={bottomSheetRef1}
+        index={-1}
+        snapPoints={snapPoints}
+        handleIndicatorStyle={{ backgroundColor: "black" }}
+        backgroundStyle={{}}
+        backdropComponent={renderBackdrop}
+      >
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 10,
+            width: 25,
+            height: 25,
+            flexDirection: "row",
+            justifyContent: "center",
+            paddingBottom: 10,
+          }}
+          onPress={handleClosePress1}
+        >
+          <SvgXml style={{ alignSelf: "center" }} xml={CancelIcon} />
+        </TouchableOpacity>
+      </BottomSheet>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   mainView: {
-    padding: 16,
-    paddingBottom: 0,
+    margin: 16,
   },
   container: {
     backgroundColor: "#fff",
     height: "100%",
     flex: 1,
+  },
+  containerInput: {
+    borderRadius: 15,
+    borderStyle: "solid",
+    borderColor: "#e8e8e8",
+    borderWidth: 1,
+    height: 50,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+  },
+  container2: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  inputArea: {
+    height: "100%",
+    width: "100%",
   },
   statusBar: {
     width: "100%",
