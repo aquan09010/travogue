@@ -53,8 +53,8 @@ import { CancelIcon } from "@/Assets/Icons/DetailIcon";
 import { searchActivities } from "@/Hooks/TravelActivityHooks";
 export default function NewPostScreen({ route }) {
   const { tab } = route.params;
-  const { activities, isSearchActivitiesLoading, searchActivitiesError } =
-    searchActivities(accessToken, searchQuery);
+  // const { activities, isSearchActivitiesLoading, searchActivitiesError } =
+  //   searchActivities(accessToken, searchQuery);
 
   const navigation = useNavigation();
   const gotoHost = async (e) => {
@@ -89,8 +89,10 @@ export default function NewPostScreen({ route }) {
   const bottomSheetRef = React.createRef(BottomSheet);
   const bottomSheetRef1 = React.createRef(BottomSheet);
 
-  const handleClosePress = () =>
-    bottomSheetRef.current?.close(Keyboard.dismiss());
+  const handleClosePress = () => {
+    Keyboard.dismiss();
+    bottomSheetRef.current?.close();
+  };
 
   const handleOpenPress = () => {
     bottomSheetRef.current?.expand();
@@ -172,19 +174,22 @@ export default function NewPostScreen({ route }) {
             </Text>
           </View>
         </View>
-        <TextInput
-          multiline={true}
-          autoFocus={false}
-          style={{
-            paddingHorizontal: 14,
-            paddingVertical: 10,
-            height: "auto",
-            textAlignVertical: "top",
-            fontSize: 18,
-          }}
-          placeholder="Bạn đang ở đâu đấy? "
-          placeholderTextColor="grey"
-        />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <TextInput
+            multiline={true}
+            autoFocus={false}
+            style={{
+              paddingHorizontal: 14,
+              paddingVertical: 10,
+              height: "auto",
+              textAlignVertical: "top",
+              fontSize: 18,
+            }}
+            placeholder="Bạn đang ở đâu đấy? "
+            placeholderTextColor="grey"
+          />
+        </TouchableWithoutFeedback>
+
         <ScrollView style={{ height: "auto", flexDirection: "row" }}>
           {images ? (
             images.map((image) => (
@@ -225,7 +230,7 @@ export default function NewPostScreen({ route }) {
           style={{
             flexDirection: "row",
           }}
-          onPress={handleOpenPress}
+          onPress={() => handleOpenPress()}
         >
           <View
             style={{
@@ -244,7 +249,7 @@ export default function NewPostScreen({ route }) {
           style={{
             flexDirection: "row",
           }}
-          onPress={handleOpenPress1}
+          onPress={() => handleOpenPress1()}
         >
           <View
             style={{
@@ -281,22 +286,20 @@ export default function NewPostScreen({ route }) {
             justifyContent: "center",
             paddingBottom: 10,
           }}
-          onPress={handleClosePress}
+          onPress={() => handleClosePress()}
         >
           <SvgXml style={{ alignSelf: "center" }} xml={CancelIcon} />
         </TouchableOpacity>
         <ScrollView style={{ marginTop: 25 }}>
-          <View keyboardShouldPersistTaps="always">
-            <View style={styles.mainView}>
-              <View style={styles.containerInput}>
-                <TextInput
-                  style={styles.inputArea}
-                  placeholder="Tìm kiếm"
-                  value={searchQuery}
-                  onChangeText={(q) => setSearchQuery(q)}
-                  autoFocus={true}
-                />
-              </View>
+          <View style={styles.mainView}>
+            <View style={styles.containerInput}>
+              <TextInput
+                style={styles.inputArea}
+                placeholder="Tìm kiếm"
+                value={searchQuery}
+                onChangeText={(q) => setSearchQuery(q)}
+                autoFocus={false}
+              />
             </View>
           </View>
         </ScrollView>
@@ -312,7 +315,7 @@ export default function NewPostScreen({ route }) {
         <TouchableOpacity
           style={{
             position: "absolute",
-            top: 0,
+            top: 10,
             left: 10,
             width: 25,
             height: 25,
@@ -320,7 +323,7 @@ export default function NewPostScreen({ route }) {
             justifyContent: "center",
             paddingBottom: 10,
           }}
-          onPress={handleClosePress1}
+          onPress={() => handleClosePress1()}
         >
           <SvgXml style={{ alignSelf: "center" }} xml={CancelIcon} />
         </TouchableOpacity>

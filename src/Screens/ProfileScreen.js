@@ -41,6 +41,7 @@ import React, {
 } from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
+  BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
@@ -472,7 +473,7 @@ export default function ProfileScreen({ route }) {
                 </Text>
               </View>
             ) : (
-              <View>
+              <View style={{ paddingBottom: 50 }}>
                 {posts.data.map((post, index) => (
                   <PostCard
                     handleOpenPress={() => handleOpenPress(post.id)}
@@ -506,7 +507,7 @@ export default function ProfileScreen({ route }) {
         backgroundStyle={{}}
         backdropComponent={renderBackdrop}
       >
-        <View>
+        <View style={{ paddingTop: 18 }}>
           <View
             style={{
               height: 40,
@@ -520,80 +521,83 @@ export default function ProfileScreen({ route }) {
           >
             <Text style={styles.containerHeadlineModal}>Bình luận</Text>
           </View>
-
-          {isCommentLoading ? (
-            <>
-              <ActivityIndicator
-                size="large"
-                color="#ED2939"
-                style={{ paddingVertical: 12 }}
-              />
-            </>
-          ) : commentList?.length == 0 ? (
-            <View>
-              <Text style={{ marginVertical: 20, textAlign: "center" }}>
-                Hãy là người bình luận đầu tiên
-              </Text>
-            </View>
-          ) : (
-            commentList?.map((item) => (
-              <View style={{ height: 55 }}>
-                <Pressable
-                  style={{
-                    flexDirection: "row",
-                    paddingHorizontal: 18,
-                    paddingVertical: 12,
-                  }}
-                >
+        </View>
+        <View style={{ display: "flex", alignContent: "space-between" }}>
+          <ScrollView style={{ height: "75%" }}>
+            {isCommentLoading ? (
+              <>
+                <ActivityIndicator
+                  size="large"
+                  color="#ED2939"
+                  style={{ paddingVertical: 12 }}
+                />
+              </>
+            ) : commentList?.length == 0 ? (
+              <View>
+                <Text style={{ marginVertical: 20, textAlign: "center" }}>
+                  Hãy là người bình luận đầu tiên
+                </Text>
+              </View>
+            ) : (
+              commentList?.map((item) => (
+                <View style={{ height: 55 }}>
                   <Pressable
-                    onPress={() => {}}
-                    style={[styles.avatar, styles.actionPadding]}
+                    style={{
+                      flexDirection: "row",
+                      paddingHorizontal: 18,
+                      paddingVertical: 12,
+                    }}
                   >
-                    <Image
-                      style={[styles.avaImg, { marginRight: 10 }]}
-                      resizeMode="cover"
-                      source={{ uri: item.user.avatar }}
-                    />
-                  </Pressable>
-                  <View style={{}}>
-                    <View style={styles.line1}>
-                      <Text style={{ color: "gray" }}>
+                    <Pressable
+                      onPress={() => {}}
+                      style={[styles.avatar, styles.actionPadding]}
+                    >
+                      <Image
+                        style={[styles.avaImg, { marginRight: 10 }]}
+                        resizeMode="cover"
+                        source={{ uri: item.user.avatar }}
+                      />
+                    </Pressable>
+                    <View style={{}}>
+                      <View style={styles.line1}>
+                        <Text style={{ color: "gray" }}>
+                          {" "}
+                          {item.user.email.split("@")[0]} •{" "}
+                          {timeAgo(item.updatedAt)}
+                        </Text>
+                      </View>
+                      <Text style={{ paddingTop: 3, paddingRight: 45 }}>
                         {" "}
-                        {item.user.email.split("@")[0]} •{" "}
-                        {timeAgo(item.updatedAt)}
+                        {item.comment}
                       </Text>
                     </View>
-                    <Text style={{ paddingTop: 3, paddingRight: 45 }}>
-                      {" "}
-                      {item.comment}
-                    </Text>
-                  </View>
-                </Pressable>
-              </View>
-            ))
-          )}
-        </View>
-        <View style={{}}>
-          <View style={styles.searchSection}>
-            <Image
-              style={[styles.avaImg, { marginRight: 10 }]}
-              resizeMode="cover"
-              source={{ uri: user.avatar }}
-            />
-            <TextInput
-              style={[styles.input, { width: "90%" }]}
-              multiline={true}
-              placeholder="Viết bình luận ..."
-              underlineColorAndroid="transparent"
-              value={userCmt}
-              onChangeText={setUserCmt}
-            />
-            <Pressable
-              onPress={handlePostComment}
-              disabled={isPostCommentLoading}
-            >
-              <SvgXml style={{ marginLeft: 5 }} xml={sendCommentIcon} />
-            </Pressable>
+                  </Pressable>
+                </View>
+              ))
+            )}
+          </ScrollView>
+          <View style={{}}>
+            <View style={styles.searchSection}>
+              <Image
+                style={[styles.avaImg, { marginRight: 10 }]}
+                resizeMode="cover"
+                source={{ uri: user.avatar }}
+              />
+              <BottomSheetTextInput
+                style={[styles.input, { width: "90%" }]}
+                multiline={true}
+                placeholder="Viết bình luận ..."
+                underlineColorAndroid="transparent"
+                value={userCmt}
+                onChangeText={setUserCmt}
+              />
+              <Pressable
+                onPress={handlePostComment}
+                disabled={isPostCommentLoading}
+              >
+                <SvgXml style={{ marginLeft: 5 }} xml={sendCommentIcon} />
+              </Pressable>
+            </View>
           </View>
         </View>
       </BottomSheet>
