@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
+  FlatList
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -51,6 +52,7 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { CancelIcon } from "@/Assets/Icons/DetailIcon";
 import { searchActivities } from "@/Hooks/TravelActivityHooks";
+import { searchCities } from "@/Hooks/CityHooks";
 export default function NewPostScreen({ route }) {
   const { tab } = route.params;
   // const { activities, isSearchActivitiesLoading, searchActivitiesError } =
@@ -65,9 +67,11 @@ export default function NewPostScreen({ route }) {
   const handleCheckout = () => {
     navigation.navigate("Main");
   };
-  const [searchQuery, setSearchQuery] = useState("");
-
   const { accessToken, user } = useStateContext();
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const { activities, isSearchActivitiesLoading, searchActivitiesError } = searchActivities(accessToken, searchQuery);
+
   const [images, setImages] = useState([]);
   const [place, setPlace] = useState();
   const [taggedUsers, setTaggedUsers] = useState([]);
@@ -154,13 +158,21 @@ export default function NewPostScreen({ route }) {
               width: 40,
             }}
             resizeMode="cover"
-            source={require("../Assets/ava1.jpg")}
+            source={{uri: user.avatar}}
           />
           <View style={{ marginLeft: 8 }}>
             <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
-              <Text style={styles.boldText}>aquan09010</Text>
-              <Text>{` đang ở `}</Text>
-              <Text style={styles.boldText}>Quốc Học Huế</Text>
+              <Text style={styles.boldText}>{user.email.split('@')[0]}</Text>
+              {place ? 
+                <>
+                  <Text>{` đang ở `}</Text>
+                  <Pressable onPress={() => navigation.navigate("Detail", {activityId: place.id})}>
+                    <Text style={styles.boldText}>{place?.activityName}</Text>
+                  </Pressable>
+                  
+                </>
+                : <></>}
+              
             </Text>
             <Text
               style={{
@@ -290,7 +302,7 @@ export default function NewPostScreen({ route }) {
         >
           <SvgXml style={{ alignSelf: "center" }} xml={CancelIcon} />
         </TouchableOpacity>
-        <ScrollView style={{ marginTop: 25 }}>
+        <View style={{ marginTop: 25 }}>
           <View style={styles.mainView}>
             <View style={styles.containerInput}>
               <TextInput
@@ -302,7 +314,62 @@ export default function NewPostScreen({ route }) {
               />
             </View>
           </View>
-        </ScrollView>
+          {isSearchActivitiesLoading ? (
+            <>
+              <ActivityIndicator
+                size="large"
+                color="#ED2939"
+                style={{ paddingVertical: 12 }}
+              />
+              <Text
+                style={{
+                  color: "#ED2939",
+                  textAlign: "center",
+                  paddingBottom: 20,
+                  fontSize: 14,
+                }}
+              >
+                Please wait...
+              </Text>
+            </>
+          ) : searchActivitiesError ? (
+            <Text
+              style={{
+                color: "#A80027",
+                textAlign: "center",
+                paddingBottom: 20,
+                fontSize: 16,
+              }}
+            >
+              Something went wrong!
+            </Text>
+          ) : (
+            <View style={styles.mainView}>
+              <FlatList
+                data={activities.data.data}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.suggestionItem}
+                    onPress={() => {
+                      setPlace(item);
+                      handleClosePress();
+                    }}
+                  >
+                    {/* <Text style={styles.suggestionText}>{item.activityName}</Text> */}
+                    <View style={styles.container2}>
+          <Image source={{uri: item.mainImage}} style={styles.image} />
+          <View style={styles.textContainer}>
+            <Text style={[styles.text, styles.textStyle1]}>{item.activityName}</Text>
+            <Text style={styles.text}>{item.categoryName}</Text>
+          </View>
+        </View>
+
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          )}
+        </View>
       </BottomSheet>
       <BottomSheet
         ref={bottomSheetRef1}
@@ -400,5 +467,28 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: "600",
+  },
+  suggestionItem: {
+    borderBottomWidth: 1,
+    borderColor: "#e8e8e8",
+    borderStyle: "solid",
+  },
+  container2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textContainer: {
+    flex: 1,
+  },
+  text: {
+    fontSize: 16,
+  },
+  textStyle1: {
+    fontWeight: '500'
+  },
+  image: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
   },
 });
