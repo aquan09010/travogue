@@ -241,12 +241,12 @@ const getFeed = (accessToken) => {
     fetchData();
   }, []); // No dependencies for initial fetch
 
-  const refetch = () => {
+  const refetchFeed = () => {
     setIsLoading(true);
     fetchData();
   };
 
-  return { feed, isFeedLoading, error, refetch };
+  return { feed, isFeedLoading, error, refetchFeed };
 };
   
 export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost, postCommentsByPost, getFeed};

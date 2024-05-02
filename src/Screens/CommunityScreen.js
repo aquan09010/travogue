@@ -17,6 +17,7 @@ import {
   SafeAreaView,
   Pressable,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import PostCard from "@/Components/PostCard";
 import { useStateContext } from "@/Context/StateContext";
@@ -88,7 +89,7 @@ export default function CommunityScreen() {
 
   const { accessToken, user } = useStateContext();
 
-  const { feed, isFeedLoading, error } = getFeed(accessToken);
+  const { feed, isFeedLoading, error, refetchFeed } = getFeed(accessToken);
 
   const { getComments, comments, isCommentLoading, commentError } = getCommentsByPost();
 
@@ -127,6 +128,12 @@ export default function CommunityScreen() {
           backgroundColor: "#FFFFFF",
           paddingBottom: 60,
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFeedLoading}
+            onRefresh={refetchFeed}
+          />
+        }
       >
         
         {isFeedLoading ? (
