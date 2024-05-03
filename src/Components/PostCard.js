@@ -22,7 +22,7 @@ import {
   BookmarkIconSelected,
   CommentBlackIcon,
   HeartBlackIcon,
-  HeartSeletetedIcon
+  HeartSeletetedIcon,
 } from "@/Assets/Icons/Proflie";
 import { deleteLikeHook, postLikeHook } from "@/Hooks/PostHooks";
 import { useStateContext } from "@/Context/StateContext";
@@ -69,7 +69,7 @@ const timeAgo = (dateString) => {
   return "just now";
 };
 
-export default function PostCard({data, handleOpenPress, handleOpenPress1}) {
+export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
   // const [selectedBookmark, setSelectedBookmark] = useState(false);
   const [liked, setLiked] = useState(data.liked);
   const [numOfLikes, setNumOfLikes] = useState(data.numOfLikes);
@@ -85,14 +85,14 @@ export default function PostCard({data, handleOpenPress, handleOpenPress1}) {
 
     if (!liked) {
       setLiked(true);
-      setNumOfLikes(numOfLikes => numOfLikes + 1);
+      setNumOfLikes((numOfLikes) => numOfLikes + 1);
       await postLike(accessToken, data.id);
     } else {
       setLiked(false);
-      setNumOfLikes(numOfLikes => numOfLikes - 1);
+      setNumOfLikes((numOfLikes) => numOfLikes - 1);
       await deleteLike(accessToken, data.id);
     }
-  }
+  };
 
   const [selectedBookmark, setSelectedBookmark] = useState(false);
   const snapPoints = useMemo(() => ["50%", "90%"]);
@@ -114,32 +114,41 @@ export default function PostCard({data, handleOpenPress, handleOpenPress1}) {
     >
       <View style={{ paddingHorizontal: 10 }}>
         <View style={styles.status}>
-          <Pressable onPress={() => navigation.navigate("ProfileScreen", {userId: data.user.id})}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("ProfileScreen", { userId: data.user.id })
+            }
+          >
             <Image
-            style={{
-              height: 40,
-              width: 40,
-              borderRadius: 40 / 2,
-              width: 40,
-            }}
-            resizeMode="cover"
-            source={{ uri: data.user.avatar }}
+              style={{
+                height: 40,
+                width: 40,
+                borderRadius: 40 / 2,
+                width: 40,
+              }}
+              resizeMode="cover"
+              source={{ uri: data.user.avatar }}
             />
           </Pressable>
-          
+
           <View style={{ marginLeft: 8 }}>
             <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
               <Text style={styles.boldText}>
                 {data.user.email.split("@")[0]}{" "}
               </Text>
               <Text>{`đang ở`}</Text>
-              <Pressable onPress={() => navigation.navigate("Detail", {activityId: data.travelActivity.id})}>
+              <Text
+                onPress={() =>
+                  navigation.navigate("Detail", {
+                    activityId: data.travelActivity.id,
+                  })
+                }
+              >
                 <Text style={styles.boldText}>
                   {" "}
                   {data.travelActivity.activityName}
                 </Text>
-              </Pressable>
-              
+              </Text>
             </Text>
             <Text
               style={{
@@ -194,9 +203,13 @@ export default function PostCard({data, handleOpenPress, handleOpenPress1}) {
         </Swiper>
         <Text style={{ paddingTop: 8, paddingBottom: 8 }}>{data.caption}</Text>
         <View style={styles.frameParent}>
-          <View style={{ flexDirection: "row" }} >
+          <View style={{ flexDirection: "row" }}>
             <Pressable onPress={handleLike}>
-              {liked ? <SvgXml xml={HeartSeletetedIcon}/> : <SvgXml xml={HeartBlackIcon} />}
+              {liked ? (
+                <SvgXml xml={HeartSeletetedIcon} />
+              ) : (
+                <SvgXml xml={HeartBlackIcon} />
+              )}
             </Pressable>
             <Pressable onPress={handleOpenPress} style={{ marginLeft: 15 }}>
               <SvgXml xml={CommentBlackIcon} />
@@ -213,35 +226,42 @@ export default function PostCard({data, handleOpenPress, handleOpenPress1}) {
         <Pressable onPress={handleOpenPress1}>
           <Text style={{ marginLeft: 5 }}>{numOfLikes} lượt thích</Text>
         </Pressable>
-        
-        {!data.latestComment ? <></> : <Pressable
-          style={{
-            flexDirection: "row",
-            paddingHorizontal: 18,
-            paddingVertical: 12,
-          }}
-        >
+
+        {!data.latestComment ? (
+          <></>
+        ) : (
           <Pressable
-            onPress={() => {}}
-            style={[styles.avatar, styles.actionPadding]}
+            style={{
+              flexDirection: "row",
+              paddingHorizontal: 18,
+              paddingVertical: 12,
+            }}
           >
-            <Image
-              style={[styles.avaImg, { marginRight: 10 }]}
-              resizeMode="cover"
-              source={{ uri: data.latestComment.user.avatar}}
-            />
-          </Pressable>
-          <View style={{}}>
-            <View style={styles.line}>
-              <Text style={{color: 'gray'}}>
-                {data.latestComment.user.email.split('@')[0]} • {timeAgo(data.latestComment.updatedAt)}
+            <Pressable
+              onPress={() => {}}
+              style={[styles.avatar, styles.actionPadding]}
+            >
+              <Image
+                style={[styles.avaImg, { marginRight: 10 }]}
+                resizeMode="cover"
+                source={{ uri: data.latestComment.user.avatar }}
+              />
+            </Pressable>
+            <View style={{}}>
+              <View style={styles.line}>
+                <Text style={{ color: "gray" }}>
+                  {data.latestComment.user.email.split("@")[0]} •{" "}
+                  {timeAgo(data.latestComment.updatedAt)}
+                </Text>
+              </View>
+              <Text style={{ paddingRight: 45 }}>
+                {data.latestComment.comment}
               </Text>
             </View>
-            <Text style={{ paddingRight: 45 }}>{data.latestComment.comment}</Text>
-          </View>
-        </Pressable>}
+          </Pressable>
+        )}
         <Pressable>
-          <Text style={{ marginLeft: 5, color: 'gray' }}>
+          <Text style={{ marginLeft: 5, color: "gray" }}>
             Xem tất cả {numOfComments} bình luận
           </Text>
         </Pressable>
