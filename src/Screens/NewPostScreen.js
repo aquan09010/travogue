@@ -12,6 +12,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   FlatList,
+  Button,
+  CheckBox,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -40,7 +42,12 @@ import { useStateContext } from "@/Context/StateContext";
 import { getFollowers, getFollowing } from "@/Hooks/FollowHooks";
 import { ActivityIndicator } from "react-native";
 import { isAllOf } from "@reduxjs/toolkit";
+import { Video } from "expo-av";
+
 import {
+  CameraPostIcon,
+  CheckBoxIcon,
+  CheckBoxSelectedIcon,
   ImagePostIcon,
   LocationPostIcon,
   PeoplePostIcon,
@@ -52,11 +59,13 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { CancelIcon } from "@/Assets/Icons/DetailIcon";
 import { searchActivities } from "@/Hooks/TravelActivityHooks";
-import { searchCities } from "@/Hooks/CityHooks";
+import LineProfile from "@/Components/LineProfile";
+import LineCheckBox from "@/Components/LineCheckbox";
+
 export default function NewPostScreen({ route }) {
-  const { tab } = route.params;
-  // const { activities, isSearchActivitiesLoading, searchActivitiesError } =
-  //   searchActivities(accessToken, searchQuery);
+  const { userProfile } = route.params;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
 
   const navigation = useNavigation();
   const gotoHost = async (e) => {
@@ -72,9 +81,26 @@ export default function NewPostScreen({ route }) {
   const [searchQuery, setSearchQuery] = useState("");
   const { activities, isSearchActivitiesLoading, searchActivitiesError } =
     searchActivities(accessToken, searchQuery);
-
+  const { followers, isFollowerLoading } = getFollowers(
+    accessToken,
+    userProfile.id
+  );
   const [images, setImages] = useState([]);
   const [place, setPlace] = useState();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const handleSelectItem = (item) => {
+    const isSelected = selectedItems.includes(item);
+
+    if (isSelected) {
+      // Item is already selected, remove it
+      setSelectedItems(
+        selectedItems.filter((selectedItem) => selectedItem !== item)
+      );
+    } else {
+      // Item is not selected, add it
+      setSelectedItems([...selectedItems, item]);
+    }
+  };
   const [taggedUsers, setTaggedUsers] = useState([]);
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -90,6 +116,7 @@ export default function NewPostScreen({ route }) {
       setImages(result.assets.map((asset) => asset.uri));
     }
   };
+  console.log(images);
   const snapPoints = useMemo(() => ["95%"], []);
   const bottomSheetRef = React.createRef(BottomSheet);
   const bottomSheetRef1 = React.createRef(BottomSheet);
@@ -118,6 +145,7 @@ export default function NewPostScreen({ route }) {
     ),
     []
   );
+
   function formatDate(dateString) {
     // Parse the date string into a Date object
     const date = new Date(dateString);
@@ -180,6 +208,44 @@ export default function NewPostScreen({ route }) {
                 <></>
               )}
             </Text>
+            <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
+              {selectedItems.length === 2 ? (
+                <>
+                  <Text>{`cùng với `}</Text>
+                  <Text style={styles.boldText}>
+                    {selectedItems[0].split("@")[0]}
+                  </Text>
+                  <Text>{" và "}</Text>
+                  <Text style={styles.boldText}>
+                    {selectedItems[1].split("@")[0]}
+                  </Text>
+                </>
+              ) : selectedItems.length === 1 ? (
+                <>
+                  <Text>{`cùng với `}</Text>
+                  <Text style={styles.boldText}>
+                    {selectedItems[0].split("@")[0]}
+                  </Text>
+                </>
+              ) : selectedItems.length > 2 ? (
+                <>
+                  <Text>{`cùng với `}</Text>
+                  <Text style={styles.boldText}>
+                    {selectedItems[0].split("@")[0]}
+                  </Text>
+                  <Text>{" và "}</Text>
+                  <Text
+                    onPress={() => handleOpenPress1()}
+                    style={styles.boldText}
+                  >
+                    3 người khác
+                  </Text>
+                </>
+              ) : (
+                <></>
+              )}
+            </Text>
+
             <Text
               style={{
                 fontSize: 10,
@@ -207,24 +273,76 @@ export default function NewPostScreen({ route }) {
             placeholderTextColor="grey"
           />
         </TouchableWithoutFeedback>
-
+        {/* <View>
+          <Video
+            source={""}
+            paused={!isPlaying}
+            controls={true}
+            style={styles.backgroundVideo}
+            muted={isMuted}
+          />
+          <Button
+            onPress={() => setIsPlaying((p) => !p)}
+            title={isPlaying ? "Stop" : "Play"}
+          />
+          <Button
+            onPress={() => setIsMuted((m) => !m)}
+            title={isMuted ? "Unmute" : "Mute"}
+          />
+        </View> */}
         <ScrollView style={{ height: "auto", flexDirection: "row" }}>
           {images ? (
-            images.map((image) => (
-              <Image
-                source={{ uri: image }}
-                style={{
-                  width: 300,
-                  height: 300,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              />
-            ))
+            images.map((image) => {
+              const extension = image.split(".").pop();
+              if (extension === "mp4") {
+                return (
+                  <View>
+                    <Video
+                      source={{ uri: image }}
+                      style={{ width: 300, height: 200 }}
+                      useNativeControls
+                      resizeMode="contain"
+                      isLooping
+                    />
+                  </View>
+                );
+              } else {
+                return (
+                  <Image
+                    source={{ uri: image }}
+                    style={{
+                      width: 300,
+                      height: 300,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  />
+                );
+              }
+            })
           ) : (
             <></>
           )}
         </ScrollView>
+        <Pressable
+          style={{
+            flexDirection: "row",
+          }}
+          onPress={() => {}}
+        >
+          <View
+            style={{
+              margin: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              height: 25,
+              width: 30,
+            }}
+          >
+            <SvgXml xml={CameraPostIcon} />
+          </View>
+          <Text style={{ alignSelf: "center", fontSize: 18 }}>Camera</Text>
+        </Pressable>
         <Pressable
           style={{
             flexDirection: "row",
@@ -404,6 +522,86 @@ export default function NewPostScreen({ route }) {
         >
           <SvgXml style={{ alignSelf: "center" }} xml={CancelIcon} />
         </TouchableOpacity>
+        <View style={{ marginTop: 25, width: "100%" }}>
+          <View style={styles.mainView}>
+            {isFollowerLoading ? (
+              <>
+                <ActivityIndicator
+                  size="large"
+                  color="#ED2939"
+                  style={{ paddingVertical: 12 }}
+                />
+                <Text
+                  style={{
+                    color: "#ED2939",
+                    textAlign: "center",
+                    paddingBottom: 20,
+                    fontSize: 14,
+                  }}
+                >
+                  Please wait...
+                </Text>
+              </>
+            ) : (
+              <FlatList
+                data={followers.data}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => handleSelectItem(item.email)}
+                    style={{
+                      height: 55,
+                      marginTop: 10,
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Pressable style={[styles.avatar, styles.actionPadding]}>
+                        <Image
+                          style={[styles.avaImg, { marginRight: 10 }]}
+                          resizeMode="cover"
+                          source={{ uri: item.avatar }}
+                        />
+                      </Pressable>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <View style={{ width: "65%", marginTop: 5 }}>
+                          <View style={styles.line1}>
+                            <Text style={styles.title}>
+                              {item.email.split("@")[0]}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{ justifyContent: "center", width: "20%" }}
+                        >
+                          {selectedItems.includes(item.email) ? (
+                            <SvgXml
+                              style={{ alignSelf: "center" }}
+                              xml={CheckBoxSelectedIcon}
+                            />
+                          ) : (
+                            <SvgXml
+                              style={{ alignSelf: "center" }}
+                              xml={CheckBoxIcon}
+                            />
+                          )}
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            )}
+          </View>
+        </View>
       </BottomSheet>
     </SafeAreaView>
   );
@@ -453,7 +651,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
   },
   checkout: {
@@ -500,5 +698,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginRight: 10,
+  },
+  avaImg: {
+    height: 50,
+    width: 50,
+    borderRadius: 50 / 2,
   },
 });
