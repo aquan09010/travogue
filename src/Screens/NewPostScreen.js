@@ -24,6 +24,7 @@ import React, {
   useRef,
   useMemo,
   useCallback,
+  useEffect,
 } from "react";
 import {
   SearchIcon,
@@ -61,6 +62,7 @@ import { CancelIcon } from "@/Assets/Icons/DetailIcon";
 import { searchActivities } from "@/Hooks/TravelActivityHooks";
 import LineProfile from "@/Components/LineProfile";
 import LineCheckBox from "@/Components/LineCheckbox";
+import { addImageToPost, createPostHook } from "@/Hooks/PostHooks";
 
 export default function NewPostScreen({ route }) {
   const { userProfile } = route.params;
@@ -162,6 +164,21 @@ export default function NewPostScreen({ route }) {
 
     return formattedDate;
   }
+
+  const [caption, setCaption] = useState("")
+
+  const { createPost, newPost, isCreatePostLoading } = createPostHook();
+  const { addImage, isAddImageLoading} = addImageToPost();
+
+  const handleCreatePost = async () => {
+    const response = await createPost(accessToken, place ? place.id : null, caption, selectedItems.map(item => item.id))
+    console.log(response);
+    for (const image of images) {
+      await addImage(accessToken, response.data.id, image);
+    }
+    navigation.navigate("ProfileScreen", { userId: user.id })
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.statusBar}>
@@ -169,7 +186,9 @@ export default function NewPostScreen({ route }) {
           <SvgXml xml={ArrowLeftBlack} />
         </Pressable>
         <Text style={styles.title}>Đăng bài viết</Text>
-        <Pressable style={styles.button} onPress={() => {}}>
+        <Pressable style={styles.button} onPress={() => handleCreatePost()}
+          disabled={isCreatePostLoading || isAddImageLoading}  
+        >
           <Text style={styles.checkout}>Đăng</Text>
         </Pressable>
       </View>
@@ -178,6 +197,12 @@ export default function NewPostScreen({ route }) {
         keyboardShouldPersistTaps="always"
         contentContainerStyle={{ flexGrow: 1 }}
       >
+        {isAddImageLoading || isCreatePostLoading
+          ? <ActivityIndicator
+                  size="large"
+                  color="#ED2939"
+                  style={{ paddingVertical: 12 }}
+                /> : <></> }
         <View style={styles.status}>
           <Image
             style={{
@@ -213,25 +238,25 @@ export default function NewPostScreen({ route }) {
                 <>
                   <Text>{`cùng với `}</Text>
                   <Text style={styles.boldText}>
-                    {selectedItems[0].split("@")[0]}
+                    {selectedItems[0].email.split("@")[0]}
                   </Text>
                   <Text>{" và "}</Text>
                   <Text style={styles.boldText}>
-                    {selectedItems[1].split("@")[0]}
+                    {selectedItems[1].email.split("@")[0]}
                   </Text>
                 </>
               ) : selectedItems.length === 1 ? (
                 <>
                   <Text>{`cùng với `}</Text>
                   <Text style={styles.boldText}>
-                    {selectedItems[0].split("@")[0]}
+                    {selectedItems[0].email.split("@")[0]}
                   </Text>
                 </>
               ) : selectedItems.length > 2 ? (
                 <>
                   <Text>{`cùng với `}</Text>
                   <Text style={styles.boldText}>
-                    {selectedItems[0].split("@")[0]}
+                    {selectedItems[0].email.split("@")[0]}
                   </Text>
                   <Text>{" và "}</Text>
                   <Text
@@ -271,6 +296,8 @@ export default function NewPostScreen({ route }) {
             }}
             placeholder="Bạn đang ở đâu đấy? "
             placeholderTextColor="grey"
+            value={caption}
+            onChangeText={c => setCaption(c)}
           />
         </TouchableWithoutFeedback>
         {/* <View>
@@ -548,7 +575,7 @@ export default function NewPostScreen({ route }) {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                   <TouchableOpacity
-                    onPress={() => handleSelectItem(item.email)}
+                    onPress={() => handleSelectItem(item)}
                     style={{
                       height: 55,
                       marginTop: 10,
@@ -582,7 +609,7 @@ export default function NewPostScreen({ route }) {
                         <View
                           style={{ justifyContent: "center", width: "20%" }}
                         >
-                          {selectedItems.includes(item.email) ? (
+                          {selectedItems.includes(item) ? (
                             <SvgXml
                               style={{ alignSelf: "center" }}
                               xml={CheckBoxSelectedIcon}

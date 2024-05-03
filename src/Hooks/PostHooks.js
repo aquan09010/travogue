@@ -288,5 +288,102 @@ const getFeed = (accessToken) => {
 
   return { feed, isFeedLoading, error, refetchFeed };
 };
+
+const createPostHook = () => {
+  const [newPost, setNewPost] = useState(null);
+  const [isCreatePostLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const createPost = useCallback(
+    async (accessToken, travelActivityId, caption, usersTagged) => {
+      setIsLoading(true);
+
+      try {
+        const options = {
+          method: 'POST',
+          url: `https://travogue-production.up.railway.app/travogue-service/posts`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            travelActivityId: travelActivityId
+          },
+          data: {
+            caption: caption,
+            usersTagged: usersTagged
+          }
+        };
+        const response = await axios.request(options);
+        setNewPost(response.data)
+        setIsLoading(false);
+        return response.data
+      } catch (error) {
+        setError(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  const refetch = () => {
+    setIsLoading(true);
+    createPost();
+  };
+
+  return { createPost, newPost, isCreatePostLoading, error, refetch };
+};
+
+const addImageToPost = () => {
+  const [post, setPost] = useState(null);
+  const [isAddImageLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const addImage = useCallback(
+    async (accessToken, postId, photoUri) => {
+      setIsLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("image", {
+        name: "image.jpg",
+        type: "image/jpeg",
+        uri: Platform.OS === "ios" ? photoUri.replace("file://", "") : photoUri,
+      });
+
+      try {
+        const response = await fetch(
+          `https://travogue-production.up.railway.app/travogue-service/posts/${postId}/images`,
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "multipart/form-data",
+            }, // Assuming imageFile is a File object or similar
+          }
+        );
+        let responseJson = await response.json();
+        console.log("POST IMAGE: ". responseJson);
+        setPost(responseJson)
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.response.data);
+        console.log("POST IMAGE ERROR: ", error)
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  const refetch = () => {
+    setIsLoading(true);
+    addImage();
+  };
+
+  return { addImage, post, isAddImageLoading, error, refetch };
+};
+
   
-export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost, postCommentsByPost, getLikesListByPost, getFeed};
+export { getPostsByUser, postLikeHook, deleteLikeHook, getCommentsByPost, postCommentsByPost, getLikesListByPost, getFeed, createPostHook, addImageToPost};

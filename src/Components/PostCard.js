@@ -136,19 +136,24 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
               <Text style={styles.boldText}>
                 {data.user.email.split("@")[0]}{" "}
               </Text>
-              <Text>{`đang ở`}</Text>
-              <Text
-                onPress={() =>
-                  navigation.navigate("Detail", {
-                    activityId: data.travelActivity.id,
-                  })
-                }
-              >
-                <Text style={styles.boldText}>
-                  {" "}
-                  {data.travelActivity.activityName}
-                </Text>
-              </Text>
+              {data.travelActivity && 
+                <>
+                  <Text>{`đang ở`}</Text>
+                  <Text
+                    onPress={() =>
+                      navigation.navigate("Detail", {
+                        activityId: data.travelActivity.id,
+                      })
+                    }
+                  >
+                    <Text style={styles.boldText}>
+                      {" "}
+                      {data.travelActivity.activityName}
+                    </Text>
+                  </Text>  
+                </>
+              }
+              
             </Text>
             <Text
               style={{
@@ -162,45 +167,48 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
             </Text>
           </View>
         </View>
-        <Swiper
-          style={styles.wrapper}
-          dot={
-            <View
-              style={{
-                backgroundColor: "rgba(0,0,0,.2)",
-                width: 4,
-                height: 4,
-                borderRadius: 4,
-                marginLeft: 3,
-                marginRight: 3,
-                marginTop: 3,
-                marginBottom: -50,
-              }}
-            />
-          }
-          activeDot={
-            <View
-              style={{
-                backgroundColor: "#007aff",
-                width: 5,
-                height: 5,
-                borderRadius: 4,
-                marginLeft: 3,
-                marginRight: 3,
-                marginTop: 3,
-                marginBottom: -50,
-              }}
-            />
-          }
-        >
-          {data.images.split(";").map((image) => (
-            <Image
-              style={styles.slide1}
-              resizeMode="cover"
-              source={{ uri: image }}
-            />
-          ))}
-        </Swiper>
+        {data.images && 
+          <Swiper
+            style={styles.wrapper}
+            dot={
+              <View
+                style={{
+                  backgroundColor: "rgba(0,0,0,.2)",
+                  width: 4,
+                  height: 4,
+                  borderRadius: 4,
+                  marginLeft: 3,
+                  marginRight: 3,
+                  marginTop: 3,
+                  marginBottom: -50,
+                }}
+              />
+            }
+            activeDot={
+              <View
+                style={{
+                  backgroundColor: "#007aff",
+                  width: 5,
+                  height: 5,
+                  borderRadius: 4,
+                  marginLeft: 3,
+                  marginRight: 3,
+                  marginTop: 3,
+                  marginBottom: -50,
+                }}
+              />
+            }
+          >
+            {data.images.split(";").map((image) => (
+              <Image
+                style={styles.slide1}
+                resizeMode="cover"
+                source={{ uri: image }}
+              />
+            ))}
+          </Swiper>
+        }
+        
         <Text style={{ paddingTop: 8, paddingBottom: 8 }}>{data.caption}</Text>
         <View style={styles.frameParent}>
           <View style={{ flexDirection: "row" }}>
