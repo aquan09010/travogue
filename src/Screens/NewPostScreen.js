@@ -61,7 +61,7 @@ import BottomSheet, {
 import { CancelIcon } from "@/Assets/Icons/DetailIcon";
 import { searchActivities } from "@/Hooks/TravelActivityHooks";
 import LineProfile from "@/Components/LineProfile";
-import LineCheckBox from "@/Components/LineCheckbox";
+import { Camera, CameraType } from "expo-camera";
 import { addImageToPost, createPostHook } from "@/Hooks/PostHooks";
 
 export default function NewPostScreen({ route }) {
@@ -73,6 +73,10 @@ export default function NewPostScreen({ route }) {
   const gotoHost = async (e) => {
     e.preventDefault();
     navigation.navigate("HostProfile");
+  };
+  const gotoCameraScreen = async (e) => {
+    e.preventDefault();
+    navigation.navigate("CameraScreen");
   };
 
   const handleCheckout = () => {
@@ -103,7 +107,28 @@ export default function NewPostScreen({ route }) {
       setSelectedItems([...selectedItems, item]);
     }
   };
+  const [type, setType] = useState(CameraType.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
   const [taggedUsers, setTaggedUsers] = useState([]);
+  const openCamera = async () => {
+    const { status } = await ImagePicker.getCameraPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera permissions to make this work!");
+      return;
+    }
+    try {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 3],
+      });
+      if (!result.canceled) {
+        console.log(result);
+      }
+    } catch (error) {
+      console.log("Error occurred while launching the camera: ", error);
+    }
+  };
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -118,7 +143,6 @@ export default function NewPostScreen({ route }) {
       setImages(result.assets.map((asset) => asset.uri));
     }
   };
-  console.log(images);
   const snapPoints = useMemo(() => ["95%"], []);
   const bottomSheetRef = React.createRef(BottomSheet);
   const bottomSheetRef1 = React.createRef(BottomSheet);
@@ -355,7 +379,7 @@ export default function NewPostScreen({ route }) {
           style={{
             flexDirection: "row",
           }}
-          onPress={() => {}}
+          onPress={gotoCameraScreen}
         >
           <View
             style={{
