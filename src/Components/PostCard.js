@@ -69,7 +69,7 @@ const timeAgo = (dateString) => {
   return "just now";
 };
 
-export default function PostCard({data, handleOpenPress}) {
+export default function PostCard({data, handleOpenPress, handleOpenPress1}) {
   // const [selectedBookmark, setSelectedBookmark] = useState(false);
   const [liked, setLiked] = useState(data.liked);
   const [numOfLikes, setNumOfLikes] = useState(data.numOfLikes);
@@ -133,10 +133,13 @@ export default function PostCard({data, handleOpenPress}) {
                 {data.user.email.split("@")[0]}{" "}
               </Text>
               <Text>{`đang ở`}</Text>
-              <Text style={styles.boldText}>
-                {" "}
-                {data.travelActivity.activityName}
-              </Text>
+              <Pressable onPress={() => navigation.navigate("Detail", {activityId: data.travelActivity.id})}>
+                <Text style={styles.boldText}>
+                  {" "}
+                  {data.travelActivity.activityName}
+                </Text>
+              </Pressable>
+              
             </Text>
             <Text
               style={{
@@ -207,7 +210,10 @@ export default function PostCard({data, handleOpenPress}) {
             />
           </Pressable> */}
         </View>
-        <Text style={{ marginLeft: 5 }}>{numOfLikes} lượt thích</Text>
+        <Pressable onPress={handleOpenPress1}>
+          <Text style={{ marginLeft: 5 }}>{numOfLikes} lượt thích</Text>
+        </Pressable>
+        
         {!data.latestComment ? <></> : <Pressable
           style={{
             flexDirection: "row",
