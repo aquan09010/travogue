@@ -10,6 +10,7 @@ import { Image } from 'expo-image'
 import Modal from 'react-native-modal'
 import ChosenTicket from '../Components/ChosenTicket'
 import { useNavigation } from '@react-navigation/native'
+import { SwipeListView } from 'react-native-swipe-list-view'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 
 const DetailATripADay = () => {
