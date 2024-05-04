@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
-import { Image } from 'expo-image'
-import { useNavigation } from '@react-navigation/native'
 import {
-  StyleSheet,
-  View,
   Text,
+  View,
   ScrollView,
+  StyleSheet,
+  SafeAreaView,
   TouchableOpacity
 } from 'react-native'
+import { Image } from 'expo-image'
+import Modal from 'react-native-modal'
 import ChosenTicket from '../Components/ChosenTicket'
+import { useNavigation } from '@react-navigation/native'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+
 
 const DetailATripADay = () => {
   const navigation = useNavigation()
@@ -27,7 +30,7 @@ const DetailATripADay = () => {
   )
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Nút quay lại. Nút share. Nút Edit */}
       <View style={styles.headerContainer}>
         <TouchableOpacity
@@ -95,7 +98,9 @@ const DetailATripADay = () => {
 
         <ScrollView style={styles.listDestinations}>
           <View style={styles.filterAndDelete}>
-
+            <TouchableOpacity style={styles.touchableTrash}>
+              <Text style={styles.trash}>trash</Text>
+            </TouchableOpacity>
           </View>
 
           <ChosenTicket
@@ -430,7 +435,7 @@ const DetailATripADay = () => {
           />
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -589,17 +594,25 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#e8e8e8',
+    backgroundColor: '#e8e8e8'
   },
   filterAndDelete: {
+    height: 16,
     width: '100%',
-    height: 15,
+    marginTop: 16,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16,
-    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end'
   },
+  touchableTrash: {
+    marginRight: '5%'
+  },
+  trash: {
+    fontSize: 15,
+    color: '#000',
+    fontFamily: 'FontAwesome6ProLight'
+  }
 })
 
 export default DetailATripADay
