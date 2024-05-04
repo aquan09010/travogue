@@ -12,7 +12,6 @@ import ChosenTicket from '../Components/ChosenTicket'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 
-
 const DetailATripADay = () => {
   const navigation = useNavigation()
 
@@ -28,6 +27,22 @@ const DetailATripADay = () => {
       {selectedDay === day && <View style={styles.dayLine} />}
     </TouchableOpacity>
   )
+
+  // Modal Toggle Edit
+  const [isModalEditVisible, setModalEditVisible] = useState(false)
+
+  const toggleEditModal = async e => {
+    e.preventDefault()
+    setModalEditVisible(!isModalEditVisible)
+  }
+
+  // Modal Toggle Delete All Items
+  const [isModalDeleteVisible, setModalDeleteVisible] = useState(false)
+
+  const toggleDeleteModal = async e => {
+    e.preventDefault()
+    setModalDeleteVisible(!isModalDeleteVisible)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,7 +63,10 @@ const DetailATripADay = () => {
           <Text style={styles.shareFromSquare}>share-from-square</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.touchableEdit}>
+        <TouchableOpacity
+          style={styles.touchableEdit}
+          onPress={toggleEditModal}
+        >
           <Text style={styles.penToSquare}>pen-to-square</Text>
         </TouchableOpacity>
       </View>
@@ -98,7 +116,10 @@ const DetailATripADay = () => {
 
         <ScrollView style={styles.listDestinations}>
           <View style={styles.filterAndDelete}>
-            <TouchableOpacity style={styles.touchableTrash}>
+            <TouchableOpacity
+              style={styles.touchableTrash}
+              onPress={toggleDeleteModal}
+            >
               <Text style={styles.trash}>trash</Text>
             </TouchableOpacity>
           </View>
@@ -435,6 +456,122 @@ const DetailATripADay = () => {
           />
         </ScrollView>
       </View>
+
+      {/* Toggle Edit Modal */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'flex-end'
+        }}
+        avoidKeyboard={true}
+        swipeDirection='down'
+        propagateSwipe={true}
+        isVisible={isModalEditVisible}
+        onSwipeComplete={toggleEditModal}
+        onBackdropPress={() => setModalEditVisible(false)}
+        onBackButtonPress={() => setModalEditVisible(false)}
+      >
+        <View
+          style={{
+            bottom: 0,
+            height: 270,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: '#EAEAEA'
+          }}
+        >
+          {/* Thanh kéo lên kéo xuống */}
+          <View
+            style={{
+              width: 40,
+              height: 10,
+              marginTop: 15,
+              borderRadius: 5,
+              alignSelf: 'center',
+              backgroundColor: '#000000'
+            }}
+          />
+
+          {/* Nội dung các chức năng */}
+          <View style={styles.function}>
+            <TouchableOpacity>
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>pencil</Text>
+                <Text style={styles.text1}>Đổi tên Chuyến đi</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>layer-group</Text>
+                <Text style={styles.text1}>Sắp xếp các điểm dừng chân</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>trash</Text>
+                <Text style={styles.text1}>Xóa Chuyến đi</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Toggle Delete Modal */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        avoidKeyboard={true}
+        swipeDirection='down'
+        propagateSwipe={true}
+        isVisible={isModalDeleteVisible}
+        onSwipeComplete={toggleDeleteModal}
+        onBackdropPress={() => setModalDeleteVisible(false)}
+        onBackButtonPress={() => setModalDeleteVisible(false)}
+      >
+        <View
+          style={{
+            width: 320,
+            height: 200,
+            display: 'flex',
+            borderRadius: 20,
+            flexDirection: 'column',
+            backgroundColor: '#D9D9D9',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            gap: 24,
+            borderWidth: 1,
+            padding: 24
+          }}
+        >
+          <Text style={styles.deleteTitle}>Xóa Ngày 1</Text>
+
+          <Text style={styles.deleteText}>
+            Tất cả điểm dừng chân trong ngày này sẽ bị xóa hoàn toàn. Bạn có
+            muốn xóa hết ?
+          </Text>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity>
+              <Text style={styles.cancelText}>Hủy bỏ</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Text style={styles.acceptDeleteText}>Xóa bỏ</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   )
 }
@@ -559,16 +696,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginRight: 24
   },
-  dayLine: {
-    borderTopWidth: 3,
-    borderColor: '#000',
-    borderStyle: 'solid'
-  },
   days: {
     fontSize: 16,
     color: '#000',
     lineHeight: 36,
     fontFamily: 'BeVN'
+  },
+  dayLine: {
+    borderTopWidth: 3,
+    borderColor: '#000',
+    borderStyle: 'solid'
   },
   touchableCalendar: {
     width: '10%',
@@ -612,6 +749,71 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#000',
     fontFamily: 'FontAwesome6ProLight'
+  },
+  function: {
+    gap: 24,
+    width: 'auto',
+    height: 'auto',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  subcontainer1: {
+    width: 'auto',
+    height: 'auto',
+    display: 'flex',
+    marginTop: '6%',
+    marginLeft: '8%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'flex-start'
+  },
+  icon1: {
+    width: 40,
+    fontSize: 30,
+    color: '#000',
+    textAlign: 'center',
+    fontFamily: 'FontAwesome6ProLight'
+  },
+  text1: {
+    fontSize: 20,
+    color: '#000',
+    marginLeft: '5%',
+    fontFamily: 'BeVN'
+  },
+  deleteTitle: {
+    fontSize: 18,
+    color: '#000',
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    fontFamily: 'BeVNSemi'
+  },
+  deleteText: {
+    fontSize: 14,
+    color: '#000',
+    fontWeight: '300',
+    letterSpacing: 0.3,
+    fontFamily: 'BeVNProLight'
+  },
+  buttonContainer: {
+    gap: 32,
+    display: 'flex',
+    flexDirection: 'row',
+    alignSelf: 'flex-end'
+  },
+  cancelText: {
+    fontSize: 14,
+    color: '#ed2939',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+    fontFamily: 'BeVNProMedium'
+  },
+  acceptDeleteText: {
+    fontSize: 14,
+    color: '#0b3bb7',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+    fontFamily: 'BeVNProMedium'
   }
 })
 
