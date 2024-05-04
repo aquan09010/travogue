@@ -50,6 +50,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ArrowLeftBlack } from "@/Assets/Icons/Navigation";
 import { getUserProfile } from "@/Hooks/UserHook";
 import { followUserHook, unFollowUserHook } from "@/Hooks/FollowHooks";
+import { BarIcon } from "../Assets/Icons/Proflie";
 
 const timeAgo = (dateString) => {
   const now = new Date();
@@ -201,6 +202,13 @@ export default function ProfileScreen({ route }) {
           </Pressable>
         </View>
       )}
+      {currentUser && 
+        <>
+          <Pressable style={styles.icon} onPress={() => navigation.navigate("ProfileSettingScreen")}>
+            <SvgXml xml={BarIcon} />
+          </Pressable>
+        </>
+      }
       {isUserLoading ? (
         <></>
       ) : (
@@ -799,5 +807,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 30,
+  },
+  icon: {
+    position: 'absolute',
+    top: 60, // Adjust top spacing as needed
+    right: 10, // Adjust right spacing as needed
+    width: 30, // Adjust icon width as needed
+    height: 30, // Adjust icon height as needed
+    zIndex: 1000
   },
 });

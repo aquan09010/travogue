@@ -27,6 +27,7 @@ import ProfileScreen from "@/Screens/ProfileScreen";
 import DetailATripADay from "@/Screens/DetailATripADay";
 import NewPostScreen from "@/Screens/NewPostScreen";
 import CameraScreen from "@/Screens/CameraScreen";
+import ProfileSettingScreen from "@/Screens/ProfileSettingScreen";
 // import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
@@ -172,6 +173,11 @@ export default function AppNavigation() {
           name="CameraScreen"
           options={{ headerShown: false }}
           component={CameraScreen}
+        />
+        <Stack.Screen
+          name="ProfileSettingScreen"
+          options={{ headerShown: false }}
+          component={ProfileSettingScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
