@@ -380,18 +380,20 @@ const DetailATripADay = () => {
 
   // Swipe List View
   const renderHiddenItem = (data, rowMap) => (
-    <TouchableOpacity
-      style={styles.deleteContainer}
-      onPress={() => deleteRow(rowMap, data.item.key)}
-    >
-      <Image
-        style={styles.redContainer}
-        contentFit='cover'
-        source={require('../Assets/ellipse_red.png')}
-      ></Image>
+    <View style={styles.rowBack}>
+      <TouchableOpacity
+        style={styles.deleteContainer}
+        onPress={() => deleteRow(rowMap, data.item.key)}
+      >
+        <Image
+          style={styles.redContainer}
+          contentFit='cover'
+          source={require('../Assets/ellipse_red.png')}
+        />
 
-      <Text style={styles.whiteTrash}>trash</Text>
-    </TouchableOpacity>
+        <Text style={styles.whiteTrash}>trash</Text>
+      </TouchableOpacity>
+    </View>
   )
 
   const deleteRow = (rowMap, rowKey) => {
@@ -506,7 +508,6 @@ const DetailATripADay = () => {
           )}
           renderHiddenItem={renderHiddenItem}
           rightOpenValue={-75}
-          keyExtractor={(item, index) => index.toString()}
         />
       </View>
 
@@ -868,17 +869,35 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
     fontFamily: 'BeVNProMedium'
   },
+  rowBack: {
+    flex: 1,
+    paddingRight: 32,
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+},
   deleteContainer: {
-    borderWidth: 1,
-    width: 30,
-    height: 30,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: 25,
+    position: 'relative',
+    justifyContent: 'center'
   },
-  deleteContainer: {},
-  redContainer: {},
+  redContainer: {
+    width: 25,
+    height: 25,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   whiteTrash: {
+    position: 'absolute',
     fontSize: 14,
     color: '#fff',
-    fontFamily: 'FontAwesome6ProLight'
+    fontFamily: 'FontAwesome6ProLight',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
 
