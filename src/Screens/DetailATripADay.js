@@ -562,7 +562,7 @@ const DetailATripADay = () => {
           </Text>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setModalDeleteVisible(false)}>
               <Text style={styles.cancelText}>Hủy bỏ</Text>
             </TouchableOpacity>
 
@@ -734,7 +734,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e8e8e8'
   },
   filterAndDelete: {
-    height: 16,
+    height: 18,
     width: '100%',
     marginTop: 16,
     display: 'flex',
@@ -743,10 +743,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   touchableTrash: {
-    marginRight: '5%'
+    marginRight: '7%'
   },
   trash: {
-    fontSize: 15,
+    fontSize: 17,
     color: '#000',
     fontFamily: 'FontAwesome6ProLight'
   },
