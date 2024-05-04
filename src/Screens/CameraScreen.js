@@ -31,7 +31,8 @@ import {
   SnapIcon,
   XFlashIcon,
 } from "@/Assets/Icons/DetailIcon";
-export default function CameraScreen() {
+export default function CameraScreen({ route }) {
+  const {handleTakeImage} = route.params
   const navigation = useNavigation();
   const goToPreviousTab = () => {
     navigation.goBack();
@@ -64,6 +65,8 @@ export default function CameraScreen() {
       try {
         await MediaLibrary.createAssetAsync(image);
         alert("Snap Successfully");
+        handleTakeImage(image);
+        navigation.goBack();
         setImage(null);
       } catch (e) {
         console.log(e);

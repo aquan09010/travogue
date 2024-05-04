@@ -70,13 +70,18 @@ export default function NewPostScreen({ route }) {
   const [isMuted, setIsMuted] = useState(false);
 
   const navigation = useNavigation();
-  const gotoHost = async (e) => {
+  const gotoHost = (e) => {
     e.preventDefault();
     navigation.navigate("HostProfile");
   };
-  const gotoCameraScreen = async (e) => {
+
+  const handleTakeImage = (imageUri) => {
+    setImages([imageUri, ...images])
+  }
+
+  const gotoCameraScreen = (e) => {
     e.preventDefault();
-    navigation.navigate("CameraScreen");
+    navigation.navigate("CameraScreen", {handleTakeImage: handleTakeImage});
   };
 
   const handleCheckout = () => {
@@ -140,7 +145,7 @@ export default function NewPostScreen({ route }) {
     });
     console.log(result);
     if (!result.canceled) {
-      setImages(result.assets.map((asset) => asset.uri));
+      setImages(images => [...result.assets.map((asset) => asset.uri), ...images]);
     }
   };
   const snapPoints = useMemo(() => ["95%"], []);
