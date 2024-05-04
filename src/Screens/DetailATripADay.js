@@ -13,6 +13,339 @@ import { useNavigation } from '@react-navigation/native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 
+const data = [
+  {
+    pic: require('../Assets/pic29.png'),
+    name: 'Tham quan Tòa nhà Bitexco',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: true
+  },
+  {
+    pic: require('../Assets/pic28.png'),
+    name: 'Tham quan Địa đạo Củ Chi',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Củ Chi, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic27.png'),
+    name: 'Tham quan Bưu điện trung tâm Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic26.png'),
+    name: 'Tham quan Thảo Cầm Viên Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic25.png'),
+    name: 'Tham quan Nhà thờ Đức Bà Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic24.png'),
+    name: 'Tham quan Dinh Độc Lập',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic23.png'),
+    name: 'Khách sạn Liberty Central Sài Gòn Riverside',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic22.png'),
+    name: 'The Odys Boutique Hotel',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic21.png'),
+    name: 'Yuzu Omakase ゆずお任せ VN',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic20.png'),
+    name: 'Nhà hàng Park Lounge',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic29.png'),
+    name: 'Tham quan Tòa nhà Bitexco',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: true
+  },
+  {
+    pic: require('../Assets/pic28.png'),
+    name: 'Tham quan Địa đạo Củ Chi',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Củ Chi, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic27.png'),
+    name: 'Tham quan Bưu điện trung tâm Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic26.png'),
+    name: 'Tham quan Thảo Cầm Viên Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic25.png'),
+    name: 'Tham quan Nhà thờ Đức Bà Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic24.png'),
+    name: 'Tham quan Dinh Độc Lập',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic23.png'),
+    name: 'Khách sạn Liberty Central Sài Gòn Riverside',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic22.png'),
+    name: 'The Odys Boutique Hotel',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic21.png'),
+    name: 'Yuzu Omakase ゆずお任せ VN',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic20.png'),
+    name: 'Nhà hàng Park Lounge',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic29.png'),
+    name: 'Tham quan Tòa nhà Bitexco',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: true
+  },
+  {
+    pic: require('../Assets/pic28.png'),
+    name: 'Tham quan Địa đạo Củ Chi',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Củ Chi, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic27.png'),
+    name: 'Tham quan Bưu điện trung tâm Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic26.png'),
+    name: 'Tham quan Thảo Cầm Viên Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic25.png'),
+    name: 'Tham quan Nhà thờ Đức Bà Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic24.png'),
+    name: 'Tham quan Dinh Độc Lập',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic23.png'),
+    name: 'Khách sạn Liberty Central Sài Gòn Riverside',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic22.png'),
+    name: 'The Odys Boutique Hotel',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic21.png'),
+    name: 'Yuzu Omakase ゆずお任せ VN',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    pic: require('../Assets/pic20.png'),
+    name: 'Nhà hàng Park Lounge',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  }
+]
+
 const DetailATripADay = () => {
   const navigation = useNavigation()
 
@@ -43,6 +376,36 @@ const DetailATripADay = () => {
   const toggleDeleteModal = async e => {
     e.preventDefault()
     setModalDeleteVisible(!isModalDeleteVisible)
+  }
+
+  // Swipe List View
+  const renderHiddenItem = (data, rowMap) => (
+    <TouchableOpacity
+      style={styles.deleteContainer}
+      onPress={() => deleteRow(rowMap, data.item.key)}
+    >
+      <Image
+        style={styles.redContainer}
+        contentFit='cover'
+        source={require('../Assets/ellipse_red.png')}
+      ></Image>
+
+      <Text style={styles.whiteTrash}>trash</Text>
+    </TouchableOpacity>
+  )
+
+  const deleteRow = (rowMap, rowKey) => {
+    closeRow(rowMap, rowKey)
+    const newData = [...data]
+    const prevIndex = data.findIndex(item => item.key === rowKey)
+    newData.splice(prevIndex, 1)
+    setData(newData)
+  }
+
+  const closeRow = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow()
+    }
   }
 
   return (
@@ -115,347 +478,36 @@ const DetailATripADay = () => {
         {/* Đường kẻ */}
         <View style={styles.line} />
 
-        <ScrollView style={styles.listDestinations}>
-          <View style={styles.filterAndDelete}>
-            <TouchableOpacity
-              style={styles.touchableTrash}
-              onPress={toggleDeleteModal}
-            >
-              <Text style={styles.trash}>trash</Text>
-            </TouchableOpacity>
-          </View>
-
-          <ChosenTicket
-            topRate={true}
-            pic={require('../Assets/pic29.png')}
-            name='Tham quan Tòa nhà Bitexco'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic28.png')}
-            name='Tham quan Địa đạo Củ Chi'
-            rate='4.98'
-            numberOfComments='253'
-            address='Củ Chi, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic27.png')}
-            name='Tham quan Bưu điện trung tâm Sài Gòn'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic26.png')}
-            name='Tham quan Thảo Cầm Viên Sài Gòn'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic25.png')}
-            name='Tham quan Nhà thờ Đức Bà Sài Gòn'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic24.png')}
-            name='Tham quan Dinh Độc Lập'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic23.png')}
-            name='Khách sạn Liberty Central Sài Gòn Riverside'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic22.png')}
-            name='The Odys Boutique Hotel'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic21.png')}
-            name='Yuzu Omakase ゆずお任せ VN'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic20.png')}
-            name='Nhà hàng Park Lounge'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={true}
-            pic={require('../Assets/pic29.png')}
-            name='Tham quan Tòa nhà Bitexco'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic28.png')}
-            name='Tham quan Địa đạo Củ Chi'
-            rate='4.98'
-            numberOfComments='253'
-            address='Củ Chi, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic27.png')}
-            name='Tham quan Bưu điện trung tâm Sài Gòn'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic26.png')}
-            name='Tham quan Thảo Cầm Viên Sài Gòn'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic25.png')}
-            name='Tham quan Nhà thờ Đức Bà Sài Gòn'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic24.png')}
-            name='Tham quan Dinh Độc Lập'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic23.png')}
-            name='Khách sạn Liberty Central Sài Gòn Riverside'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic22.png')}
-            name='The Odys Boutique Hotel'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic21.png')}
-            name='Yuzu Omakase ゆずお任せ VN'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic20.png')}
-            name='Nhà hàng Park Lounge'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={true}
-            pic={require('../Assets/pic29.png')}
-            name='Tham quan Tòa nhà Bitexco'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic28.png')}
-            name='Tham quan Địa đạo Củ Chi'
-            rate='4.98'
-            numberOfComments='253'
-            address='Củ Chi, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic27.png')}
-            name='Tham quan Bưu điện trung tâm Sài Gòn'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic26.png')}
-            name='Tham quan Thảo Cầm Viên Sài Gòn'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic25.png')}
-            name='Tham quan Nhà thờ Đức Bà Sài Gòn'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic24.png')}
-            name='Tham quan Dinh Độc Lập'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic23.png')}
-            name='Khách sạn Liberty Central Sài Gòn Riverside'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic22.png')}
-            name='The Odys Boutique Hotel'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic21.png')}
-            name='Yuzu Omakase ゆずお任せ VN'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-          <ChosenTicket
-            topRate={false}
-            pic={require('../Assets/pic20.png')}
-            name='Nhà hàng Park Lounge'
-            rate='4.98'
-            numberOfComments='253'
-            address='Q1, Hồ Chí Minh'
-            price='12'
-            category='Nghệ thuật, Văn hoá, Lịch sử'
-            admin={require('../Assets/admin3.png')}
-          />
-        </ScrollView>
+        <SwipeListView
+          ListHeaderComponent={
+            <View style={styles.filterAndDelete}>
+              <TouchableOpacity
+                style={styles.touchableTrash}
+                onPress={toggleDeleteModal}
+              >
+                <Text style={styles.trash}>trash</Text>
+              </TouchableOpacity>
+            </View>
+          }
+          style={styles.listDestinations}
+          data={data}
+          renderItem={({ item }) => (
+            <ChosenTicket
+              topRate={item.topRate}
+              pic={item.pic}
+              name={item.name}
+              rate={item.rate}
+              numberOfComments={item.numberOfComments}
+              address={item.address}
+              price={item.price}
+              category={item.category}
+              admin={item.admin}
+            />
+          )}
+          renderHiddenItem={renderHiddenItem}
+          rightOpenValue={-75}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
 
       {/* Toggle Edit Modal */}
@@ -815,6 +867,18 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 0.3,
     fontFamily: 'BeVNProMedium'
+  },
+  deleteContainer: {
+    borderWidth: 1,
+    width: 30,
+    height: 30,
+  },
+  deleteContainer: {},
+  redContainer: {},
+  whiteTrash: {
+    fontSize: 14,
+    color: '#fff',
+    fontFamily: 'FontAwesome6ProLight'
   }
 })
 
