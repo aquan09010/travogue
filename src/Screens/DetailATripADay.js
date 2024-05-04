@@ -15,6 +15,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 
 const data = [
   {
+    key: '1',
     pic: require('../Assets/pic29.png'),
     name: 'Tham quan Tòa nhà Bitexco',
     rate: '4.98',
@@ -26,6 +27,7 @@ const data = [
     topRate: true
   },
   {
+    key: '2',
     pic: require('../Assets/pic28.png'),
     name: 'Tham quan Địa đạo Củ Chi',
     rate: '4.98',
@@ -37,6 +39,7 @@ const data = [
     topRate: false
   },
   {
+    key: '3',
     pic: require('../Assets/pic27.png'),
     name: 'Tham quan Bưu điện trung tâm Sài Gòn',
     rate: '4.98',
@@ -48,6 +51,7 @@ const data = [
     topRate: false
   },
   {
+    key: '4',
     pic: require('../Assets/pic26.png'),
     name: 'Tham quan Thảo Cầm Viên Sài Gòn',
     rate: '4.98',
@@ -59,6 +63,7 @@ const data = [
     topRate: false
   },
   {
+    key: '5',
     pic: require('../Assets/pic25.png'),
     name: 'Tham quan Nhà thờ Đức Bà Sài Gòn',
     rate: '4.98',
@@ -70,6 +75,7 @@ const data = [
     topRate: false
   },
   {
+    key: '6',
     pic: require('../Assets/pic24.png'),
     name: 'Tham quan Dinh Độc Lập',
     rate: '4.98',
@@ -81,6 +87,7 @@ const data = [
     topRate: false
   },
   {
+    key: '7',
     pic: require('../Assets/pic23.png'),
     name: 'Khách sạn Liberty Central Sài Gòn Riverside',
     rate: '4.98',
@@ -92,6 +99,7 @@ const data = [
     topRate: false
   },
   {
+    key: '8',
     pic: require('../Assets/pic22.png'),
     name: 'The Odys Boutique Hotel',
     rate: '4.98',
@@ -103,6 +111,7 @@ const data = [
     topRate: false
   },
   {
+    key: '9',
     pic: require('../Assets/pic21.png'),
     name: 'Yuzu Omakase ゆずお任せ VN',
     rate: '4.98',
@@ -114,6 +123,7 @@ const data = [
     topRate: false
   },
   {
+    key: '10',
     pic: require('../Assets/pic20.png'),
     name: 'Nhà hàng Park Lounge',
     rate: '4.98',
@@ -125,6 +135,7 @@ const data = [
     topRate: false
   },
   {
+    key: '11',
     pic: require('../Assets/pic29.png'),
     name: 'Tham quan Tòa nhà Bitexco',
     rate: '4.98',
@@ -136,6 +147,7 @@ const data = [
     topRate: true
   },
   {
+    key: '12',
     pic: require('../Assets/pic28.png'),
     name: 'Tham quan Địa đạo Củ Chi',
     rate: '4.98',
@@ -147,6 +159,7 @@ const data = [
     topRate: false
   },
   {
+    key: '13',
     pic: require('../Assets/pic27.png'),
     name: 'Tham quan Bưu điện trung tâm Sài Gòn',
     rate: '4.98',
@@ -158,6 +171,7 @@ const data = [
     topRate: false
   },
   {
+    key: '14',
     pic: require('../Assets/pic26.png'),
     name: 'Tham quan Thảo Cầm Viên Sài Gòn',
     rate: '4.98',
@@ -169,6 +183,7 @@ const data = [
     topRate: false
   },
   {
+    key: '15',
     pic: require('../Assets/pic25.png'),
     name: 'Tham quan Nhà thờ Đức Bà Sài Gòn',
     rate: '4.98',
@@ -180,6 +195,7 @@ const data = [
     topRate: false
   },
   {
+    key: '16',
     pic: require('../Assets/pic24.png'),
     name: 'Tham quan Dinh Độc Lập',
     rate: '4.98',
@@ -191,6 +207,7 @@ const data = [
     topRate: false
   },
   {
+    key: '17',
     pic: require('../Assets/pic23.png'),
     name: 'Khách sạn Liberty Central Sài Gòn Riverside',
     rate: '4.98',
@@ -202,6 +219,7 @@ const data = [
     topRate: false
   },
   {
+    key: '18',
     pic: require('../Assets/pic22.png'),
     name: 'The Odys Boutique Hotel',
     rate: '4.98',
@@ -213,6 +231,7 @@ const data = [
     topRate: false
   },
   {
+    key: '19',
     pic: require('../Assets/pic21.png'),
     name: 'Yuzu Omakase ゆずお任せ VN',
     rate: '4.98',
@@ -224,6 +243,7 @@ const data = [
     topRate: false
   },
   {
+    key: '20',
     pic: require('../Assets/pic20.png'),
     name: 'Nhà hàng Park Lounge',
     rate: '4.98',
@@ -235,6 +255,7 @@ const data = [
     topRate: false
   },
   {
+    key: '21',
     pic: require('../Assets/pic29.png'),
     name: 'Tham quan Tòa nhà Bitexco',
     rate: '4.98',
@@ -246,6 +267,7 @@ const data = [
     topRate: true
   },
   {
+    key: '22',
     pic: require('../Assets/pic28.png'),
     name: 'Tham quan Địa đạo Củ Chi',
     rate: '4.98',
@@ -257,6 +279,7 @@ const data = [
     topRate: false
   },
   {
+    key: '23',
     pic: require('../Assets/pic27.png'),
     name: 'Tham quan Bưu điện trung tâm Sài Gòn',
     rate: '4.98',
@@ -268,6 +291,7 @@ const data = [
     topRate: false
   },
   {
+    key: '24',
     pic: require('../Assets/pic26.png'),
     name: 'Tham quan Thảo Cầm Viên Sài Gòn',
     rate: '4.98',
@@ -279,6 +303,7 @@ const data = [
     topRate: false
   },
   {
+    key: '25',
     pic: require('../Assets/pic25.png'),
     name: 'Tham quan Nhà thờ Đức Bà Sài Gòn',
     rate: '4.98',
@@ -290,6 +315,7 @@ const data = [
     topRate: false
   },
   {
+    key: '26',
     pic: require('../Assets/pic24.png'),
     name: 'Tham quan Dinh Độc Lập',
     rate: '4.98',
@@ -301,6 +327,7 @@ const data = [
     topRate: false
   },
   {
+    key: '27',
     pic: require('../Assets/pic23.png'),
     name: 'Khách sạn Liberty Central Sài Gòn Riverside',
     rate: '4.98',
@@ -312,6 +339,7 @@ const data = [
     topRate: false
   },
   {
+    key: '28',
     pic: require('../Assets/pic22.png'),
     name: 'The Odys Boutique Hotel',
     rate: '4.98',
@@ -323,6 +351,7 @@ const data = [
     topRate: false
   },
   {
+    key: '29',
     pic: require('../Assets/pic21.png'),
     name: 'Yuzu Omakase ゆずお任せ VN',
     rate: '4.98',
@@ -334,6 +363,7 @@ const data = [
     topRate: false
   },
   {
+    key: '30',
     pic: require('../Assets/pic20.png'),
     name: 'Nhà hàng Park Lounge',
     rate: '4.98',
@@ -379,6 +409,7 @@ const DetailATripADay = () => {
   }
 
   // Swipe List View
+
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
       <TouchableOpacity
@@ -875,8 +906,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-},
+    justifyContent: 'flex-end'
+  },
   deleteContainer: {
     display: 'flex',
     flexDirection: 'column',
