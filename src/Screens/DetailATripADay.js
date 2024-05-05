@@ -395,17 +395,22 @@ const DetailATripADay = () => {
   // Modal Toggle Edit
   const [isModalEditVisible, setModalEditVisible] = useState(false)
 
-  const toggleEditModal = async e => {
-    e.preventDefault()
-    setModalEditVisible(!isModalEditVisible)
+  const toggleEditModal = async () => {
+    setModalEditVisible(!isModalEditVisible);
   }
 
   // Modal Toggle Delete All Items
   const [isModalDeleteVisible, setModalDeleteVisible] = useState(false)
 
-  const toggleDeleteModal = async e => {
-    e.preventDefault()
-    setModalDeleteVisible(!isModalDeleteVisible)
+  const toggleDeleteModal = async () => {
+    setModalDeleteVisible(!isModalDeleteVisible);
+  }
+
+  // Modal Toggle Delete A Trip
+  const [isModalDeleteTripVisible, setModalDeleteTripVisible] = useState(false)
+
+  const toggleDeleteTripModal = async () => {
+    setModalDeleteTripVisible(!isModalDeleteTripVisible);
   }
 
   // Swipe List View
@@ -582,21 +587,31 @@ const DetailATripADay = () => {
 
           {/* Nội dung các chức năng */}
           <View style={styles.function}>
-            <TouchableOpacity>
+            <TouchableOpacity style={styles.touchableFunction}>
               <View style={styles.subcontainer1}>
                 <Text style={styles.icon1}>pencil</Text>
                 <Text style={styles.text1}>Đổi tên Chuyến đi</Text>
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity style={styles.touchableFunction}>
               <View style={styles.subcontainer1}>
                 <Text style={styles.icon1}>layer-group</Text>
                 <Text style={styles.text1}>Sắp xếp các điểm dừng chân</Text>
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () => {
+                try {
+                  await toggleDeleteTripModal
+                  await setModalEditVisible(false)
+                } catch (error) {
+                  console.error(error)
+                }
+              }}
+              style={styles.touchableFunction}
+            >
               <View style={styles.subcontainer1}>
                 <Text style={styles.icon1}>trash</Text>
                 <Text style={styles.text1}>Xóa Chuyến đi</Text>
@@ -626,17 +641,16 @@ const DetailATripADay = () => {
       >
         <View
           style={{
+            gap: 24,
             width: 320,
             height: 200,
+            padding: 24,
             display: 'flex',
             borderRadius: 20,
             flexDirection: 'column',
-            backgroundColor: '#D9D9D9',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            gap: 24,
-            borderWidth: 1,
-            padding: 24
+            backgroundColor: '#D9D9D9'
           }}
         >
           <Text style={styles.deleteTitle}>Xóa Ngày 1</Text>
@@ -648,6 +662,57 @@ const DetailATripADay = () => {
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => setModalDeleteVisible(false)}>
+              <Text style={styles.cancelText}>Hủy bỏ</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Text style={styles.acceptDeleteText}>Xóa bỏ</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal Delete Trip Modal */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        avoidKeyboard={true}
+        swipeDirection='down'
+        propagateSwipe={true}
+        isVisible={isModalDeleteTripVisible}
+        onSwipeComplete={toggleDeleteTripModal}
+        onBackdropPress={() => setModalDeleteTripVisible(false)}
+        onBackButtonPress={() => setModalDeleteTripVisible(false)}
+      >
+        <View
+          style={{
+            width: 320,
+            height: 200,
+            display: 'flex',
+            borderRadius: 20,
+            flexDirection: 'column',
+            backgroundColor: '#D9D9D9',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            gap: 24,
+            padding: 24
+          }}
+        >
+          <Text style={styles.deleteTitle}>Xóa Chuyến đi này</Text>
+
+          <Text style={styles.deleteText}>
+            Bạn có muốn xóa hoàn toàn “Chuyến đi 7 ngày của bạn tại Hồ Chí Minh”
+            ?
+          </Text>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => setModalDeleteTripVisible(false)}>
               <Text style={styles.cancelText}>Hủy bỏ</Text>
             </TouchableOpacity>
 
@@ -842,12 +907,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column'
   },
+  touchableFunction: {
+    marginTop: '6%',
+    marginLeft: '8%'
+  },
   subcontainer1: {
     width: 'auto',
     height: 'auto',
     display: 'flex',
-    marginTop: '6%',
-    marginLeft: '8%',
     flexDirection: 'row',
     alignItems: 'center',
     alignContent: 'center',

@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
-import { Image } from 'expo-image'
-import Button1 from '../Components/Button1'
-import { useNavigation } from '@react-navigation/native'
 import {
-  StyleSheet,
   View,
   Text,
+  StyleSheet,
   ScrollView,
+  SafeAreaView,
   TouchableOpacity
 } from 'react-native'
+import { Image } from 'expo-image'
+import Modal from 'react-native-modal'
+import React, { useState } from 'react'
+import Button1 from '../Components/Button1'
+import { useNavigation } from '@react-navigation/native'
 
 const DetailATripPlan = () => {
   const navigation = useNavigation()
@@ -26,8 +28,24 @@ const DetailATripPlan = () => {
     </TouchableOpacity>
   )
 
+  // Modal Toggle Edit
+  const [isModalEditVisible, setModalEditVisible] = useState(false)
+
+  const toggleEditModal = async e => {
+    e.preventDefault()
+    setModalEditVisible(!isModalEditVisible)
+  }
+
+  // Modal Toggle Delete All Items
+  const [isModalDeleteVisible, setModalDeleteVisible] = useState(false)
+
+  const toggleDeleteModal = async e => {
+    e.preventDefault()
+    setModalDeleteVisible(!isModalDeleteVisible)
+  }
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Nút quay lại. Nút share. Nút Edit */}
       <View style={styles.headerContainer}>
         <TouchableOpacity
@@ -45,26 +63,25 @@ const DetailATripPlan = () => {
           <Text style={styles.shareFromSquare}>share-from-square</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.touchableEdit}>
+        <TouchableOpacity
+          style={styles.touchableEdit}
+          onPress={toggleEditModal}
+        >
           <Text style={styles.penToSquare}>pen-to-square</Text>
         </TouchableOpacity>
       </View>
-
       {/* Tiêu đề chuyến đi */}
       <Text style={styles.title}>Chuyến đi 7 ngày của bạn tại Hồ Chí Minh</Text>
-
       {/* Thông tin người tạo */}
       <Text style={styles.information}>
         Tạo bởi Ng Lâm Tùng | Có 6 điểm đến | 7 ngày
       </Text>
-
       {/* Nút nhấn vào để xem vị trí trên Map */}
       <View style={styles.mapContainer}>
         <Text style={styles.mapIcon}>map</Text>
 
         <Text style={styles.mapText}>Xem trên Map</Text>
       </View>
-
       {/* Khung nội dung kế hoạch */}
       <View style={styles.planContainer}>
         {/* Thanh hiển thị ngày */}
@@ -141,7 +158,70 @@ const DetailATripPlan = () => {
           </View>
         </ScrollView>
       </View>
-    </View>
+      {/* Toggle Edit Modal */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'flex-end'
+        }}
+        avoidKeyboard={true}
+        swipeDirection='down'
+        propagateSwipe={true}
+        isVisible={isModalEditVisible}
+        onSwipeComplete={toggleEditModal}
+        onBackdropPress={() => setModalEditVisible(false)}
+        onBackButtonPress={() => setModalEditVisible(false)}
+      >
+        <View
+          style={{
+            bottom: 0,
+            height: 270,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: '#EAEAEA'
+          }}
+        >
+          {/* Thanh kéo lên kéo xuống */}
+          <View
+            style={{
+              width: 40,
+              height: 10,
+              marginTop: 15,
+              borderRadius: 5,
+              alignSelf: 'center',
+              backgroundColor: '#000000'
+            }}
+          />
+
+          {/* Nội dung các chức năng */}
+          <View style={styles.function}>
+            <TouchableOpacity>
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>pencil</Text>
+                <Text style={styles.text1}>Đổi tên Chuyến đi</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>layer-group</Text>
+                <Text style={styles.text1}>Sắp xếp các điểm dừng chân</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>trash</Text>
+                <Text style={styles.text1}>Xóa Chuyến đi</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
   )
 }
 
@@ -326,6 +406,37 @@ const styles = StyleSheet.create({
     fontSize: 19,
     color: '#000',
     marginLeft: '2%',
+    fontFamily: 'BeVN'
+  },
+  function: {
+    gap: 24,
+    width: 'auto',
+    height: 'auto',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  subcontainer1: {
+    width: 'auto',
+    height: 'auto',
+    display: 'flex',
+    marginTop: '6%',
+    marginLeft: '8%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'flex-start'
+  },
+  icon1: {
+    width: 40,
+    fontSize: 30,
+    color: '#000',
+    textAlign: 'center',
+    fontFamily: 'FontAwesome6ProLight'
+  },
+  text1: {
+    fontSize: 20,
+    color: '#000',
+    marginLeft: '5%',
     fontFamily: 'BeVN'
   }
 })
