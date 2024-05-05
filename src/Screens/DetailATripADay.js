@@ -432,7 +432,7 @@ const DetailATripADay = () => {
     const newData = [...data]
     const prevIndex = data.findIndex(item => item.key === rowKey)
     newData.splice(prevIndex, 1)
-    setData(newData)
+    // setData(newData)
   }
 
   const closeRow = (rowMap, rowKey) => {
