@@ -12,7 +12,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 const HomePagePlanning = () => {
   const navigation = useNavigation()
 
-  // Modal Toggle
+  // Modal Toggle Function
   const [isModalVisible, setModalVisible] = useState(false)
 
   const toggleModal = async e => {
@@ -28,47 +28,6 @@ const HomePagePlanning = () => {
         <TouchableOpacity onPress={toggleModal}>
           <Text style={styles.buttonFunction}>pen-to-square</Text>
         </TouchableOpacity>
-      </View>
-
-      {/* Nội dung */}
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>circle-location-arrow</Text>
-        <Text style={styles.text}>Địa điểm bạn muốn đi</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>pot-food</Text>
-        <Text style={styles.text}>Món ăn muốn thưởng thức</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>hotel</Text>
-        <Text style={styles.text}>Nơi bạn muốn ở</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>mountain-sun</Text>
-        <Text style={styles.text}>Trải nghiệm mới mẻ</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>circle-bookmark</Text>
-        <Text style={styles.text}>Ghi chú</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>circle-camera</Text>
-        <Text style={styles.text}>Thêm những khoảnh khắc đẹp</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>circle-user</Text>
-        <Text style={styles.text}>Mời bạn bè</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>user-group</Text>
-        <Text style={styles.text}>Chia sẻ lên cộng đồng</Text>
       </View>
 
       {/* Toggle hiển thị chức năng */}
@@ -136,6 +95,47 @@ const HomePagePlanning = () => {
           </View>
         </View>
       </Modal>
+
+      {/* Nội dung */}
+      <View style={styles.subcontainer}>
+        <Text style={styles.icon}>circle-location-arrow</Text>
+        <Text style={styles.text}>Địa điểm bạn muốn đi</Text>
+      </View>
+
+      <View style={styles.subcontainer}>
+        <Text style={styles.icon}>pot-food</Text>
+        <Text style={styles.text}>Món ăn muốn thưởng thức</Text>
+      </View>
+
+      <View style={styles.subcontainer}>
+        <Text style={styles.icon}>hotel</Text>
+        <Text style={styles.text}>Nơi bạn muốn ở</Text>
+      </View>
+
+      <View style={styles.subcontainer}>
+        <Text style={styles.icon}>mountain-sun</Text>
+        <Text style={styles.text}>Trải nghiệm mới mẻ</Text>
+      </View>
+
+      <View style={styles.subcontainer}>
+        <Text style={styles.icon}>circle-bookmark</Text>
+        <Text style={styles.text}>Ghi chú</Text>
+      </View>
+
+      <View style={styles.subcontainer}>
+        <Text style={styles.icon}>circle-camera</Text>
+        <Text style={styles.text}>Thêm những khoảnh khắc đẹp</Text>
+      </View>
+
+      <View style={styles.subcontainer}>
+        <Text style={styles.icon}>circle-user</Text>
+        <Text style={styles.text}>Mời bạn bè</Text>
+      </View>
+
+      <View style={styles.subcontainer}>
+        <Text style={styles.icon}>user-group</Text>
+        <Text style={styles.text}>Chia sẻ lên cộng đồng</Text>
+      </View>
     </SafeAreaView>
   )
 }

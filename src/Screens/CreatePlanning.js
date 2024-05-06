@@ -1,7 +1,17 @@
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
 import React, { useState, useRef, useCallback, useMemo } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import {
+  Text,
+  View,
+  Modal,
+  Button,
+  Platform,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView
+} from 'react-native'
 
 // Danh sách Các Tỉnh/Thành phố gợi ý
 const cities = [
@@ -41,6 +51,18 @@ const CreatePlanning = () => {
       <Text style={styles.title}>
         Hãy tạo hành trình cho chuyến đi của bạn !
       </Text>
+
+      {/* Nơi đặt trên cho kế hoạch */}
+      <TouchableOpacity
+        style={styles.touchableSearch}
+        onPress={() => setModalVisible(true)}
+      >
+        <View style={styles.searchBar}>
+          <Text style={styles.searchIcon}>pencil</Text>
+          <Text style={styles.textSearchBar}>Đặt tên cho Chuyến đi</Text>
+        </View>
+      </TouchableOpacity>
+
 
       {/* Thanh Search các địa điểm nếu bạn không tìm thấy ở địa điểm gợi ý */}
       <TouchableOpacity
@@ -236,7 +258,7 @@ const styles = StyleSheet.create({
   },
   touchableButton: {
     height: 55,
-    marginTop: '65%'
+    marginTop: '50%'
   },
   createButton: {
     width: 361,
