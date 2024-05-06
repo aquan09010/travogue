@@ -15,6 +15,14 @@ import { useNavigation } from '@react-navigation/native'
 const DetailATripPlan = () => {
   const navigation = useNavigation()
 
+  // Khởi tạo danh sách ngày với 7 ngày
+  const [days, setDays] = useState([1, 2, 3, 4, 5, 6, 7])
+
+  // Hàm để thêm một ngày mới vào danh sách
+  const addDay = () => {
+    setDays(prevDays => [...prevDays, prevDays.length + 1])
+  }
+
   // Cập nhật ngày trong Danh sách ngày
   const [selectedDay, setSelectedDay] = useState(1)
 
@@ -92,17 +100,13 @@ const DetailATripPlan = () => {
             showsHorizontalScrollIndicator={false}
             style={styles.listDay}
           >
-            <DayButton day={1} />
-            <DayButton day={2} />
-            <DayButton day={3} />
-            <DayButton day={4} />
-            <DayButton day={5} />
-            <DayButton day={6} />
-            <DayButton day={7} />
+            {days.map(day => (
+              <DayButton key={day} day={day} />
+            ))}
           </ScrollView>
 
           {/* Icon thêm ngày vào danh sách ngày */}
-          <TouchableOpacity style={styles.touchableCalendar}>
+          <TouchableOpacity style={styles.touchableCalendar} onPress={addDay}>
             <Text style={styles.calendarCirclePlus}>calendar-circle-plus</Text>
           </TouchableOpacity>
         </View>
