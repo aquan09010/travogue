@@ -1,6 +1,6 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react'
 import { Image } from 'expo-image'
 import { useNavigation } from '@react-navigation/native'
+import React, { useState, useRef, useCallback, useMemo } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 
 // Danh sách Các Tỉnh/Thành phố gợi ý
@@ -21,7 +21,7 @@ const CreatePlanning = () => {
   const navigation = useNavigation()
 
   // Kiểm tra danh sách Thành phố/Tỉnh đã chọn
-  const [selectedCity, setSelectedCity] = useState()
+  const [selectedCity, setSelectedCity] = useState([])
 
   return (
     <View style={styles.container}>
@@ -67,22 +67,26 @@ const CreatePlanning = () => {
             style={[
               styles.item,
               {
-                borderColor: selectedCity == option ? 'red' : 'black'
+                borderColor: selectedCity.includes(option) ? 'red' : 'black'
               }
             ]}
             onPress={() => {
-              if (selectedCity == option) {
-                setSelectedCity(null)
-              } else {
-                setSelectedCity(option)
-              }
+              setSelectedCity(prevOptions => {
+                if (prevOptions.includes(option)) {
+                  // If the option is already selected, remove it from the array
+                  return prevOptions.filter(prevOption => prevOption !== option)
+                } else {
+                  // If the option is not selected, add it to the array
+                  return [...prevOptions, option]
+                }
+              })
             }}
           >
             <Text
               style={[
                 styles.textLocation,
                 {
-                  color: selectedCity == option ? 'red' : 'black'
+                  color: selectedCity.includes(option) ? 'red' : 'black'
                 }
               ]}
             >
