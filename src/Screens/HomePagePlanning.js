@@ -12,7 +12,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 const HomePagePlanning = () => {
   const navigation = useNavigation()
 
-  // Modal Toggle Function
+  // Modal Toggle Functions
   const [isModalVisible, setModalVisible] = useState(false)
 
   const toggleModal = async e => {
@@ -30,22 +30,22 @@ const HomePagePlanning = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Toggle hiển thị chức năng */}
+      {/* Modal Toggle Functions */}
       <Modal
-        onBackButtonPress={() => setModalVisible(false)}
-        onBackdropPress={() => setModalVisible(false)}
-        swipeDirection='down'
-        onSwipeComplete={toggleModal}
-        isVisible={isModalVisible}
-        avoidKeyboard={true}
-        propagateSwipe={true}
         style={{
-          justifyContent: 'flex-end',
-          height: '100%',
-          width: '100%',
+          margin: 0,
           padding: 0,
-          margin: 0
+          width: '100%',
+          height: '100%',
+          justifyContent: 'flex-end'
         }}
+        avoidKeyboard={true}
+        swipeDirection='down'
+        propagateSwipe={true}
+        isVisible={isModalVisible}
+        onSwipeComplete={toggleModal}
+        onBackdropPress={() => setModalVisible(false)}
+        onBackButtonPress={() => setModalVisible(false)}
       >
         <View
           style={{

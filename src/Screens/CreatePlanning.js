@@ -1,17 +1,18 @@
-import { Image } from 'expo-image'
-import { useNavigation } from '@react-navigation/native'
-import React, { useState, useRef, useCallback, useMemo } from 'react'
 import {
   Text,
   View,
-  Modal,
   Button,
   Platform,
   TextInput,
   StyleSheet,
+  SafeAreaView,
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native'
+import { Image } from 'expo-image'
+import Modal from 'react-native-modal'
+import { useNavigation } from '@react-navigation/native'
+import React, { useState, useRef, useCallback, useMemo } from 'react'
 
 // Danh sách Các Tỉnh/Thành phố gợi ý
 const cities = [
@@ -33,8 +34,16 @@ const CreatePlanning = () => {
   // Kiểm tra danh sách Thành phố/Tỉnh đã chọn
   const [selectedCity, setSelectedCity] = useState([])
 
+  // Model Toggle Đặt tên
+  const [isModalNameVisible, setModalNameVisible] = useState(false)
+
+  const toggleModalName = async e => {
+    e.preventDefault()
+    setModalNameVisible(!isModalNameVisible)
+  }
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Nút quay lại */}
       <TouchableOpacity onPress={() => navigation.navigate('Lập kế hoạch')}>
         <Image
@@ -54,8 +63,8 @@ const CreatePlanning = () => {
 
       {/* Nơi đặt trên cho kế hoạch */}
       <TouchableOpacity
+        onPress={toggleModalName}
         style={styles.touchableSearch}
-        onPress={() => setModalVisible(true)}
       >
         <View style={styles.searchBar}>
           <Text style={styles.searchIcon}>pencil</Text>
@@ -63,6 +72,51 @@ const CreatePlanning = () => {
         </View>
       </TouchableOpacity>
 
+      {/* Modal Toggle Functions */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'flex-end'
+        }}
+        avoidKeyboard={true}
+        isVisible={isModalNameVisible}
+        onBackdropPress={() => setModalNameVisible(false)}
+        onBackButtonPress={() => setModalNameVisible(false)}
+      >
+        <View
+          style={{
+            gap: 24,
+            bottom: 0,
+            height: 140,
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            borderTopLeftRadius: 20,
+            justifyContent: 'center',
+            borderTopRightRadius: 20,
+            backgroundColor: '#EAEAEA'
+          }}
+        >
+          <View style={styles.functionNameButton}>
+            <TouchableOpacity>
+              <Text style={styles.cancelText}>Hủy bỏ</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Text style={styles.acceptText}>Hoàn thành</Text>
+            </TouchableOpacity>
+          </View>
+
+          <TextInput
+            selectionColor='gray'
+            style={styles.textInput}
+            placeholder='Đặt tên cho Chuyến đi'
+          />
+        </View>
+      </Modal>
 
       {/* Thanh Search các địa điểm nếu bạn không tìm thấy ở địa điểm gợi ý */}
       <TouchableOpacity
@@ -138,7 +192,7 @@ const CreatePlanning = () => {
           <Text style={styles.createText}>Tạo Chuyến đi</Text>
         </View>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -217,6 +271,37 @@ const styles = StyleSheet.create({
     marginLeft: '7%',
     letterSpacing: 0.1,
     fontFamily: 'BeVN'
+  },
+  functionNameButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 220
+  },
+  cancelText: {
+    fontSize: 17,
+    color: '#767676',
+    letterSpacing: 0.2,
+    fontWeight: '500',
+    fontFamily: 'BeVNProMedium'
+  },
+  acceptText: {
+    fontSize: 17,
+    color: '#0b3bb7',
+    letterSpacing: 0.2,
+    fontWeight: '500',
+    fontFamily: 'BeVNProMedium'
+  },
+  textInput: {
+    width: 380,
+    height: 70,
+    fontSize: 15,
+    color: '#000',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingLeft: 16,
+    fontWeight: '300',
+    fontFamily: 'BeVNProLight',
+    backgroundColor: '#e8e8e8'
   },
   suggestText: {
     fontSize: 14,
