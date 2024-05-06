@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { Image } from 'expo-image'
 import Modal from 'react-native-modal'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button1 from '../Components/Button1'
 import { useNavigation } from '@react-navigation/native'
 
@@ -16,12 +16,36 @@ const DetailATripPlan = () => {
   const navigation = useNavigation()
 
   // Khởi tạo danh sách ngày với 7 ngày
-  const [days, setDays] = useState([1, 2, 3, 4, 5, 6, 7])
+  const [days, setDays] = useState([1])
 
   // Hàm để thêm một ngày mới vào danh sách
   const addDay = () => {
     setDays(prevDays => [...prevDays, prevDays.length + 1])
   }
+
+  // Hàm để xóa ngày được chọn từ danh sách
+  const deleteDay = () => {
+    const newDays = days.filter(day => day !== selectedDay)
+    setDays(newDays.map((day, index) => index + 1)) // Cập nhật lại số thứ tự ngày
+
+    // Cập nhật ngày được chọn
+    if (newDays.includes(selectedDay - 1)) {
+      setSelectedDay(selectedDay - 1)
+    } else {
+      setSelectedDay(newDays[newDays.length - 1] || 1)
+    }
+  }
+
+  useEffect(() => {
+    // Nếu ngày được chọn không còn tồn tại trong danh sách, cập nhật nó
+    if (!days.includes(selectedDay)) {
+      if (days.includes(selectedDay - 1)) {
+        setSelectedDay(selectedDay - 1)
+      } else {
+        setSelectedDay(days[days.length - 1] || 1)
+      }
+    }
+  }, [days])
 
   // Cập nhật ngày trong Danh sách ngày
   const [selectedDay, setSelectedDay] = useState(1)
@@ -115,14 +139,17 @@ const DetailATripPlan = () => {
         <View style={styles.line} />
 
         <ScrollView style={styles.listDestinations}>
-          <View style={styles.filterAndDelete}>
-            <TouchableOpacity
-              style={styles.touchableTrash}
-              onPress={toggleDeleteModal}
-            >
-              <Text style={styles.trash}>trash</Text>
-            </TouchableOpacity>
-          </View>
+          {/* Nút xóa 1 ngày */}
+          {days.length > 1 && (
+            <View style={styles.filterAndDelete}>
+              <TouchableOpacity
+                style={styles.touchableTrash}
+                onPress={toggleDeleteModal}
+              >
+                <Text style={styles.trash}>trash</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           {/* Nút thêm điểm dừng chân */}
           <View style={styles.buttonAddPlaceContainer}>
@@ -280,7 +307,12 @@ const DetailATripPlan = () => {
               <Text style={styles.cancelText}>Hủy bỏ</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModalDeleteVisible(false)
+                deleteDay()
+              }}
+            >
               <Text style={styles.acceptDeleteText}>Xóa bỏ</Text>
             </TouchableOpacity>
           </View>
