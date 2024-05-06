@@ -115,8 +115,17 @@ const DetailATripPlan = () => {
         <View style={styles.line} />
 
         <ScrollView style={styles.listDestinations}>
+          <View style={styles.filterAndDelete}>
+            <TouchableOpacity
+              style={styles.touchableTrash}
+              onPress={toggleDeleteModal}
+            >
+              <Text style={styles.trash}>trash</Text>
+            </TouchableOpacity>
+          </View>
+
           {/* Nút thêm điểm dừng chân */}
-          <View style={styles.buttonContainer}>
+          <View style={styles.buttonAddPlaceContainer}>
             <Button1 navigation={navigation} />
           </View>
 
@@ -162,6 +171,7 @@ const DetailATripPlan = () => {
           </View>
         </ScrollView>
       </View>
+
       {/* Toggle Edit Modal */}
       <Modal
         style={{
@@ -221,6 +231,57 @@ const DetailATripPlan = () => {
                 <Text style={styles.icon1}>trash</Text>
                 <Text style={styles.text1}>Xóa Chuyến đi</Text>
               </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Toggle Delete Modal */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        avoidKeyboard={true}
+        swipeDirection='down'
+        propagateSwipe={true}
+        isVisible={isModalDeleteVisible}
+        onSwipeComplete={toggleDeleteModal}
+        onBackdropPress={() => setModalDeleteVisible(false)}
+        onBackButtonPress={() => setModalDeleteVisible(false)}
+      >
+        <View
+          style={{
+            gap: 24,
+            width: 320,
+            height: 200,
+            padding: 24,
+            display: 'flex',
+            borderRadius: 20,
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            backgroundColor: '#D9D9D9'
+          }}
+        >
+          <Text style={styles.deleteTitle}>Xóa Ngày 1</Text>
+
+          <Text style={styles.deleteText}>
+            Tất cả điểm dừng chân trong ngày này sẽ bị xóa hoàn toàn. Bạn có
+            muốn xóa hết ?
+          </Text>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => setModalDeleteVisible(false)}>
+              <Text style={styles.cancelText}>Hủy bỏ</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Text style={styles.acceptDeleteText}>Xóa bỏ</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -374,6 +435,23 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     fontFamily: 'FontAwesome6ProLight'
   },
+  filterAndDelete: {
+    height: 18,
+    width: '100%',
+    marginTop: 16,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
+  touchableTrash: {
+    marginRight: '7%'
+  },
+  trash: {
+    fontSize: 17,
+    color: '#000',
+    fontFamily: 'FontAwesome6ProLight'
+  },
   listDestinations: {
     width: '100%',
     display: 'flex',
@@ -385,7 +463,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: '#bababa'
   },
-  buttonContainer: {
+  buttonAddPlaceContainer: {
     alignItems: 'center',
     marginVertical: '5%'
   },
@@ -442,6 +520,40 @@ const styles = StyleSheet.create({
     color: '#000',
     marginLeft: '5%',
     fontFamily: 'BeVN'
+  },
+  deleteTitle: {
+    fontSize: 18,
+    color: '#000',
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    fontFamily: 'BeVNSemi'
+  },
+  deleteText: {
+    fontSize: 14,
+    color: '#000',
+    fontWeight: '300',
+    letterSpacing: 0.3,
+    fontFamily: 'BeVNProLight'
+  },
+  buttonContainer: {
+    gap: 32,
+    display: 'flex',
+    flexDirection: 'row',
+    alignSelf: 'flex-end'
+  },
+  cancelText: {
+    fontSize: 14,
+    color: '#ed2939',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+    fontFamily: 'BeVNProMedium'
+  },
+  acceptDeleteText: {
+    fontSize: 14,
+    color: '#0b3bb7',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+    fontFamily: 'BeVNProMedium'
   }
 })
 
