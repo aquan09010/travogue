@@ -101,7 +101,7 @@ const CreatePlanning = () => {
           }}
         >
           <View style={styles.functionNameButton}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setModalNameVisible(false)}>
               <Text style={styles.cancelText}>Hủy bỏ</Text>
             </TouchableOpacity>
 

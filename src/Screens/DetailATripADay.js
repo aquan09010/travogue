@@ -396,21 +396,21 @@ const DetailATripADay = () => {
   const [isModalEditVisible, setModalEditVisible] = useState(false)
 
   const toggleEditModal = async () => {
-    setModalEditVisible(!isModalEditVisible);
+    setModalEditVisible(!isModalEditVisible)
   }
 
   // Modal Toggle Delete All Items
   const [isModalDeleteVisible, setModalDeleteVisible] = useState(false)
 
   const toggleDeleteModal = async () => {
-    setModalDeleteVisible(!isModalDeleteVisible);
+    setModalDeleteVisible(!isModalDeleteVisible)
   }
 
   // Modal Toggle Delete A Trip
   const [isModalDeleteTripVisible, setModalDeleteTripVisible] = useState(false)
 
   const toggleDeleteTripModal = async () => {
-    setModalDeleteTripVisible(!isModalDeleteTripVisible);
+    setModalDeleteTripVisible(!isModalDeleteTripVisible)
   }
 
   // Swipe List View
@@ -546,6 +546,57 @@ const DetailATripADay = () => {
           rightOpenValue={-75}
         />
       </View>
+      
+      {/* Toggle Delete Modal */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        avoidKeyboard={true}
+        swipeDirection='down'
+        propagateSwipe={true}
+        isVisible={isModalDeleteVisible}
+        onSwipeComplete={toggleDeleteModal}
+        onBackdropPress={() => setModalDeleteVisible(false)}
+        onBackButtonPress={() => setModalDeleteVisible(false)}
+      >
+        <View
+          style={{
+            gap: 24,
+            width: 320,
+            height: 200,
+            padding: 24,
+            display: 'flex',
+            borderRadius: 20,
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            backgroundColor: '#D9D9D9'
+          }}
+        >
+          <Text style={styles.deleteTitle}>Xóa Ngày 1</Text>
+
+          <Text style={styles.deleteText}>
+            Tất cả điểm dừng chân trong ngày này sẽ bị xóa hoàn toàn. Bạn có
+            muốn xóa hết ?
+          </Text>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => setModalDeleteVisible(false)}>
+              <Text style={styles.cancelText}>Hủy bỏ</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Text style={styles.acceptDeleteText}>Xóa bỏ</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       {/* Toggle Edit Modal */}
       <Modal
@@ -616,57 +667,6 @@ const DetailATripADay = () => {
                 <Text style={styles.icon1}>trash</Text>
                 <Text style={styles.text1}>Xóa Chuyến đi</Text>
               </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      {/* Toggle Delete Modal */}
-      <Modal
-        style={{
-          margin: 0,
-          padding: 0,
-          width: '100%',
-          height: '100%',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-        avoidKeyboard={true}
-        swipeDirection='down'
-        propagateSwipe={true}
-        isVisible={isModalDeleteVisible}
-        onSwipeComplete={toggleDeleteModal}
-        onBackdropPress={() => setModalDeleteVisible(false)}
-        onBackButtonPress={() => setModalDeleteVisible(false)}
-      >
-        <View
-          style={{
-            gap: 24,
-            width: 320,
-            height: 200,
-            padding: 24,
-            display: 'flex',
-            borderRadius: 20,
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-            backgroundColor: '#D9D9D9'
-          }}
-        >
-          <Text style={styles.deleteTitle}>Xóa Ngày 1</Text>
-
-          <Text style={styles.deleteText}>
-            Tất cả điểm dừng chân trong ngày này sẽ bị xóa hoàn toàn. Bạn có
-            muốn xóa hết ?
-          </Text>
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={() => setModalDeleteVisible(false)}>
-              <Text style={styles.cancelText}>Hủy bỏ</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Text style={styles.acceptDeleteText}>Xóa bỏ</Text>
             </TouchableOpacity>
           </View>
         </View>
