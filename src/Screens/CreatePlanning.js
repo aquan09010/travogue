@@ -173,13 +173,13 @@ const CreatePlanning = () => {
       </View>
 
       {/* Ô chọn thời gian cho chuyến đi */}
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <View style={styles.searchBarTime}>
           <Text style={styles.clock}>clock</Text>
 
           <Text style={styles.textSearchBar}>Thời gian cho Chuyến đi</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* Nút tạo chuyến đi */}
       <TouchableOpacity
@@ -245,21 +245,21 @@ const styles = StyleSheet.create({
     borderColor: '#767676',
     backgroundColor: '#fff'
   },
-  searchBarTime: {
-    width: 361,
-    height: 50,
-    borderWidth: 1,
-    marginTop: '5%',
-    borderRadius: 15,
-    alignSelf: 'center',
-    paddingVertical: 14,
-    alignItems: 'center',
-    borderStyle: 'solid',
-    flexDirection: 'row',
-    paddingHorizontal: 30,
-    borderColor: '#767676',
-    backgroundColor: '#fff'
-  },
+  // searchBarTime: {
+  //   width: 361,
+  //   height: 50,
+  //   borderWidth: 1,
+  //   marginTop: '5%',
+  //   borderRadius: 15,
+  //   alignSelf: 'center',
+  //   paddingVertical: 14,
+  //   alignItems: 'center',
+  //   borderStyle: 'solid',
+  //   flexDirection: 'row',
+  //   paddingHorizontal: 30,
+  //   borderColor: '#767676',
+  //   backgroundColor: '#fff'
+  // },
   searchIcon: {
     fontSize: 14,
     fontFamily: 'FontAwesome6ProLight'
@@ -336,14 +336,18 @@ const styles = StyleSheet.create({
     letterSpacing: 0.1,
     fontFamily: 'BeVN'
   },
-  clock: {
-    fontSize: 14,
-    color: '#000',
-    fontFamily: 'FontAwesome6ProLight'
-  },
+  // clock: {
+  //   fontSize: 14,
+  //   color: '#000',
+  //   fontFamily: 'FontAwesome6ProLight'
+  // },
   touchableButton: {
     height: 55,
-    marginTop: '50%'
+    bottom: '3%',
+    width: '100%',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   createButton: {
     width: 361,
