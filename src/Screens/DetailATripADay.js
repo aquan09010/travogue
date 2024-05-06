@@ -546,7 +546,7 @@ const DetailATripADay = () => {
           rightOpenValue={-75}
         />
       </View>
-      
+
       {/* Toggle Delete Modal */}
       <Modal
         style={{
@@ -653,14 +653,7 @@ const DetailATripADay = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={async () => {
-                try {
-                  await toggleDeleteTripModal
-                  await setModalEditVisible(false)
-                } catch (error) {
-                  console.error(error)
-                }
-              }}
+              onPress={toggleDeleteTripModal}
               style={styles.touchableFunction}
             >
               <View style={styles.subcontainer1}>
