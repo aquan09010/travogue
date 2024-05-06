@@ -155,51 +155,49 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
               }
             </Text>
 
-            <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
-              {data.tags.length === 2 ? (
-                <>
-                  <Text>{`cùng với `}</Text>
+            {data.tags.length === 2 ? (
+              <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
+                <Text>{`cùng với `}</Text>
+                <Text style={styles.boldText}
+                  onPress={() => navigation.navigate("ProfileScreen", {userId: data.tags[0].user.id})}
+                >
+                  {data.tags[0].user.email.split("@")[0]}
+                </Text>
+                <Text>{" và "}</Text>
+                <Text style={styles.boldText}
+                  onPress={() => navigation.navigate("ProfileScreen", { userId: data.tags[1].user.id })}
+                >
+                  {data.tags[1].user.email.split("@")[0]}
+                </Text>
+              </Text>
+            ) : data.tags.length === 1 ? (
+              <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
+                <Text>{`cùng với `}</Text>
                   <Text style={styles.boldText}
-                    onPress={() => navigation.navigate("ProfileScreen", {userId: data.tags[0].user.id})}
+                    onPress={() => navigation.navigate("ProfileScreen", { userId: data.tags[0].user.id })}
                   >
-                    {data.tags[0].user.email.split("@")[0]}
-                  </Text>
-                  <Text>{" và "}</Text>
-                  <Text style={styles.boldText}
-                    onPress={() => navigation.navigate("ProfileScreen", { userId: data.tags[1].user.id })}
-                  >
-                    {data.tags[1].user.email.split("@")[0]}
-                  </Text>
-                </>
-              ) : data.tags.length === 1 ? (
-                <>
-                  <Text>{`cùng với `}</Text>
+                  {data.tags[0].user.email.split("@")[0]}
+                </Text>
+              </Text>
+            ) : data.tags.length > 2 ? (
+              <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
+                <Text>{`cùng với `}</Text>
                     <Text style={styles.boldText}
                       onPress={() => navigation.navigate("ProfileScreen", { userId: data.tags[0].user.id })}
                     >
-                    {data.tags[0].user.email.split("@")[0]}
-                  </Text>
-                </>
-              ) : data.tags.length > 2 ? (
-                <>
-                  <Text>{`cùng với `}</Text>
-                      <Text style={styles.boldText}
-                        onPress={() => navigation.navigate("ProfileScreen", { userId: data.tags[0].user.id })}
-                      >
-                    {data.tags[0].user.email.split("@")[0]}
-                  </Text>
-                  <Text>{" và "}</Text>
-                  <Text
-                    onPress={() => {}}
-                    style={styles.boldText}
-                  >
-                    {data.tags.length - 1} người khác
-                  </Text>
-                </>
-              ) : (
-                <></>
-              )}
-            </Text>
+                  {data.tags[0].user.email.split("@")[0]}
+                </Text>
+                <Text>{" và "}</Text>
+                <Text
+                  onPress={() => {}}
+                  style={styles.boldText}
+                >
+                  {data.tags.length - 1} người khác
+                </Text>
+              </Text>
+            ) : (
+              <></>
+            )}
 
             <Text
               style={{
