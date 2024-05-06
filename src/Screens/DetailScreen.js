@@ -39,6 +39,10 @@ import {
 } from "@/Hooks/TravelActivityHooks";
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
+import { ResizeMode, Video } from "expo-av";
+
+const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
+const videoExtensions = ["mp4"];
 
 export default function DetailScreen({ route }) {
   const navigation = useNavigation();
@@ -208,6 +212,10 @@ export default function DetailScreen({ route }) {
     setBabyQuantity(babyQuantity + 1);
   };
 
+  const ref = React.useRef(null);
+
+  const [currentIndex, setCurrentIndex] = useState(0); // Track current Swiper index
+
   return (
     <View style={styles.container}>
       {isActivityLoading ? (
@@ -235,19 +243,32 @@ export default function DetailScreen({ route }) {
       ) : (
         <>
           <View style={{ flex: 1 }}>
-            <Swiper>
-              <Image
-                source={{ uri: activity.data.mainImage }}
-                style={styles.backgroundContainer}
-              />
-              <Image
-                source={{ uri: activity.data.mainImage }}
-                style={styles.backgroundContainer}
-              />
-              <Image
-                source={require("../Assets/ava1.jpg")}
-                style={styles.backgroundContainer}
-              />
+            <Swiper onIndexChanged={(index) => setCurrentIndex(index)}>
+              {activity.data.images.split(";")
+                    .map((image, index) => {
+                      const extension = image.split(".").pop()
+                      if (imageExtensions.includes(extension)) {
+                        return <Image
+                          source={{ uri: image }}
+                          style={styles.backgroundContainer}
+                          resizeMode="contain"
+                        key={index}/>
+                      } else if (videoExtensions.includes(extension)) {
+                        return <Video
+                          ref={ref}
+                          style={styles.container}
+                          resizeMode={ResizeMode.COVER}
+                          shouldPlay={currentIndex == index}
+                          isLooping
+                          useNativeControls
+                          source={{ uri: image }}
+                          key={index}
+                        />
+                      }
+                      
+                })
+              }
+              
             </Swiper>
           </View>
 
