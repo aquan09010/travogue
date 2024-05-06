@@ -257,7 +257,7 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
         
         <Text style={{ paddingTop: 8, paddingBottom: 8 }}>{data.caption}</Text>
         <View style={styles.frameParent}>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
             <Pressable onPress={handleLike}>
               {liked ? (
                 <SvgXml xml={HeartSeletetedIcon} />
@@ -265,8 +265,16 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
                 <SvgXml xml={HeartBlackIcon} />
               )}
             </Pressable>
+            <Pressable onPress={handleOpenPress1}>
+              <Text style={{ marginLeft: 5, color: "gray" }}>{numOfLikes}</Text>
+            </Pressable>
             <Pressable onPress={handleOpenPress} style={{ marginLeft: 15 }}>
               <SvgXml xml={CommentBlackIcon} />
+            </Pressable>
+            <Pressable>
+              <Text style={{ marginLeft: 5, color: "gray" }}>
+                {numOfComments}
+              </Text>
             </Pressable>
           </View>
           {/* <Pressable onPress={() => setSelectedBookmark(!selectedBookmark)}>
@@ -277,9 +285,6 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
             />
           </Pressable> */}
         </View>
-        <Pressable onPress={handleOpenPress1}>
-          <Text style={{ marginLeft: 5 }}>{numOfLikes} lượt thích</Text>
-        </Pressable>
 
         {!data.latestComment ? (
           <></>
@@ -314,11 +319,6 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
             </View>
           </Pressable>
         )}
-        <Pressable>
-          <Text style={{ marginLeft: 5, color: "gray" }}>
-            Xem tất cả {numOfComments} bình luận
-          </Text>
-        </Pressable>
       </View>
     </View>
   );
