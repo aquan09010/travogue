@@ -1,6 +1,6 @@
 import { ArrowLeft, SearchIcon } from "@/Assets/Icons/Navigation";
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -40,6 +40,7 @@ import {
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
 import { ResizeMode, Video } from "expo-av";
+import { current } from "@reduxjs/toolkit";
 
 const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 const videoExtensions = ["mp4"];
@@ -212,7 +213,9 @@ export default function DetailScreen({ route }) {
     setBabyQuantity(babyQuantity + 1);
   };
 
-  const ref = React.useRef(null);
+  const ref = useRef(null);
+  const [status, setStatus] = useState({});
+  
 
   const [currentIndex, setCurrentIndex] = useState(0); // Track current Swiper index
 
@@ -252,13 +255,13 @@ export default function DetailScreen({ route }) {
                           source={{ uri: image }}
                           style={styles.backgroundContainer}
                           resizeMode="contain"
-                        key={index}/>
+                        />
                       } else if (videoExtensions.includes(extension)) {
                         return <Video
                           ref={ref}
                           style={styles.container}
                           resizeMode={ResizeMode.COVER}
-                          shouldPlay={currentIndex == index}
+                          shouldPlay={currentIndex === index}
                           isLooping
                           useNativeControls
                           source={{ uri: image }}
