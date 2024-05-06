@@ -5,6 +5,7 @@ import {
   Platform,
   TextInput,
   StyleSheet,
+  ScrollView,
   SafeAreaView,
   TouchableOpacity,
   KeyboardAvoidingView
@@ -43,143 +44,152 @@ const CreatePlanning = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Nút quay lại */}
-      <TouchableOpacity onPress={() => navigation.navigate('Lập kế hoạch')}>
-        <Image
-          style={styles.arrowLeftIcon}
-          contentFit='cover'
-          source={require('../Assets/arrowleft.png')}
-        />
-      </TouchableOpacity>
-
-      {/* Đường kẻ */}
-      <View style={styles.line} />
-
-      {/* Tiêu đề */}
-      <Text style={styles.title}>
-        Hãy tạo hành trình cho chuyến đi của bạn !
-      </Text>
-
-      {/* Nơi đặt trên cho kế hoạch */}
-      <TouchableOpacity
-        onPress={toggleModalName}
-        style={styles.touchableSearch}
-      >
-        <View style={styles.searchBar}>
-          <Text style={styles.searchIcon}>pencil</Text>
-          <Text style={styles.textSearchBar}>Đặt tên cho Chuyến đi</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Modal Toggle Functions */}
-      <Modal
-        style={{
-          margin: 0,
-          padding: 0,
-          width: '100%',
-          height: '100%',
-          justifyContent: 'flex-end'
-        }}
-        avoidKeyboard={true}
-        isVisible={isModalNameVisible}
-        onBackdropPress={() => setModalNameVisible(false)}
-        onBackButtonPress={() => setModalNameVisible(false)}
-      >
-        <View
-          style={{
-            gap: 24,
-            bottom: 0,
-            height: 140,
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            borderTopLeftRadius: 20,
-            justifyContent: 'center',
-            borderTopRightRadius: 20,
-            backgroundColor: '#EAEAEA'
-          }}
-        >
-          <View style={styles.functionNameButton}>
-            <TouchableOpacity onPress={() => setModalNameVisible(false)}>
-              <Text style={styles.cancelText}>Hủy bỏ</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Text style={styles.acceptText}>Hoàn thành</Text>
-            </TouchableOpacity>
-          </View>
-
-          <TextInput
-            selectionColor='gray'
-            style={styles.textInput}
-            placeholder='Đặt tên cho Chuyến đi'
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView>
+        {/* Nút quay lại */}
+        <TouchableOpacity onPress={() => navigation.navigate('Lập kế hoạch')}>
+          <Image
+            style={styles.arrowLeftIcon}
+            contentFit='cover'
+            source={require('../Assets/arrowleft.png')}
           />
-        </View>
-      </Modal>
+        </TouchableOpacity>
 
-      {/* Thanh Search các địa điểm nếu bạn không tìm thấy ở địa điểm gợi ý */}
-      <TouchableOpacity
-        style={styles.touchableSearch}
-        onPress={() => navigation.navigate('SearchDestination')}
-      >
-        <View style={styles.searchBar}>
-          <Text style={styles.searchIcon}>magnifying-glass</Text>
+        {/* Đường kẻ */}
+        <View style={styles.line} />
 
-          <Text style={styles.textSearchBar}>Thêm nơi bắt đầu hành trình</Text>
-        </View>
-      </TouchableOpacity>
+        {/* Tiêu đề */}
+        <Text style={styles.title}>
+          Hãy tạo hành trình cho chuyến đi của bạn !
+        </Text>
 
-      {/* Gợi ý các địa điểm */}
-      <Text style={styles.suggestText}>
-        Bạn có thể thích những địa điểm này
-      </Text>
+        {/* Nơi đặt trên cho kế hoạch */}
+        <TouchableOpacity
+          onPress={toggleModalName}
+          style={styles.touchableSearch}
+        >
+          <View style={styles.searchBar}>
+            <Text style={styles.searchIcon}>pencil</Text>
+            <Text style={styles.textSearchBar}>Đặt tên cho Chuyến đi</Text>
+          </View>
+        </TouchableOpacity>
 
-      {/* Các địa điểm 1*/}
-      <View style={styles.locationContainer}>
-        {cities.map((option, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.item,
-              {
-                borderColor: selectedCity.includes(option) ? 'red' : 'black'
-              }
-            ]}
-            onPress={() => {
-              setSelectedCity(prevOptions => {
-                if (prevOptions.includes(option)) {
-                  // If the option is already selected, remove it from the array
-                  return prevOptions.filter(prevOption => prevOption !== option)
-                } else {
-                  // If the option is not selected, add it to the array
-                  return [...prevOptions, option]
-                }
-              })
+        {/* Modal Toggle Functions */}
+        <Modal
+          style={{
+            margin: 0,
+            padding: 0,
+            width: '100%',
+            height: '100%',
+            justifyContent: 'flex-end'
+          }}
+          avoidKeyboard={true}
+          isVisible={isModalNameVisible}
+          onBackdropPress={() => setModalNameVisible(false)}
+          onBackButtonPress={() => setModalNameVisible(false)}
+        >
+          <View
+            style={{
+              gap: 24,
+              bottom: 0,
+              height: 140,
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              borderTopLeftRadius: 20,
+              justifyContent: 'center',
+              borderTopRightRadius: 20,
+              backgroundColor: '#EAEAEA'
             }}
           >
-            <Text
+            <View style={styles.functionNameButton}>
+              <TouchableOpacity onPress={() => setModalNameVisible(false)}>
+                <Text style={styles.cancelText}>Hủy bỏ</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity>
+                <Text style={styles.acceptText}>Hoàn thành</Text>
+              </TouchableOpacity>
+            </View>
+
+            <TextInput
+              selectionColor='gray'
+              style={styles.textInput}
+              placeholder='Đặt tên cho Chuyến đi'
+            />
+          </View>
+        </Modal>
+
+        {/* Thanh Search các địa điểm nếu bạn không tìm thấy ở địa điểm gợi ý */}
+        <TouchableOpacity
+          style={styles.touchableSearch}
+          onPress={() => navigation.navigate('SearchDestination')}
+        >
+          <View style={styles.searchBar}>
+            <Text style={styles.searchIcon}>magnifying-glass</Text>
+
+            <Text style={styles.textSearchBar}>
+              Thêm nơi bắt đầu hành trình
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        {/* Gợi ý các địa điểm */}
+        <Text style={styles.suggestText}>
+          Bạn có thể thích những địa điểm này
+        </Text>
+
+        {/* Các địa điểm 1*/}
+        <View style={styles.locationContainer}>
+          {cities.map((option, index) => (
+            <TouchableOpacity
+              key={index}
               style={[
-                styles.textLocation,
+                styles.item,
                 {
-                  color: selectedCity.includes(option) ? 'red' : 'black'
+                  borderColor: selectedCity.includes(option) ? 'red' : 'black'
                 }
               ]}
+              onPress={() => {
+                setSelectedCity(prevOptions => {
+                  if (prevOptions.includes(option)) {
+                    // If the option is already selected, remove it from the array
+                    return prevOptions.filter(
+                      prevOption => prevOption !== option
+                    )
+                  } else {
+                    // If the option is not selected, add it to the array
+                    return [...prevOptions, option]
+                  }
+                })
+              }}
             >
-              {option}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+              <Text
+                style={[
+                  styles.textLocation,
+                  {
+                    color: selectedCity.includes(option) ? 'red' : 'black'
+                  }
+                ]}
+              >
+                {option}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-      {/* Ô chọn thời gian cho chuyến đi */}
-      {/* <TouchableOpacity>
+        {/* Ô chọn thời gian cho chuyến đi */}
+        {/* <TouchableOpacity>
         <View style={styles.searchBarTime}>
           <Text style={styles.clock}>clock</Text>
 
           <Text style={styles.textSearchBar}>Thời gian cho Chuyến đi</Text>
         </View>
       </TouchableOpacity> */}
+      </ScrollView>
 
       {/* Nút tạo chuyến đi */}
       <TouchableOpacity
@@ -192,7 +202,7 @@ const CreatePlanning = () => {
           <Text style={styles.createText}>Tạo Chuyến đi</Text>
         </View>
       </TouchableOpacity>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -347,7 +357,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   createButton: {
     width: 361,

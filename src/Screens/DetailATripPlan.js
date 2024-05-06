@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native'
 const DetailATripPlan = () => {
   const navigation = useNavigation()
 
-  // Khởi tạo danh sách ngày với 7 ngày
+  // Khởi tạo danh sách ngày với 1 ngày mặc định
   const [days, setDays] = useState([1])
 
   // Hàm để thêm một ngày mới vào danh sách
@@ -25,17 +25,19 @@ const DetailATripPlan = () => {
 
   // Hàm để xóa ngày được chọn từ danh sách
   const deleteDay = () => {
+    const indexToDelete = days.indexOf(selectedDay)
+
     const newDays = days.filter(day => day !== selectedDay)
     setDays(newDays.map((day, index) => index + 1)) // Cập nhật lại số thứ tự ngày
 
     // Cập nhật ngày được chọn
-    if (newDays.includes(selectedDay - 1)) {
-      setSelectedDay(selectedDay - 1)
+    if (indexToDelete >= newDays.length) {
+      setSelectedDay(Math.max(...newDays));
     } else {
-      setSelectedDay(newDays[newDays.length - 1] || 1)
+      setSelectedDay(indexToDelete + 1);
     }
   }
-
+  
   useEffect(() => {
     // Nếu ngày được chọn không còn tồn tại trong danh sách, cập nhật nó
     if (!days.includes(selectedDay)) {
