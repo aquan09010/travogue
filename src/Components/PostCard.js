@@ -27,6 +27,7 @@ import {
 import { deleteLikeHook, postLikeHook } from "@/Hooks/PostHooks";
 import { useStateContext } from "@/Context/StateContext";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { ResizeMode, Video } from "expo-av";
 
 function formatDate(dateString) {
   // Parse the date string into a Date object
@@ -69,6 +70,9 @@ const timeAgo = (dateString) => {
   return "just now";
 };
 
+const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
+const videoExtensions = ["mp4"];
+
 export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
   // const [selectedBookmark, setSelectedBookmark] = useState(false);
   const [liked, setLiked] = useState(data.liked);
@@ -103,6 +107,7 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
 
   const navigation = useNavigation();
 
+  const ref = useRef(null);
   return (
     <View
       style={{
@@ -243,13 +248,28 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
               />
             }
           >
-            {data.images.split(";").map((image) => (
-              <Image
-                style={styles.slide1}
-                resizeMode="cover"
-                source={{ uri: image }}
-              />
-            ))}
+            {data.images.split(";").map((image, index) => {
+              const extension = image.split(".").pop()
+              if (imageExtensions.includes(extension)) {
+                return <Image
+                  source={{ uri: image }}
+                  style={styles.slide1}
+                  resizeMode="cover"
+                  key={index}
+                />
+              } else if (videoExtensions.includes(extension)) {
+                return <Video
+                  ref={ref}
+                  style={styles.slide1}
+                  resizeMode={ResizeMode.COVER}
+                  shouldPlay={false}
+                  isLooping
+                  useNativeControls
+                  source={{ uri: image }}
+                  key={index}
+                />
+              }
+            })}
           </Swiper>
         }
         

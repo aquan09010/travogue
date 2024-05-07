@@ -216,9 +216,6 @@ export default function DetailScreen({ route }) {
   const ref = useRef(null);
   const [status, setStatus] = useState({});
   
-
-  const [currentIndex, setCurrentIndex] = useState(0); // Track current Swiper index
-
   return (
     <View style={styles.container}>
       {isActivityLoading ? (
@@ -246,7 +243,7 @@ export default function DetailScreen({ route }) {
       ) : (
         <>
           <View style={{ flex: 1 }}>
-            <Swiper onIndexChanged={(index) => setCurrentIndex(index)}>
+            <Swiper>
               {activity.data.images.split(";")
                     .map((image, index) => {
                       const extension = image.split(".").pop()
@@ -255,13 +252,14 @@ export default function DetailScreen({ route }) {
                           source={{ uri: image }}
                           style={styles.backgroundContainer}
                           resizeMode="contain"
+                          key={index}
                         />
                       } else if (videoExtensions.includes(extension)) {
                         return <Video
                           ref={ref}
                           style={styles.container}
                           resizeMode={ResizeMode.COVER}
-                          shouldPlay={currentIndex === index}
+                          shouldPlay={false}
                           isLooping
                           useNativeControls
                           source={{ uri: image }}
