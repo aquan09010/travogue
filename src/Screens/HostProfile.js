@@ -43,6 +43,7 @@ export default function HostProfile({route}) {
       cardName={item.activityName}
       cityName={item.cityName}
       star={item.rating}
+      numOfRating={item.numberOfRating}
     />
   );
   // const renderCircleAvatar = ({ item }) => (

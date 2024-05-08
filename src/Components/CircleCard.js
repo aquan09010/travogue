@@ -27,7 +27,7 @@ export default function CircleCard(props) {
         <Image style={styles.image} source={{uri: props.imgPath}} />
         <View style={[styles.line, { marginLeft: 5, marginBottom: 4 }]}>
           <SvgXml xml={StarBlackIcon} />
-          <Text style={[styles.text]}> {props.star.toFixed(1)}</Text>
+          <Text style={[styles.text]}> {props.star.toFixed(1)} - {props.numberOfRating}</Text>
         </View>
         <Text style={{ marginLeft: 5, marginBottom: 4 }}>{props.cityName}</Text>
         <Text style={{ marginLeft: 5, marginBottom: 5, fontWeight: "600" }}>
