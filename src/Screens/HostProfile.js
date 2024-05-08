@@ -9,13 +9,14 @@ import {
   ImageBackground,
   Pressable,
   SafeAreaView,
+  ActivityIndicator,
   FlatList,
 } from "react-native";
 import { DATA } from "../Utils/data";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { ParkIconActive } from "@/Assets/Icons/Where";
-import React, { useLayoutEffect, useState, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import { ArrowLeftBlack, SearchIconBlack } from "@/Assets/Icons/Navigation";
 import {
   CalendarIcon,
@@ -32,22 +33,33 @@ import {
   StarBlackIcon,
 } from "@/Assets/Icons/Proflie";
 import CircleCard from "@/Components/CircleCard";
-export default function HostProfile() {
+import { getHostInfo } from "@/Hooks/UserHook";
+import { useStateContext } from "@/Context/StateContext";
+export default function HostProfile({route}) {
   const navigation = useNavigation();
   const renderCircleItem = ({ item }) => (
     <CircleCard
-      imgPath={item.imgPath1}
-      cardName={item.cardName1}
-      cityName={item.cityName1}
-      star={item.star1}
+      imgPath={item.mainImage}
+      cardName={item.activityName}
+      cityName={item.cityName}
+      star={item.rating}
     />
   );
-  const renderCircleAvatar = ({ item }) => (
-    <Image
-      source={item.ava1}
-      style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
-    />
-  );
+  // const renderCircleAvatar = ({ item }) => (
+  //   <Image
+  //     source={item.ava1}
+  //     style={{ width: 100, height: 100, borderRadius: 100 / 2 }}
+  //   />
+  // );
+
+  const { accessToken } = useStateContext();
+
+  const {hostId} = route.params
+
+  const { host, isHostLoading, error, refetchHostInfo } = getHostInfo(accessToken, hostId);
+
+  useEffect(() => console.log(host), [host])
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.statusBar}>
@@ -59,52 +71,61 @@ export default function HostProfile() {
           <SvgXml xml={SearchIconBlack} />
         </Pressable>
       </View>
-      <ScrollView style={{}}>
+
+      {isHostLoading
+        ? <ActivityIndicator
+            size="large"
+            color="#ED2939"
+            style={{ paddingVertical: 12 }}
+          />
+        : <ScrollView style={{}}>
         <View style={styles.containerCard}>
           <View>
             <View style={{ paddingBottom: 10 }}>
               <Image
                 style={styles.avatar}
                 resizeMode="cover"
-                source={require("../Assets/ava1.jpg")}
+                source={{uri: host.avatar}}
               />
             </View>
-            <View style={[styles.button1]}>
+              <Pressable style={[styles.button1]}
+                onPress={() => navigation.navigate("ProfileScreen", {userId: host.id})}
+              >
               <Text style={{ color: "#fff", textAlign: "center" }}>
                 Xem Hồ sơ
               </Text>
-            </View>
+            </Pressable>
           </View>
           <View style={styles.orderCard}>
             <Text
               style={[styles.textDetail, { paddingTop: 10, paddingBottom: 5 }]}
             >
-              Martin Nguyen
+              {host.firstName + ' ' + host.lastName}
             </Text>
             <Text style={(styles.line, styles.textDetail)}>
-              12 thành phố, 64 trải nghiệm
+              {host.numOfCities} thành phố, {host.numOfActivities} trải nghiệm
             </Text>
             <Text style={{ paddingTop: 5 }}>
-              6 năm: tổ chức trải nghiệm trên Travogue từ 2017
+              Tổ chức trải nghiệm trên Travogue từ {host.createdAt.substring(0, 4)}
             </Text>
             <View style={[styles.line, { alignItems: "center" }]}>
               <SvgXml xml={LanguageBlackIcon} />
               <Text style={[styles.text]}>
                 {" "}
-                Tiếng Việt, Tiếng Anh, Tiếng Trung
+                {host.languages}
               </Text>
             </View>
             <View style={[styles.line]}>
               <SvgXml xml={ListBlackIcon} />
               <Text style={[styles.text]}>
                 {" "}
-                Chụp hình, quay phim, lái mô tô, lái ô tô
+                {host.personalSkills}
               </Text>
             </View>
-            <View style={[styles.line]}>
+            {/* <View style={[styles.line]}>
               <SvgXml xml={StarBlackIcon} />
               <Text style={[styles.text]}> 4.5</Text>
-            </View>
+            </View> */}
           </View>
         </View>
         <View style={styles.mainView}>
@@ -113,7 +134,7 @@ export default function HostProfile() {
             Trải nghiệm nổi bật của Martin
           </Text>
           <FlatList
-            data={DATA}
+            data={host.hotTour}
             renderItem={renderCircleItem}
             keyExtractor={(item, index) => index}
             horizontal
@@ -127,20 +148,16 @@ export default function HostProfile() {
             Về Martin{" "}
           </Text>
           <Text style={{ paddingBottom: 15 }}>
-            Xin chào mọi người, tôi là Martin Nguyen. Lorem ipsum dolor sit
-            amet, consectetur adipiscing elit. Vestibulum blandit velit erat.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
-            blandit velit erat. Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit. Vestibulum blandit velit erat.
+            {host.selfIntroduction}
           </Text>
-          <FlatList
+          {/* <FlatList
             data={DATA}
             renderItem={renderCircleAvatar}
             keyExtractor={(item, index) => index}
             horizontal
             showsHorizontalScrollIndicator={false}
             ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-          />
+          /> */}
         </View>
         <View style={styles.mainView}>
           <Text style={{ fontWeight: "600", fontSize: 16 }}>
@@ -149,18 +166,19 @@ export default function HostProfile() {
           </Text>
           <View style={[styles.line]}>
             <SvgXml xml={MailBlackIcon} />
-            <Text style={[styles.text]}> abc@gmail.com</Text>
+            <Text style={[styles.text]}> {host.email }</Text>
           </View>
           <View style={[styles.line]}>
             <SvgXml xml={PhoneBlackIcon} />
-            <Text style={[styles.text]}> 0123456789</Text>
+            <Text style={[styles.text]}> {host.phone}</Text>
           </View>
-          <View style={[styles.line]}>
+          {/* <View style={[styles.line]}>
             <SvgXml xml={FacebookBlackIcon} />
             <Text style={[styles.text]}> Martin Nguyen</Text>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
+      }
     </SafeAreaView>
   );
 }
@@ -226,4 +244,7 @@ const styles = StyleSheet.create({
     width: 100,
     alignSelf: "center",
   },
+  text: {
+    textTransform: 'capitalize'
+  }
 });

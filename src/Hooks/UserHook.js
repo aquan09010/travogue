@@ -42,4 +42,47 @@ const getUserProfile = (accessToken, userId) => {
     return { userProfile, isUserLoading, error, refetchUserProfile };
 };
 
-export {getUserProfile}
+const getHostInfo = (accessToken, hostId) => {
+  const [host, setHost] = useState();
+  const [isHostLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const options = {
+    method: 'GET',
+    url: `https://travogue-production.up.railway.app/travogue-service/hosts/${hostId}`,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.request(options);
+
+      setHost(response.data.data); // Assuming the response contains the child categories
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []); // No dependencies for initial fetch
+
+  const refetchHostInfo = () => {
+    setIsLoading(true);
+    fetchData();
+  };
+
+  return { host, isHostLoading, error, refetchHostInfo };
+};
+
+
+
+export {getUserProfile, getHostInfo}

@@ -64,6 +64,9 @@ import LineProfile from "@/Components/LineProfile";
 import { Camera, CameraType } from "expo-camera";
 import { addImageToPost, createPostHook } from "@/Hooks/PostHooks";
 
+const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
+const videoExtensions = ["mp4", "mov"];
+
 export default function NewPostScreen({ route }) {
   const { userProfile } = route.params;
   const [isPlaying, setIsPlaying] = useState(false);
@@ -350,7 +353,7 @@ export default function NewPostScreen({ route }) {
           {images ? (
             images.map((image) => {
               const extension = image.split(".").pop();
-              if (extension === "mp4") {
+              if (videoExtensions.includes(extension)) {
                 return (
                   <View>
                     <Video

@@ -43,7 +43,7 @@ import { ResizeMode, Video } from "expo-av";
 import { current } from "@reduxjs/toolkit";
 
 const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
-const videoExtensions = ["mp4"];
+const videoExtensions = ["mp4", "mov"];
 
 export default function DetailScreen({ route }) {
   const navigation = useNavigation();
@@ -74,9 +74,8 @@ export default function DetailScreen({ route }) {
       },
     });
   };
-  const gotoHost = async (e) => {
-    e.preventDefault();
-    navigation.navigate("HostProfile");
+  const gotoHost = (hostId) => {
+    navigation.navigate("HostProfile", {hostId: hostId});
   };
 
   const { accessToken, user } = useStateContext();
@@ -276,7 +275,7 @@ export default function DetailScreen({ route }) {
           <View style={styles.actionContainer}>
             {route.params.isExperience && (
               <Pressable
-                onPress={gotoHost}
+                onPress={() => gotoHost(activity.data.host.id)}
                 style={[styles.avatar, styles.actionPadding]}
               >
                 <Image

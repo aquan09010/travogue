@@ -71,7 +71,7 @@ const timeAgo = (dateString) => {
 };
 
 const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
-const videoExtensions = ["mp4"];
+const videoExtensions = ["mp4", "mov"];
 
 export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
   // const [selectedBookmark, setSelectedBookmark] = useState(false);

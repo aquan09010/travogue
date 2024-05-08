@@ -24,10 +24,10 @@ export default function CircleCard(props) {
       onPress={() => {}}
     >
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={props.imgPath} />
+        <Image style={styles.image} source={{uri: props.imgPath}} />
         <View style={[styles.line, { marginLeft: 5, marginBottom: 4 }]}>
           <SvgXml xml={StarBlackIcon} />
-          <Text style={[styles.text]}> {props.star}</Text>
+          <Text style={[styles.text]}> {props.star.toFixed(1)}</Text>
         </View>
         <Text style={{ marginLeft: 5, marginBottom: 4 }}>{props.cityName}</Text>
         <Text style={{ marginLeft: 5, marginBottom: 5, fontWeight: "600" }}>
