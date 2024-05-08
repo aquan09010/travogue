@@ -28,6 +28,7 @@ import DetailATripADay from "@/Screens/DetailATripADay";
 import NewPostScreen from "@/Screens/NewPostScreen";
 import CameraScreen from "@/Screens/CameraScreen";
 import ProfileSettingScreen from "@/Screens/ProfileSettingScreen";
+import HostNavigation from "./HostNavigation";
 // import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
@@ -63,6 +64,11 @@ export default function AppNavigation() {
           name="Main"
           options={{ headerShown: false }}
           component={MainNavigator}
+        />
+        <Stack.Screen
+          name="Host"
+          options={{ headerShown: false }}
+          component={HostNavigation}
         />
         <Stack.Screen
           name="Detail"
