@@ -1,23 +1,33 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Pressable } from 'react-native';
-import { SvgXml } from 'react-native-svg';
-import { ArrowLeftBlack } from '@/Assets/Icons/Navigation';
-import { useNavigation } from '@react-navigation/native';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+  Pressable,
+} from "react-native";
+import { SvgXml } from "react-native-svg";
+import { ArrowLeftBlack } from "@/Assets/Icons/Navigation";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileSettingScreen = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const gotoHostManage = () => {
+    navigation.navigate("Host");
+  };
   return (
     <SafeAreaView style={styles.container}>
-        <View style={styles.statusBar}>
-          <Pressable onPress={() => navigation.goBack()}>
-            <SvgXml xml={ArrowLeftBlack} />
-          </Pressable>
-            <Text style={styles.title}>Cài đặt</Text>
-          <Pressable onPress={() => {}}>
-            {/* <SvgXml xml={SearchIconBlack} /> */}
-          </Pressable>
-        </View>
-      <TouchableOpacity style={styles.settingItem} onPress={() => {}}>
+      <View style={styles.statusBar}>
+        <Pressable onPress={() => navigation.goBack()}>
+          <SvgXml xml={ArrowLeftBlack} />
+        </Pressable>
+        <Text style={styles.title}>Cài đặt</Text>
+        <Pressable onPress={() => {}}>
+          {/* <SvgXml xml={SearchIconBlack} /> */}
+        </Pressable>
+      </View>
+      <TouchableOpacity style={styles.settingItem} onPress={gotoHostManage}>
         <Text style={styles.settingText}>Quản lý hoạt động bạn tổ chức</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.settingItem} onPress={() => {}}>
@@ -33,19 +43,19 @@ const ProfileSettingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: "#f2f2f2",
   },
   settingItem: {
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   settingText: {
     fontSize: 16,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: "600",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "600",
   },
   statusBar: {
     width: "100%",
@@ -56,9 +66,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
   },
   logoutText: {
-    color: '#ED2939', // Red color for logout text
+    color: "#ED2939", // Red color for logout text
   },
-
 });
 
 export default ProfileSettingScreen;
