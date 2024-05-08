@@ -21,6 +21,7 @@ import {
   BookmarkIcon,
   BookmarkIconSelected,
   CommentBlackIcon,
+  DeleteIcon,
   HeartBlackIcon,
   HeartSeletetedIcon,
 } from "@/Assets/Icons/Proflie";
@@ -141,7 +142,7 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
               <Text style={styles.boldText}>
                 {data.user.email.split("@")[0]}{" "}
               </Text>
-              {data.travelActivity && 
+              {data.travelActivity && (
                 <>
                   <Text>{`đang ở`}</Text>
                   <Text
@@ -155,22 +156,32 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
                       {" "}
                       {data.travelActivity.activityName}
                     </Text>
-                  </Text>  
+                  </Text>
                 </>
-              }
+              )}
             </Text>
 
             {data.tags.length === 2 ? (
               <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
                 <Text>{`cùng với `}</Text>
-                <Text style={styles.boldText}
-                  onPress={() => navigation.navigate("ProfileScreen", {userId: data.tags[0].user.id})}
+                <Text
+                  style={styles.boldText}
+                  onPress={() =>
+                    navigation.navigate("ProfileScreen", {
+                      userId: data.tags[0].user.id,
+                    })
+                  }
                 >
                   {data.tags[0].user.email.split("@")[0]}
                 </Text>
                 <Text>{" và "}</Text>
-                <Text style={styles.boldText}
-                  onPress={() => navigation.navigate("ProfileScreen", { userId: data.tags[1].user.id })}
+                <Text
+                  style={styles.boldText}
+                  onPress={() =>
+                    navigation.navigate("ProfileScreen", {
+                      userId: data.tags[1].user.id,
+                    })
+                  }
                 >
                   {data.tags[1].user.email.split("@")[0]}
                 </Text>
@@ -178,25 +189,32 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
             ) : data.tags.length === 1 ? (
               <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
                 <Text>{`cùng với `}</Text>
-                  <Text style={styles.boldText}
-                    onPress={() => navigation.navigate("ProfileScreen", { userId: data.tags[0].user.id })}
-                  >
+                <Text
+                  style={styles.boldText}
+                  onPress={() =>
+                    navigation.navigate("ProfileScreen", {
+                      userId: data.tags[0].user.id,
+                    })
+                  }
+                >
                   {data.tags[0].user.email.split("@")[0]}
                 </Text>
               </Text>
             ) : data.tags.length > 2 ? (
               <Text style={{ fontSize: 12, color: "#000", textAlign: "left" }}>
                 <Text>{`cùng với `}</Text>
-                    <Text style={styles.boldText}
-                      onPress={() => navigation.navigate("ProfileScreen", { userId: data.tags[0].user.id })}
-                    >
+                <Text
+                  style={styles.boldText}
+                  onPress={() =>
+                    navigation.navigate("ProfileScreen", {
+                      userId: data.tags[0].user.id,
+                    })
+                  }
+                >
                   {data.tags[0].user.email.split("@")[0]}
                 </Text>
                 <Text>{" và "}</Text>
-                <Text
-                  onPress={() => {}}
-                  style={styles.boldText}
-                >
+                <Text onPress={() => {}} style={styles.boldText}>
                   {data.tags.length - 1} người khác
                 </Text>
               </Text>
@@ -216,7 +234,7 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
             </Text>
           </View>
         </View>
-        {data.images && 
+        {data.images && (
           <Swiper
             style={styles.wrapper}
             dot={
@@ -249,33 +267,37 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
             }
           >
             {data.images.split(";").map((image, index) => {
-              const extension = image.split(".").pop()
+              const extension = image.split(".").pop();
               if (imageExtensions.includes(extension)) {
-                return <Image
-                  source={{ uri: image }}
-                  style={styles.slide1}
-                  resizeMode="cover"
-                  key={index}
-                />
+                return (
+                  <Image
+                    source={{ uri: image }}
+                    style={styles.slide1}
+                    resizeMode="cover"
+                    key={index}
+                  />
+                );
               } else if (videoExtensions.includes(extension)) {
-                return <Video
-                  ref={ref}
-                  style={styles.slide1}
-                  resizeMode={ResizeMode.COVER}
-                  shouldPlay={false}
-                  isLooping
-                  useNativeControls
-                  source={{ uri: image }}
-                  key={index}
-                />
+                return (
+                  <Video
+                    ref={ref}
+                    style={styles.slide1}
+                    resizeMode={ResizeMode.COVER}
+                    shouldPlay={false}
+                    isLooping
+                    useNativeControls
+                    source={{ uri: image }}
+                    key={index}
+                  />
+                );
               }
             })}
           </Swiper>
-        }
-        
+        )}
+
         <Text style={{ paddingTop: 8, paddingBottom: 8 }}>{data.caption}</Text>
         <View style={styles.frameParent}>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Pressable onPress={handleLike}>
               {liked ? (
                 <SvgXml xml={HeartSeletetedIcon} />
@@ -295,6 +317,9 @@ export default function PostCard({ data, handleOpenPress, handleOpenPress1 }) {
               </Text>
             </Pressable>
           </View>
+          <Pressable onPress={() => {}} style={{ marginLeft: 15 }}>
+            <SvgXml xml={DeleteIcon} />
+          </Pressable>
           {/* <Pressable onPress={() => setSelectedBookmark(!selectedBookmark)}>
             <SvgXml
               xml={

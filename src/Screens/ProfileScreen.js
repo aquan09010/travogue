@@ -101,8 +101,7 @@ export default function ProfileScreen({ route }) {
     await getComments(accessToken, postId);
   };
 
-  const handleClosePress1 = () =>
-    bottomSheetRef1.current?.close();
+  const handleClosePress1 = () => bottomSheetRef1.current?.close();
 
   const handleOpenPress1 = async (postId) => {
     bottomSheetRef1.current?.expand();
@@ -149,7 +148,8 @@ export default function ProfileScreen({ route }) {
 
   const { getComments, comments, isCommentLoading, commentError } =
     getCommentsByPost();
-  const { getLikeListByPost, likeList, isLikeListLoading, likeListError } = getLikesListByPost();
+  const { getLikeListByPost, likeList, isLikeListLoading, likeListError } =
+    getLikesListByPost();
 
   const [activePost, setActivePost] = useState();
   const [commentList, setCommentList] = useState([]);
@@ -202,13 +202,16 @@ export default function ProfileScreen({ route }) {
           </Pressable>
         </View>
       )}
-      {currentUser && 
+      {currentUser && (
         <>
-          <Pressable style={styles.icon} onPress={() => navigation.navigate("ProfileSettingScreen")}>
+          <Pressable
+            style={styles.icon}
+            onPress={() => navigation.navigate("ProfileSettingScreen")}
+          >
             <SvgXml xml={BarIcon} />
           </Pressable>
         </>
-      }
+      )}
       {isUserLoading ? (
         <></>
       ) : (
@@ -443,6 +446,7 @@ export default function ProfileScreen({ route }) {
                     </Pressable>
                     <View
                       style={{
+                        marginLeft: 10,
                         width: 108,
                         alignItems: "center",
                         backgroundColor: "#E8E8E8",
@@ -572,7 +576,11 @@ export default function ProfileScreen({ route }) {
                     }}
                   >
                     <Pressable
-                      onPress={() => navigation.navigate("ProfileScreen", {userId: item.user.id})}
+                      onPress={() =>
+                        navigation.navigate("ProfileScreen", {
+                          userId: item.user.id,
+                        })
+                      }
                       style={[styles.avatar, styles.actionPadding]}
                     >
                       <Image
@@ -673,11 +681,15 @@ export default function ProfileScreen({ route }) {
                       flexDirection: "row",
                       paddingHorizontal: 18,
                       paddingVertical: 12,
-                      alignItems: 'center'
+                      alignItems: "center",
                     }}
                   >
                     <Pressable
-                      onPress={() => navigation.navigate("ProfileScreen", {userId: item.user.id})}
+                      onPress={() =>
+                        navigation.navigate("ProfileScreen", {
+                          userId: item.user.id,
+                        })
+                      }
                       style={[styles.avatar, styles.actionPadding]}
                     >
                       <Image
@@ -688,7 +700,7 @@ export default function ProfileScreen({ route }) {
                     </Pressable>
                     <View style={{}}>
                       <View>
-                        <Text style={{ fontWeight: '500' }}>
+                        <Text style={{ fontWeight: "500" }}>
                           {" "}
                           {item.user.email.split("@")[0]}
                         </Text>
@@ -809,11 +821,11 @@ const styles = StyleSheet.create({
     height: 30,
   },
   icon: {
-    position: 'absolute',
+    position: "absolute",
     top: 60, // Adjust top spacing as needed
     right: 10, // Adjust right spacing as needed
     width: 30, // Adjust icon width as needed
     height: 30, // Adjust icon height as needed
-    zIndex: 1000
+    zIndex: 1000,
   },
 });
