@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Pressable,
   FlatList,
+  ActivityIndicator
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -26,6 +27,8 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 const Tab = createMaterialTopTabNavigator();
 import { Animated } from "react-native";
 import { AddNewIcon, FilterHostIcon } from "@/Assets/Icons/Notification";
+import { getActivityByHost } from "@/Hooks/HostManage";
+import { useStateContext } from "@/Context/StateContext";
 
 export default function HomeHost() {
   const navigation = useNavigation();
@@ -35,6 +38,12 @@ export default function HomeHost() {
   av.addListener(() => {
     return;
   });
+
+  const { accessToken, user } = useStateContext();
+
+  const { activities, isActivitiesLoading, activitiesError, refetchActivityByHost } =
+    getActivityByHost(accessToken, user.id);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainView}>
@@ -64,6 +73,44 @@ export default function HomeHost() {
             <SvgXml xml={FilterHostIcon} />
           </View>
         </View>
+
+            {isActivitiesLoading ? (
+              <>
+                <ActivityIndicator
+                  size="large"
+                  color="#ED2939"
+                  style={{ paddingVertical: 12 }}
+                />
+              </>
+            ) : activitiesError ? (
+              <Text
+                style={{
+                  color: "#A80027",
+                  textAlign: "center",
+                  paddingBottom: 20,
+                  fontSize: 16,
+                }}
+              >
+                Something went wrong!
+              </Text>
+            ) : (
+              <ScrollView style={styles.cardListContainer}>
+                {activities.data.data.map((item, index) => {
+                  return (
+                    <AccommodationCard
+                      key={index}
+                      id={item.id}
+                      cardName={item.activityName}
+                      imgPath={item.mainImage}
+                      location={item.city.name}
+                      price={item.generalPrice}
+                      star={item.averageRating}
+                      isExperience={false}
+                    />
+                  );
+                })}
+              </ScrollView>
+            )}
       </View>
     </SafeAreaView>
   );
