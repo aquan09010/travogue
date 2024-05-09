@@ -12,6 +12,129 @@ import React, { useState, useEffect } from 'react'
 import Button1 from '../Components/Button1'
 import { useNavigation } from '@react-navigation/native'
 
+const data = [
+  {
+    key: '1',
+    pic: require('../Assets/pic29.png'),
+    name: 'Tham quan Tòa nhà Bitexco',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: true
+  },
+  {
+    key: '2',
+    pic: require('../Assets/pic28.png'),
+    name: 'Tham quan Địa đạo Củ Chi',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Củ Chi, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    key: '3',
+    pic: require('../Assets/pic27.png'),
+    name: 'Tham quan Bưu điện trung tâm Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    key: '4',
+    pic: require('../Assets/pic26.png'),
+    name: 'Tham quan Thảo Cầm Viên Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    key: '5',
+    pic: require('../Assets/pic25.png'),
+    name: 'Tham quan Nhà thờ Đức Bà Sài Gòn',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    key: '6',
+    pic: require('../Assets/pic24.png'),
+    name: 'Tham quan Dinh Độc Lập',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    key: '7',
+    pic: require('../Assets/pic23.png'),
+    name: 'Khách sạn Liberty Central Sài Gòn Riverside',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    key: '8',
+    pic: require('../Assets/pic22.png'),
+    name: 'The Odys Boutique Hotel',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    key: '9',
+    pic: require('../Assets/pic21.png'),
+    name: 'Yuzu Omakase ゆずお任せ VN',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  },
+  {
+    key: '10',
+    pic: require('../Assets/pic20.png'),
+    name: 'Nhà hàng Park Lounge',
+    rate: '4.98',
+    numberOfComments: '253',
+    address: 'Q1, Hồ Chí Minh',
+    price: '12',
+    category: 'Nghệ thuật, Văn hoá, Lịch sử',
+    admin: require('../Assets/admin3.png'),
+    topRate: false
+  }
+]
+
 const DetailATripPlan = () => {
   const navigation = useNavigation()
 
@@ -32,12 +155,12 @@ const DetailATripPlan = () => {
 
     // Cập nhật ngày được chọn
     if (indexToDelete >= newDays.length) {
-      setSelectedDay(Math.max(...newDays));
+      setSelectedDay(Math.max(...newDays))
     } else {
-      setSelectedDay(indexToDelete + 1);
+      setSelectedDay(indexToDelete + 1)
     }
   }
-  
+
   useEffect(() => {
     // Nếu ngày được chọn không còn tồn tại trong danh sách, cập nhật nó
     if (!days.includes(selectedDay)) {
@@ -65,17 +188,54 @@ const DetailATripPlan = () => {
   // Modal Toggle Edit
   const [isModalEditVisible, setModalEditVisible] = useState(false)
 
-  const toggleEditModal = async e => {
-    e.preventDefault()
+  const toggleEditModal = async () => {
     setModalEditVisible(!isModalEditVisible)
   }
 
-  // Modal Toggle Delete All Items
+  // Modal Toggle Delete All Items in a Day
   const [isModalDeleteVisible, setModalDeleteVisible] = useState(false)
 
-  const toggleDeleteModal = async e => {
-    e.preventDefault()
+  const toggleDeleteModal = async () => {
     setModalDeleteVisible(!isModalDeleteVisible)
+  }
+
+  // Modal Toggle Delete A Trip
+  const [isModalDeleteTripVisible, setModalDeleteTripVisible] = useState(false)
+
+  const toggleDeleteTripModal = async () => {
+    setModalDeleteTripVisible(!isModalDeleteTripVisible)
+  }
+
+  // Swipe List View (Để xóa 1 item bằng cách kéo sang trái)
+  const renderHiddenItem = (data, rowMap) => (
+    <View style={styles.rowBack}>
+      <TouchableOpacity
+        style={styles.deleteContainer}
+        onPress={() => deleteRow(rowMap, data.item.key)}
+      >
+        <Image
+          style={styles.redContainer}
+          contentFit='cover'
+          source={require('../Assets/ellipse_red.png')}
+        />
+
+        <Text style={styles.whiteTrash}>trash</Text>
+      </TouchableOpacity>
+    </View>
+  )
+
+  const deleteRow = (rowMap, rowKey) => {
+    closeRow(rowMap, rowKey)
+    const newData = [...data]
+    const prevIndex = data.findIndex(item => item.key === rowKey)
+    newData.splice(prevIndex, 1)
+    // setData(newData)
+  }
+
+  const closeRow = (rowMap, rowKey) => {
+    if (rowMap[rowKey]) {
+      rowMap[rowKey].closeRow()
+    }
   }
 
   return (
@@ -104,18 +264,22 @@ const DetailATripPlan = () => {
           <Text style={styles.penToSquare}>pen-to-square</Text>
         </TouchableOpacity>
       </View>
+
       {/* Tiêu đề chuyến đi */}
       <Text style={styles.title}>Chuyến đi 7 ngày của bạn tại Hồ Chí Minh</Text>
+
       {/* Thông tin người tạo */}
       <Text style={styles.information}>
         Tạo bởi Ng Lâm Tùng | Có 6 điểm đến | 7 ngày
       </Text>
+
       {/* Nút nhấn vào để xem vị trí trên Map */}
       <View style={styles.mapContainer}>
         <Text style={styles.mapIcon}>map</Text>
 
         <Text style={styles.mapText}>Xem trên Map</Text>
       </View>
+      
       {/* Khung nội dung kế hoạch */}
       <View style={styles.planContainer}>
         {/* Thanh hiển thị ngày */}

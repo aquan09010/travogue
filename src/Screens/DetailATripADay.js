@@ -159,7 +159,7 @@ const DetailATripADay = () => {
     setModalEditVisible(!isModalEditVisible)
   }
 
-  // Modal Toggle Delete All Items
+  // Modal Toggle Delete All Items in a Day
   const [isModalDeleteVisible, setModalDeleteVisible] = useState(false)
 
   const toggleDeleteModal = async () => {
@@ -173,7 +173,7 @@ const DetailATripADay = () => {
     setModalDeleteTripVisible(!isModalDeleteTripVisible)
   }
 
-  // Swipe List View
+  // Swipe List View (Để xóa 1 item bằng cách kéo sang trái)
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
       <TouchableOpacity
