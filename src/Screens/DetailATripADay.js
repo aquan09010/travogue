@@ -1,6 +1,7 @@
 import {
   Text,
   View,
+  TextInput,
   ScrollView,
   StyleSheet,
   SafeAreaView,
@@ -186,21 +187,35 @@ const DetailATripADay = () => {
     </TouchableOpacity>
   )
 
-  // Modal Toggle Edit
+  // Modal Toggle Các Chức Năng (Đổi tên, Sắp xếp, Xóa)
   const [isModalEditVisible, setModalEditVisible] = useState(false)
 
   const toggleEditModal = async () => {
     setModalEditVisible(!isModalEditVisible)
   }
 
-  // Modal Toggle Delete All Items in a Day
+  // Modal Toggle Xóa tất cả các điểm dừng chân trong 1 ngày (Xóa 1 ngày)
   const [isModalDeleteVisible, setModalDeleteVisible] = useState(false)
 
   const toggleDeleteModal = async () => {
     setModalDeleteVisible(!isModalDeleteVisible)
   }
 
-  // Modal Toggle Delete A Trip
+  // Model Toggle Đổi tên
+  const [isModalNameVisible, setModalNameVisible] = useState(false)
+
+  const toggleModalName = async () => {
+    setModalNameVisible(!isModalNameVisible)
+  }
+
+  // Modal Toggle Sắp xếp các điểm dừng chân
+  const [isModalSortVisible, setModalSortVisible] = useState(false)
+
+  const toggleSortModal = async () => {
+    setModalSortVisible(!isModalSortVisible)
+  }
+
+  // Modal Toggle Xóa cả Chuyến đi
   const [isModalDeleteTripVisible, setModalDeleteTripVisible] = useState(false)
 
   const toggleDeleteTripModal = async () => {
@@ -339,7 +354,80 @@ const DetailATripADay = () => {
         />
       </View>
 
-      {/* Toggle Delete Modal */}
+      {/*  Modal Toggle Các Chức Năng (Đổi tên, Sắp xếp, Xóa) */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'flex-end'
+        }}
+        avoidKeyboard={true}
+        swipeDirection='down'
+        propagateSwipe={true}
+        isVisible={isModalEditVisible}
+        onSwipeComplete={toggleEditModal}
+        onBackdropPress={() => setModalEditVisible(false)}
+        onBackButtonPress={() => setModalEditVisible(false)}
+      >
+        <View
+          style={{
+            bottom: 0,
+            height: 270,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: '#EAEAEA'
+          }}
+        >
+          {/* Thanh kéo lên kéo xuống */}
+          <View
+            style={{
+              width: 40,
+              height: 10,
+              marginTop: 15,
+              borderRadius: 5,
+              alignSelf: 'center',
+              backgroundColor: '#000000'
+            }}
+          />
+
+          {/* Nội dung các chức năng */}
+          <View style={styles.function}>
+            <TouchableOpacity
+              style={styles.touchableFunction}
+              onPress={toggleModalName}
+            >
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>pencil</Text>
+                <Text style={styles.text1}>Đổi tên Chuyến đi</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.touchableFunction}
+              onPress={toggleSortModal}
+            >
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>layer-group</Text>
+                <Text style={styles.text1}>Sắp xếp các điểm dừng chân</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.touchableFunction}
+              onPress={toggleDeleteTripModal}
+            >
+              <View style={styles.subcontainer1}>
+                <Text style={styles.icon1}>trash</Text>
+                <Text style={styles.text1}>Xóa Chuyến đi</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal Toggle Xóa tất cả các điểm dừng chân trong 1 ngày */}
       <Modal
         style={{
           margin: 0,
@@ -380,7 +468,7 @@ const DetailATripADay = () => {
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => setModalDeleteVisible(false)}>
-              <Text style={styles.cancelText}>Hủy bỏ</Text>
+              <Text style={styles.cancelTextDelete}>Hủy bỏ</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -395,7 +483,7 @@ const DetailATripADay = () => {
         </View>
       </Modal>
 
-      {/* Toggle Edit Modal */}
+      {/* Modal Toggle Đổi tên */}
       <Modal
         style={{
           margin: 0,
@@ -405,64 +493,45 @@ const DetailATripADay = () => {
           justifyContent: 'flex-end'
         }}
         avoidKeyboard={true}
-        swipeDirection='down'
-        propagateSwipe={true}
-        isVisible={isModalEditVisible}
-        onSwipeComplete={toggleEditModal}
-        onBackdropPress={() => setModalEditVisible(false)}
-        onBackButtonPress={() => setModalEditVisible(false)}
+        isVisible={isModalNameVisible}
+        onBackdropPress={() => setModalNameVisible(false)}
+        onBackButtonPress={() => setModalNameVisible(false)}
       >
         <View
           style={{
+            gap: 24,
             bottom: 0,
-            height: 270,
+            height: 140,
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
             borderTopLeftRadius: 20,
+            justifyContent: 'center',
             borderTopRightRadius: 20,
             backgroundColor: '#EAEAEA'
           }}
         >
-          {/* Thanh kéo lên kéo xuống */}
-          <View
-            style={{
-              width: 40,
-              height: 10,
-              marginTop: 15,
-              borderRadius: 5,
-              alignSelf: 'center',
-              backgroundColor: '#000000'
-            }}
-          />
-
-          {/* Nội dung các chức năng */}
-          <View style={styles.function}>
-            <TouchableOpacity style={styles.touchableFunction}>
-              <View style={styles.subcontainer1}>
-                <Text style={styles.icon1}>pencil</Text>
-                <Text style={styles.text1}>Đổi tên Chuyến đi</Text>
-              </View>
+          <View style={styles.functionNameButton}>
+            <TouchableOpacity onPress={() => setModalNameVisible(false)}>
+              <Text style={styles.cancelTextChangeName}>Hủy bỏ</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.touchableFunction}>
-              <View style={styles.subcontainer1}>
-                <Text style={styles.icon1}>layer-group</Text>
-                <Text style={styles.text1}>Sắp xếp các điểm dừng chân</Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={toggleDeleteTripModal}
-              style={styles.touchableFunction}
-            >
-              <View style={styles.subcontainer1}>
-                <Text style={styles.icon1}>trash</Text>
-                <Text style={styles.text1}>Xóa Chuyến đi</Text>
-              </View>
+            <TouchableOpacity>
+              <Text style={styles.acceptText}>Hoàn thành</Text>
             </TouchableOpacity>
           </View>
+
+          <TextInput
+            selectionColor='gray'
+            style={styles.textInput}
+            placeholder='Chuyến đi 7 ngày của bạn tại Hồ Chí Minh'
+          />
         </View>
       </Modal>
 
-      {/* Modal Delete Trip Modal */}
+      {/* Modal Toggle Sắp xếp các điểm dừng chân */}
+
+      {/* Modal Toggle Xóa cả Chuyến đi */}
       <Modal
         style={{
           margin: 0,
@@ -503,7 +572,7 @@ const DetailATripADay = () => {
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => setModalDeleteTripVisible(false)}>
-              <Text style={styles.cancelText}>Hủy bỏ</Text>
+              <Text style={styles.cancelTextDelete}>Hủy bỏ</Text>
             </TouchableOpacity>
 
             <TouchableOpacity>
@@ -743,7 +812,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'flex-end'
   },
-  cancelText: {
+  cancelTextDelete: {
     fontSize: 14,
     color: '#ed2939',
     fontWeight: '500',
@@ -786,6 +855,37 @@ const styles = StyleSheet.create({
     fontFamily: 'FontAwesome6ProLight',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  functionNameButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 220
+  },
+  cancelTextChangeName: {
+    fontSize: 17,
+    color: '#767676',
+    letterSpacing: 0.2,
+    fontWeight: '500',
+    fontFamily: 'BeVNProMedium'
+  },
+  acceptText: {
+    fontSize: 17,
+    color: '#0b3bb7',
+    letterSpacing: 0.2,
+    fontWeight: '500',
+    fontFamily: 'BeVNProMedium'
+  },
+  textInput: {
+    width: 380,
+    height: 70,
+    fontSize: 15,
+    color: '#000',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingLeft: 16,
+    fontWeight: '300',
+    fontFamily: 'BeVNProLight',
+    backgroundColor: '#e8e8e8'
   }
 })
 

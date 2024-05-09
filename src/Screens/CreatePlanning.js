@@ -77,7 +77,7 @@ const CreatePlanning = () => {
           </View>
         </TouchableOpacity>
 
-        {/* Modal Toggle Functions */}
+        {/* Modal Toggle Đặt tên */}
         <Modal
           style={{
             margin: 0,
@@ -111,7 +111,7 @@ const CreatePlanning = () => {
               </TouchableOpacity>
 
               <TouchableOpacity>
-                <Text style={styles.acceptText}>Hoàn thành</Text>
+                <Text style={styles.acceptTextChangeName}>Hoàn thành</Text>
               </TouchableOpacity>
             </View>
 
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'BeVNProMedium'
   },
-  acceptText: {
+  acceptTextChangeName: {
     fontSize: 17,
     color: '#0b3bb7',
     letterSpacing: 0.2,
