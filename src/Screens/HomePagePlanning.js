@@ -20,6 +20,12 @@ const HomePagePlanning = () => {
     setModalVisible(!isModalVisible)
   }
 
+  // Hàm trung gian vừa đóng được Modal vừa chuyển sang trang CreatePlanning
+  const navigateAndCloseModal = routeName => {
+    setModalVisible(false)
+    navigation.navigate(routeName)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Tiêu đề */}
@@ -78,7 +84,7 @@ const HomePagePlanning = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('CreatePlanning')}
+              onPress={() => navigateAndCloseModal('CreatePlanning')}
             >
               <View style={styles.subcontainer1}>
                 <Text style={styles.icon1}>location-plus</Text>
