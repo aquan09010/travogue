@@ -83,4 +83,53 @@ const searchCities = (accessToken, keyword) => {
   return { cities, isCitiesLoading, citiesError, refetch };
 };
 
-export { getTopCities, searchCities };
+const getActivityByCategoryInACity = (accessToken, cityId, categoryId, filter, keyword) => {
+  const [activities, setActivities] = useState([]);
+  const [isActivitiesLoading, setIsLoading] = useState(true);
+  const [activitiesError, setError] = useState(null);
+
+  const options = {
+    method: 'GET',
+    url: `https://travogue-production.up.railway.app/travogue-service/cities/${cityId}/travel-activities`,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params: {
+      mainCategoryId: categoryId,
+      filter: filter,
+      pageNumber: 0,
+      pageSize: 100,
+      keyword: keyword,
+      sortField: 'average_rating',
+    },
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.request(options);
+
+      setActivities(response.data); // Assuming the response contains the child categories
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const refetchActivityByCategory = () => {
+    setIsLoading(true);
+    fetchData();
+  };
+
+  return { activities, isActivitiesLoading, activitiesError, refetchActivityByCategory };
+};
+
+export { getTopCities, searchCities, getActivityByCategoryInACity };

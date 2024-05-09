@@ -34,6 +34,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { ArrowLeftBlack } from "@/Assets/Icons/Navigation";
 import { useNavigation } from "@react-navigation/native";
+import { useStateContext } from "@/Context/StateContext";
 
 // Danh sách Loại hoạt động
 const options = [
@@ -127,6 +128,9 @@ export default function WhereaboutSearchScreen() {
     setSliderValuePositions(positions);
   };
   const navigation = useNavigation();
+
+  const { accessToken } = useStateContext();
+  
 
   return (
     <SafeAreaView>
