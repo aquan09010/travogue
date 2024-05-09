@@ -139,6 +139,40 @@ const data = [
 const DetailATripADay = () => {
   const navigation = useNavigation()
 
+  // Khởi tạo danh sách ngày với 1 ngày mặc định
+  const [days, setDays] = useState([1])
+
+  // Hàm để thêm một ngày mới vào danh sách
+  const addDay = () => {
+    setDays(prevDays => [...prevDays, prevDays.length + 1])
+  }
+
+  // Hàm để xóa ngày được chọn từ danh sách
+  const deleteDay = () => {
+    const indexToDelete = days.indexOf(selectedDay)
+
+    const newDays = days.filter(day => day !== selectedDay)
+    setDays(newDays.map((day, index) => index + 1)) // Cập nhật lại số thứ tự ngày
+
+    // Cập nhật ngày được chọn
+    if (indexToDelete >= newDays.length) {
+      setSelectedDay(Math.max(...newDays))
+    } else {
+      setSelectedDay(indexToDelete + 1)
+    }
+  }
+
+  useEffect(() => {
+    // Nếu ngày được chọn không còn tồn tại trong danh sách, cập nhật nó
+    if (!days.includes(selectedDay)) {
+      if (days.includes(selectedDay - 1)) {
+        setSelectedDay(selectedDay - 1)
+      } else {
+        setSelectedDay(days[days.length - 1] || 1)
+      }
+    }
+  }, [days])
+
   // Cập nhật ngày trong Danh sách ngày
   const [selectedDay, setSelectedDay] = useState(1)
 
@@ -257,17 +291,13 @@ const DetailATripADay = () => {
             showsHorizontalScrollIndicator={false}
             style={styles.listDay}
           >
-            <DayButton day={1} />
-            <DayButton day={2} />
-            <DayButton day={3} />
-            <DayButton day={4} />
-            <DayButton day={5} />
-            <DayButton day={6} />
-            <DayButton day={7} />
+            {days.map(day => (
+              <DayButton key={day} day={day} />
+            ))}
           </ScrollView>
 
           {/* Icon thêm ngày vào danh sách ngày */}
-          <TouchableOpacity style={styles.touchableCalendar}>
+          <TouchableOpacity style={styles.touchableCalendar} onPress={addDay}>
             <Text style={styles.calendarCirclePlus}>calendar-circle-plus</Text>
           </TouchableOpacity>
         </View>
@@ -277,14 +307,17 @@ const DetailATripADay = () => {
 
         <SwipeListView
           ListHeaderComponent={
-            <View style={styles.filterAndDelete}>
-              <TouchableOpacity
-                style={styles.touchableTrash}
-                onPress={toggleDeleteModal}
-              >
-                <Text style={styles.trash}>trash</Text>
-              </TouchableOpacity>
-            </View>
+            days.length > 1 && (
+              <View style={styles.filterAndDelete}>
+                {/* Nút xóa 1 ngày */}
+                <TouchableOpacity
+                  style={styles.touchableTrash}
+                  onPress={toggleDeleteModal}
+                >
+                  <Text style={styles.trash}>trash</Text>
+                </TouchableOpacity>
+              </View>
+            )
           }
           style={styles.listDestinations}
           data={data}
@@ -350,7 +383,12 @@ const DetailATripADay = () => {
               <Text style={styles.cancelText}>Hủy bỏ</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModalDeleteVisible(false)
+                deleteDay()
+              }}
+            >
               <Text style={styles.acceptDeleteText}>Xóa bỏ</Text>
             </TouchableOpacity>
           </View>

@@ -1,15 +1,14 @@
-import * as React from 'react'
-import { Image } from 'expo-image'
-import SuggestionTicket from '../Components/SuggestionTicket'
 import {
   View,
   Text,
   FlatList,
   StyleSheet,
-  ScrollView,
   SafeAreaView,
   TouchableOpacity
 } from 'react-native'
+import { Image } from 'expo-image'
+import SuggestionTicket from '../Components/SuggestionTicket'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 
 const data = [
   {
