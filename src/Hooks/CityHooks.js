@@ -122,7 +122,7 @@ const getActivityByCategoryInACity = (accessToken, cityId, categoryId, filter, k
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [categoryId, filter]);
 
   const refetchActivityByCategory = () => {
     setIsLoading(true);
@@ -131,5 +131,7 @@ const getActivityByCategoryInACity = (accessToken, cityId, categoryId, filter, k
 
   return { activities, isActivitiesLoading, activitiesError, refetchActivityByCategory };
 };
+
+
 
 export { getTopCities, searchCities, getActivityByCategoryInACity };

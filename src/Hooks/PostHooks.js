@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { Platform } from 'react-native';
 
 const getPostsByUser = (accessToken, userId) => {
     const [posts, setPosts] = useState([]);

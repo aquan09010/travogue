@@ -6,9 +6,11 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  Platform,
+  ActivityIndicator
 } from "react-native";
 
-import React, { useState, useRef, useCallback, useMemo } from "react";
+import React, { useState, useRef, useCallback, useMemo, useEffect } from "react";
 
 import { SvgXml } from "react-native-svg";
 
@@ -29,12 +31,15 @@ import {
   BottomSheetModalProvider,
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler";
 
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { ArrowLeftBlack } from "@/Assets/Icons/Navigation";
 import { useNavigation } from "@react-navigation/native";
 import { useStateContext } from "@/Context/StateContext";
+import { getActivityByCategoryInACity } from "@/Hooks/CityHooks";
+import AccommodationCard from "@/Components/AccomodationCard";
+import { getChildCategories } from "@/Hooks/TravelActivityHooks";
 
 // Danh sách Loại hoạt động
 const options = [
@@ -47,18 +52,26 @@ const options = [
 ];
 
 // Danh sách Đánh giá
-const optionsComment = ["5 - 4", "4 - 2.5", "2.5 - 0"];
+const optionsComment = ["5 - 4", "4 - 2", "2 - 0"];
 
 /**
  * Represents the Whereabout Search Screen.
  * This screen allows users to search for locations based on different criteria.
  * @returns {JSX.Element} The Whereabout Search Screen component.
  */
-export default function WhereaboutSearchScreen() {
+export default function WhereaboutSearchScreen({route}) {
   // Tabs.
   const tabs = ["Đi đâu", "Ăn gì", "Ở đâu", "Trải Nghiệm"];
 
   const [selected, setSelected] = useState(0);
+
+    // Kiểm tra danh sách Loại hoạt động
+    const [selectedOption, setSelectedOption] = useState([]);
+
+    // Kiểm tra danh sách Đánh giá
+  const [selectedComment, setSelectedComment] = useState(null);
+  const [selectedPrice, setSelectedPrice] = useState(null);
+  
 
   // Bottom Sheet Model.
   const bottomSheetModalRef = useRef(null);
@@ -104,12 +117,6 @@ export default function WhereaboutSearchScreen() {
     outputRange: ["#ffffff", "rgba(255, 255, 255, 0)"],
   });
 
-  // Kiểm tra danh sách Loại hoạt động
-  const [selectedOption, setSelectedOption] = useState([]);
-
-  // Kiểm tra danh sách Đánh giá
-  const [selectedComment, setSelectedComment] = useState();
-
   // Slider values.
   const [sliderValues, setSliderValues] = useState([50, 1000]);
   const [sliderValuePositions, setSliderValuePositions] = useState([0, 280]);
@@ -129,7 +136,42 @@ export default function WhereaboutSearchScreen() {
   };
   const navigation = useNavigation();
 
-  const { accessToken } = useStateContext();
+  const { accessToken, mainCategories } = useStateContext();
+
+  const { city } = route.params
+  
+  const [mainCategory, setMainCategory] = useState('c7a2fe12-21ee-4757-a36d-ed429743b472');
+
+  const [filter, setFilter] = useState("");
+  const [keyword, setKeyword] = useState("");
+  
+  const { activities, isActivitiesLoading, activitiesError, refetchActivityByCategory } =
+    getActivityByCategoryInACity(accessToken, city.id, mainCategory, filter, keyword);
+  
+  const { childCategories, isLoading, error } = getChildCategories(accessToken, mainCategory);
+
+  const handleApplyFilter = () => {
+    let filterString = ""; // Initialize an empty string to store the filters
+      // Build filters with proper handling of empty values
+      if (selectedOption.length > 0) {
+        filterString += "type=" + selectedOption.map(childCategory => childCategory.id).join(';');
+      }
+
+      if (selectedPrice) {
+        filterString += (filterString.length > 0 ? "&" : "") + // Add "&" only if filterString is not empty
+                      "price=" + selectedPrice[0]*1000 + "-" + selectedPrice[1]*1000;
+      }
+
+      if (selectedComment) {
+        filterString += (filterString.length > 0 ? "&" : "") + // Add "&" only if filterString is not empty
+                      "rating=" + selectedComment[0] + ":" + selectedComment[4];
+      }
+
+      setFilter(filterString);
+    console.log("FILTER STRING: " + filterString);
+    
+    bottomSheetModalRef.current?.close();
+  }
   
 
   return (
@@ -140,7 +182,7 @@ export default function WhereaboutSearchScreen() {
             <SvgXml xml={ArrowLeftBlack} />
           </Pressable>
 
-          <Text style={{ fontSize: 18, fontWeight: "600" }}>London</Text>
+          <Text style={{ fontSize: 18, fontWeight: "600" }}>{ city.name}</Text>
 
           <SvgXml xml={SearchBlackIcon} style={styles.search} />
         </SafeAreaView>
@@ -148,7 +190,13 @@ export default function WhereaboutSearchScreen() {
           <View>
             <View style={styles.header}>
               {tabs.map((e, i) => (
-                <Pressable key={i} onPress={() => setSelected(i)}>
+                <Pressable key={i} onPress={() => {
+                  setSelected(i);
+                  if (i == 0) setMainCategory(mainCategories.didau.id)
+                  else if (i == 1) setMainCategory(mainCategories.angi.id)
+                  else if (i == 2) setMainCategory(mainCategories.odau.id)
+                  else setMainCategory(mainCategories.trainghiem.id)
+                }}>
                   <Text
                     style={[
                       styles.titleTab,
@@ -176,28 +224,11 @@ export default function WhereaboutSearchScreen() {
                 style={styles.kind}
                 onPress={handlePresentModalPress}
               >
-                <Text>Loại</Text>
+                <Text>Bộ lọc</Text>
 
                 <SvgXml xml={DownArrow} style={styles.downArrow} />
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.price}
-                onPress={handlePresentModalPress}
-              >
-                <Text>Giá</Text>
-
-                <SvgXml xml={DownArrow} style={styles.downArrow} />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.comment}
-                onPress={handlePresentModalPress}
-              >
-                <Text>Đánh giá</Text>
-
-                <SvgXml xml={DownArrow} style={styles.downArrow} />
-              </TouchableOpacity>
             </View>
 
             <BottomSheetModal
@@ -225,7 +256,8 @@ export default function WhereaboutSearchScreen() {
                   <Text style={styles.kindText}>Loại hoạt động</Text>
 
                   <View style={styles.listKind}>
-                    {options.map((option, index) => (
+                    {isLoading ? <></>
+                      : childCategories?.data.childCategories.map((option, index) => (
                       <TouchableOpacity
                         key={index}
                         style={[
@@ -260,7 +292,7 @@ export default function WhereaboutSearchScreen() {
                             },
                           ]}
                         >
-                          {option}
+                          {option.categoryName}
                         </Text>
                       </TouchableOpacity>
                     ))}
@@ -284,7 +316,7 @@ export default function WhereaboutSearchScreen() {
                       values={sliderValues}
                       minMarkerOverlapDistance={50}
                       onValuesChange={handleValuesChange}
-                      onValuesChangeFinish={(values) => console.log(values)}
+                      onValuesChangeFinish={(values) => setSelectedPrice(values)}
                       markerStyle={{
                         ...Platform.select({
                           ios: {
@@ -393,18 +425,54 @@ export default function WhereaboutSearchScreen() {
                     ))}
                   </View>
                 </View>
+
+                <Pressable style={styles.button}
+                 onPress={handleApplyFilter}
+                >
+                  <Text>Áp dụng</Text>
+                </Pressable>
               </View>
             </BottomSheetModal>
           </View>
-
-          <View>
-            {selected == 0 && <WhereScreen />}
-
-            {selected == 1 && <EatScreen />}
-
-            {selected == 2 && <PlaceScreen />}
-
-            {selected == 3 && <ExperienceScreen />}
+          
+          <View style={styles.mainView}>
+            {isActivitiesLoading ? (
+              <>
+                <ActivityIndicator
+                  size="large"
+                  color="#ED2939"
+                  style={{ paddingVertical: 12 }}
+                />
+              </>
+            ) : activitiesError ? (
+              <Text
+                style={{
+                  color: "#A80027",
+                  textAlign: "center",
+                  paddingBottom: 20,
+                  fontSize: 16,
+                }}
+              >
+                Something went wrong!
+              </Text>
+            ) : (
+              <ScrollView style={styles.cardListContainer}>
+                {activities.data.data.map((item, index) => {
+                  return (
+                    <AccommodationCard
+                      key={index}
+                      id={item.id}
+                      cardName={item.activityName}
+                      imgPath={item.mainImage}
+                      location={item.city.name}
+                      price={item.generalPrice}
+                      star={item.averageRating}
+                      isExperience={false}
+                    />
+                  );
+                })}
+              </ScrollView>
+            )}
           </View>
         </SafeAreaView>
       </BottomSheetModalProvider>
@@ -468,7 +536,8 @@ const styles = StyleSheet.create({
     alignContent: "center",
     paddingHorizontal: "5%",
     justifyContent: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
+    gap: 10
   },
   barsFilter: {},
   kind: {
@@ -626,5 +695,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: "1%",
     paddingHorizontal: "3%",
+  },
+  mainView: {
+    padding: 16,
+    paddingBottom: 0,
+    backgroundColor: "#fff",
+    height: '100%'
+  },
+  button: {
+    borderRadius: 7,
+    backgroundColor: '#fff',
+    borderStyle: 'solid',
+    borderColor: '#151515',
+    borderWidth: 1,
+    overflow: 'hidden',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
 });

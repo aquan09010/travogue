@@ -115,9 +115,9 @@ export default function NewPostScreen({ route }) {
       setSelectedItems([...selectedItems, item]);
     }
   };
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-  const [taggedUsers, setTaggedUsers] = useState([]);
+  // const [type, setType] = useState(CameraType.back);
+  // const [permission, requestPermission] = Camera.useCameraPermissions();
+  // const [taggedUsers, setTaggedUsers] = useState([]);
   const openCamera = async () => {
     const { status } = await ImagePicker.getCameraPermissionsAsync();
     if (status !== "granted") {

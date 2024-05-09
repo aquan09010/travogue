@@ -32,7 +32,7 @@ const getChildCategories = (accessToken, categoryId) => {
 
   useEffect(() => {
     fetchData();
-  }, []); // No dependencies for initial fetch
+  }, [categoryId]); // No dependencies for initial fetch
 
   const refetchChildCategories = () => {
     setIsLoading(true);
