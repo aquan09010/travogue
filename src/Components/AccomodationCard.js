@@ -13,6 +13,7 @@ import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { MiniLocation, StarIcon } from "@/Assets/Icons/Card";
 import HeartButton from "./HeartButton";
+import { DeleteIcon, EditIcon } from "@/Assets/Icons/Proflie";
 
 export default function AccommodationCard(props) {
   const navigation = useNavigation();
@@ -86,7 +87,22 @@ export default function AccommodationCard(props) {
             </Pressable>
           </View>
         </View>
+        <View style={styles.container}>
+          <Pressable
+            onPress={gotoHost}
+            style={[styles.avatar, styles.actionPadding]}
+          >
+            <SvgXml xml={EditIcon} />
+          </Pressable>
+          <Pressable
+            onPress={gotoHost}
+            style={[styles.avatar, styles.actionPadding]}
+          >
+            <SvgXml xml={DeleteIcon} />
+          </Pressable>
+        </View>
       </View>
+
       <HeartButton />
     </TouchableOpacity>
   );
@@ -136,9 +152,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  actionPadding: {
-    paddingBottom: 15,
-  },
+  actionPadding: {},
   avaImg: {
     height: 30,
     width: 30,
