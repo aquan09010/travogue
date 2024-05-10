@@ -16,132 +16,137 @@ import { useNavigation } from '@react-navigation/native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import DraggableFlatList from 'react-native-draggable-flatlist'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-
-const data = [
-  {
-    key: '1',
-    pic: require('../Assets/pic29.png'),
-    name: 'Tham quan Tòa nhà Bitexco',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Q1, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: true
-  },
-  {
-    key: '2',
-    pic: require('../Assets/pic28.png'),
-    name: 'Tham quan Địa đạo Củ Chi',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Củ Chi, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: false
-  },
-  {
-    key: '3',
-    pic: require('../Assets/pic27.png'),
-    name: 'Tham quan Bưu điện trung tâm Sài Gòn',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Q1, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: false
-  },
-  {
-    key: '4',
-    pic: require('../Assets/pic26.png'),
-    name: 'Tham quan Thảo Cầm Viên Sài Gòn',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Q1, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: false
-  },
-  {
-    key: '5',
-    pic: require('../Assets/pic25.png'),
-    name: 'Tham quan Nhà thờ Đức Bà Sài Gòn',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Q1, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: false
-  },
-  {
-    key: '6',
-    pic: require('../Assets/pic24.png'),
-    name: 'Tham quan Dinh Độc Lập',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Q1, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: false
-  },
-  {
-    key: '7',
-    pic: require('../Assets/pic23.png'),
-    name: 'Khách sạn Liberty Central Sài Gòn Riverside',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Q1, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: false
-  },
-  {
-    key: '8',
-    pic: require('../Assets/pic22.png'),
-    name: 'The Odys Boutique Hotel',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Q1, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: false
-  },
-  {
-    key: '9',
-    pic: require('../Assets/pic21.png'),
-    name: 'Yuzu Omakase ゆずお任せ VN',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Q1, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: false
-  },
-  {
-    key: '10',
-    pic: require('../Assets/pic20.png'),
-    name: 'Nhà hàng Park Lounge',
-    rate: '4.98',
-    numberOfComments: '253',
-    address: 'Q1, Hồ Chí Minh',
-    price: '12',
-    category: 'Nghệ thuật, Văn hoá, Lịch sử',
-    admin: require('../Assets/admin3.png'),
-    topRate: false
-  }
-]
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const DetailATripADay = () => {
   const navigation = useNavigation()
+
+  // Mẫu data danh sách các điểm dừng chân
+  const data = [
+    {
+      key: '1',
+      pic: require('../Assets/pic29.png'),
+      name: 'Tham quan Tòa nhà Bitexco',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Q1, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: true
+    },
+    {
+      key: '2',
+      pic: require('../Assets/pic28.png'),
+      name: 'Tham quan Địa đạo Củ Chi',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Củ Chi, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: false
+    },
+    {
+      key: '3',
+      pic: require('../Assets/pic27.png'),
+      name: 'Tham quan Bưu điện trung tâm Sài Gòn',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Q1, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: false
+    },
+    {
+      key: '4',
+      pic: require('../Assets/pic26.png'),
+      name: 'Tham quan Thảo Cầm Viên Sài Gòn',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Q1, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: false
+    },
+    {
+      key: '5',
+      pic: require('../Assets/pic25.png'),
+      name: 'Tham quan Nhà thờ Đức Bà Sài Gòn',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Q1, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: false
+    },
+    {
+      key: '6',
+      pic: require('../Assets/pic24.png'),
+      name: 'Tham quan Dinh Độc Lập',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Q1, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: false
+    },
+    {
+      key: '7',
+      pic: require('../Assets/pic23.png'),
+      name: 'Khách sạn Liberty Central Sài Gòn Riverside',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Q1, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: false
+    },
+    {
+      key: '8',
+      pic: require('../Assets/pic22.png'),
+      name: 'The Odys Boutique Hotel',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Q1, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: false
+    },
+    {
+      key: '9',
+      pic: require('../Assets/pic21.png'),
+      name: 'Yuzu Omakase ゆずお任せ VN',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Q1, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: false
+    },
+    {
+      key: '10',
+      pic: require('../Assets/pic20.png'),
+      name: 'Nhà hàng Park Lounge',
+      rate: '4.98',
+      numberOfComments: '253',
+      address: 'Q1, Hồ Chí Minh',
+      price: '12',
+      category: 'Nghệ thuật, Văn hoá, Lịch sử',
+      admin: require('../Assets/admin3.png'),
+      topRate: false
+    }
+  ]
+
+  // Danh sách các điểm dừng chân trong danh mục Sắp xếp
+  const [dataDrag, setDataDrag] = useState(data)
 
   // Khởi tạo danh sách ngày với 1 ngày mặc định
   const [days, setDays] = useState([1])
@@ -538,34 +543,24 @@ const DetailATripADay = () => {
           margin: 0,
           padding: 0,
           width: '100%',
-          // height: '100%',
           flex: 1,
           display: 'flex',
           flexDirection: 'column'
-          // alignItems: 'flex-end',
-          // justifyContent: 'flex-end'
         }}
         avoidKeyboard={true}
-        // swipeDirection='down'
         propagateSwipe={true}
         isVisible={isModalSortVisible}
-        // onSwipeComplete={toggleSortModal}
         onBackdropPress={() => setModalSortVisible(false)}
         onBackButtonPress={() => setModalSortVisible(false)}
       >
         <View
           style={{
-            // gap: 24,
             flex: 1,
             width: '100%',
-            // height: '100%',
-            // padding: 24,
             display: 'flex',
+            flexDirection: 'column',
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            flexDirection: 'column',
-            // alignItems: 'flex-start',
-            // justifyContent: 'center',
             backgroundColor: '#ffffff'
           }}
         >
@@ -589,7 +584,6 @@ const DetailATripADay = () => {
             style={{
               ...styles.headerDays,
               backgroundColor: '#e8e8e8',
-              borderWidth: 1
             }}
           >
             {/* Danh sách ngày */}
@@ -605,7 +599,7 @@ const DetailATripADay = () => {
           </View>
 
           {/* Danh sách các điểm dừng chân */}
-          <FlatList
+          {/* <FlatList
             style={styles.listDestinationsArrangeList}
             data={data}
             renderItem={({ item }) => (
@@ -621,7 +615,31 @@ const DetailATripADay = () => {
                 admin={item.admin}
               />
             )}
-          />
+          /> */}
+          <GestureHandlerRootView style={styles.listDestinationsArrangeList}>
+            <DraggableFlatList
+              data={dataDrag}
+              renderItem={({ item, index, drag, isActive }) => (
+                <TouchableOpacity
+                  onLongPress={drag}
+                >
+                  <ChosenTicket
+                    topRate={item.topRate}
+                    pic={item.pic}
+                    name={item.name}
+                    rate={item.rate}
+                    numberOfComments={item.numberOfComments}
+                    address={item.address}
+                    price={item.price}
+                    category={item.category}
+                    admin={item.admin}
+                  />
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item, index) => `draggable-item-${item.key}`}
+              onDragEnd={({ data }) => setDataDrag(data)}
+            />
+          </GestureHandlerRootView>
         </View>
       </Modal>
 
