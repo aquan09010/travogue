@@ -41,6 +41,7 @@
     "react-native": "0.74.1",
     "react-native-async-storage": "^0.0.1",
     "react-native-bottom-sheet": "^1.0.3",
+    "react-native-draggable-flatlist": "^4.0.1",
     "react-native-element-dropdown": "^2.10.1",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",

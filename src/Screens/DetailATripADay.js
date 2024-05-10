@@ -1,6 +1,8 @@
 import {
   Text,
   View,
+  SectionList,
+  FlatList,
   TextInput,
   ScrollView,
   StyleSheet,
@@ -12,6 +14,7 @@ import Modal from 'react-native-modal'
 import ChosenTicket from '../Components/ChosenTicket'
 import { useNavigation } from '@react-navigation/native'
 import { SwipeListView } from 'react-native-swipe-list-view'
+import DraggableFlatList from 'react-native-draggable-flatlist'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 
 const data = [
@@ -535,23 +538,27 @@ const DetailATripADay = () => {
           margin: 0,
           padding: 0,
           width: '100%',
-          height: '100%',
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end'
+          // height: '100%',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column'
+          // alignItems: 'flex-end',
+          // justifyContent: 'flex-end'
         }}
         avoidKeyboard={true}
-        swipeDirection='down'
+        // swipeDirection='down'
         propagateSwipe={true}
         isVisible={isModalSortVisible}
-        onSwipeComplete={toggleSortModal}
+        // onSwipeComplete={toggleSortModal}
         onBackdropPress={() => setModalSortVisible(false)}
         onBackButtonPress={() => setModalSortVisible(false)}
       >
         <View
           style={{
             // gap: 24,
+            flex: 1,
             width: '100%',
-            height: 800,
+            // height: '100%',
             // padding: 24,
             display: 'flex',
             borderTopLeftRadius: 20,
@@ -559,7 +566,7 @@ const DetailATripADay = () => {
             flexDirection: 'column',
             // alignItems: 'flex-start',
             // justifyContent: 'center',
-            backgroundColor: '#EAEAEA'
+            backgroundColor: '#ffffff'
           }}
         >
           {/* Nút Quay lại + Nút Hoàn thành */}
@@ -578,7 +585,13 @@ const DetailATripADay = () => {
           </View>
 
           {/* Thanh hiển thị ngày */}
-          <View style={styles.headerDays}>
+          <View
+            style={{
+              ...styles.headerDays,
+              backgroundColor: '#e8e8e8',
+              borderWidth: 1
+            }}
+          >
             {/* Danh sách ngày */}
             <ScrollView
               horizontal={true}
@@ -592,7 +605,23 @@ const DetailATripADay = () => {
           </View>
 
           {/* Danh sách các điểm dừng chân */}
-          <View></View>
+          <FlatList
+            style={styles.listDestinationsArrangeList}
+            data={data}
+            renderItem={({ item }) => (
+              <ChosenTicket
+                topRate={item.topRate}
+                pic={item.pic}
+                name={item.name}
+                rate={item.rate}
+                numberOfComments={item.numberOfComments}
+                address={item.address}
+                price={item.price}
+                category={item.category}
+                admin={item.admin}
+              />
+            )}
+          />
         </View>
       </Modal>
 
@@ -955,11 +984,17 @@ const styles = StyleSheet.create({
   returnAndCompleteContainer: {
     display: 'flex',
     flexDirection: 'row',
-    borderWidth: 1,
     paddingVertical: 16,
     gap: 235,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  listDestinationsArrangeList: {
+    flex: 1,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#e8e8e8'
   }
 })
 
