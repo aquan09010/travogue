@@ -530,6 +530,71 @@ const DetailATripADay = () => {
       </Modal>
 
       {/* Modal Toggle Sắp xếp các điểm dừng chân */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end'
+        }}
+        avoidKeyboard={true}
+        swipeDirection='down'
+        propagateSwipe={true}
+        isVisible={isModalSortVisible}
+        onSwipeComplete={toggleSortModal}
+        onBackdropPress={() => setModalSortVisible(false)}
+        onBackButtonPress={() => setModalSortVisible(false)}
+      >
+        <View
+          style={{
+            // gap: 24,
+            width: '100%',
+            height: 800,
+            // padding: 24,
+            display: 'flex',
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            flexDirection: 'column',
+            // alignItems: 'flex-start',
+            // justifyContent: 'center',
+            backgroundColor: '#EAEAEA'
+          }}
+        >
+          {/* Nút Quay lại + Nút Hoàn thành */}
+          <View style={styles.returnAndCompleteContainer}>
+            <TouchableOpacity onPress={() => setModalSortVisible(false)}>
+              <Image
+                style={styles.arrowLeftIcon}
+                contentFit='cover'
+                source={require('../Assets/arrowleft.png')}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Text style={styles.acceptText}>Hoàn thành</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Thanh hiển thị ngày */}
+          <View style={styles.headerDays}>
+            {/* Danh sách ngày */}
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={styles.listDay}
+            >
+              {days.map(day => (
+                <DayButton key={day} day={day} />
+              ))}
+            </ScrollView>
+          </View>
+
+          {/* Danh sách các điểm dừng chân */}
+          <View></View>
+        </View>
+      </Modal>
 
       {/* Modal Toggle Xóa cả Chuyến đi */}
       <Modal
@@ -886,6 +951,15 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     fontFamily: 'BeVNProLight',
     backgroundColor: '#e8e8e8'
+  },
+  returnAndCompleteContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderWidth: 1,
+    paddingVertical: 16,
+    gap: 235,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
 
