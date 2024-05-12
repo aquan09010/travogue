@@ -13,7 +13,7 @@ import {
 import { Image } from 'expo-image'
 import Modal from 'react-native-modal'
 import { useNavigation } from '@react-navigation/native'
-import React, { useState, useRef, useCallback, useMemo } from 'react'
+import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react'
 
 // Danh sách Các Tỉnh/Thành phố gợi ý
 const cities = [
@@ -42,6 +42,8 @@ const CreatePlanning = () => {
     e.preventDefault()
     setModalNameVisible(!isModalNameVisible)
   }
+
+  useEffect(() => { console.log(selectedCity); }, [selectedCity])
 
   return (
     <KeyboardAvoidingView
@@ -126,7 +128,7 @@ const CreatePlanning = () => {
         {/* Thanh Search các địa điểm nếu bạn không tìm thấy ở địa điểm gợi ý */}
         <TouchableOpacity
           style={styles.touchableSearch}
-          onPress={() => navigation.navigate('SearchDestination')}
+          onPress={() => navigation.navigate('SearchDestination', {selectedCity: selectedCity, setSelectedCity: setSelectedCity})}
         >
           <View style={styles.searchBar}>
             <Text style={styles.searchIcon}>magnifying-glass</Text>
