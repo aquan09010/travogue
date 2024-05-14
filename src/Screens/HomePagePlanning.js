@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity
 } from 'react-native'
+import Checkbox from 'expo-checkbox'
 import Modal from 'react-native-modal'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
@@ -14,7 +15,73 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 const HomePagePlanning = () => {
   const navigation = useNavigation()
 
-  // Modal Toggle Functions
+  // Mẫu data danh sách các Chuyến đi
+  const [trips, setTrips] = useState(
+    [
+      {
+        key: '1',
+        image: require('../Assets/HoChiMinhCity.png'),
+        titleName: 'Hồ Chí Minh',
+        countItems: 'Có 6 điểm đến',
+        updateStatus: 'Thay đổi 6 phút trước'
+      },
+      {
+        key: '2',
+        image: require('../Assets/HoChiMinhCity.png'),
+        titleName: 'Hồ Chí Minh',
+        countItems: 'Có 6 điểm đến',
+        updateStatus: 'Thay đổi 6 phút trước'
+      },
+      {
+        key: '3',
+        image: require('../Assets/HoChiMinhCity.png'),
+        titleName: 'Hồ Chí Minh',
+        countItems: 'Có 6 điểm đến',
+        updateStatus: 'Thay đổi 6 phút trước'
+      },
+      {
+        key: '4',
+        image: require('../Assets/HoChiMinhCity.png'),
+        titleName: 'Hồ Chí Minh',
+        countItems: 'Có 6 điểm đến',
+        updateStatus: 'Thay đổi 6 phút trước'
+      },
+      {
+        key: '5',
+        image: require('../Assets/HoChiMinhCity.png'),
+        titleName: 'Hồ Chí Minh',
+        countItems: 'Có 6 điểm đến',
+        updateStatus: 'Thay đổi 6 phút trước'
+      }
+    ].map(trip => ({ ...trip, isChecked: false }))
+  )
+
+  // Nút Check
+  const [isChecked, setChecked] = useState(false)
+
+  const handlePress = () => {
+    setChecked(!isChecked)
+  }
+
+  // Handle checkbox change
+  const handleCheckboxChange = (key, newValue) => {
+    setTrips(
+      trips.map(trip => {
+        if (trip.key === key) {
+          return { ...trip, isChecked: newValue }
+        }
+        return trip
+      })
+    )
+  }
+
+  // Kiểm tra xem có nhấn nút Sắp xếp chưa để hiển thị ô tick
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  // Kiểm tra để hiển thị/ẩn nút Xóa
+  const [isDeleteButton, setIsDeleteButton] = useState(false)
+
+  // Modal Toggle Chức năng (Sắp xếp + Tạo mới + Xóa)
   const [isModalVisible, setModalVisible] = useState(false)
 
   const toggleModal = async e => {
@@ -111,30 +178,63 @@ const HomePagePlanning = () => {
           <Text style={styles.text}>Chia sẻ lên cộng đồng</Text>
         </View>
 
-        <TouchableOpacity style={styles.touchableFavorite}>
-          <View style={styles.favoriteContainer}>
-            {/* Ảnh đại diện */}
-            <Image
-              style={styles.imageFavorite}
-              contentFit='cover'
-              source={require('../Assets/HoChiMinhCity.png')}
-            />
+        {trips.map(trip => (
+          <TouchableOpacity
+            key={trip.key}
+            style={styles.touchableFavorite}
+            onPress={() => handleCheckboxChange(trip.key, !trip.isChecked)}
+          >
+            {isDeleting && (
+              <Checkbox
+                disabled={false}
+                value={trip.isChecked}
+                style={styles.iconCheck}
+                onPress={() => handleCheckboxChange(trip.key, !trip.isChecked)}
+                color={trip.isChecked ? 'red' : undefined}
+              />
+            )}
 
-            {/* Thông tin */}
-            <View style={styles.informationFavorite}>
-              <Text style={styles.titleFavorite}>DS Yêu Thích</Text>
+            <View style={styles.favoriteContainer}>
+              {/* Ảnh đại diện */}
+              <Image
+                style={styles.imageFavorite}
+                contentFit='cover'
+                source={trip.image}
+              />
 
-              <View style={styles.statusContainer}>
-                <Text style={styles.countItems}>(Có 6 điểm đến)</Text>
+              {/* Thông tin */}
+              <View style={styles.informationFavorite}>
+                <Text style={styles.titleFavorite}>{trip.titleName}</Text>
 
-                <Text style={styles.updateStatus}>Thay đổi 6 phút trước</Text>
+                <View style={styles.statusContainer}>
+                  <Text style={styles.countItems}>{trip.countItems}</Text>
+
+                  <Text style={styles.updateStatus}>{trip.updateStatus}</Text>
+                </View>
               </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        ))}
+
+        {/* Nút Xóa Chuyến đi */}
+        {isDeleteButton && (
+          <TouchableOpacity
+            style={styles.touchableButton}
+            onPress={() => {
+              setIsDeleting(false)
+              setIsDeleteButton(false)
+            }}
+          >
+            <View style={styles.buttonContainer}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Xóa Chuyến đi (0)</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
       </ScrollView>
 
-      {/* Modal Toggle Functions */}
+      {/* Modal Toggle Chức năng (Sắp xếp + Tạo mới + Xóa) */}
       <Modal
         style={{
           margin: 0,
@@ -190,7 +290,13 @@ const HomePagePlanning = () => {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIsDeleting(true)
+                setModalVisible(false)
+                setIsDeleteButton(true)
+              }}
+            >
               <View style={styles.subcontainer1}>
                 <Text style={styles.icon1}>trash</Text>
                 <Text style={styles.text1}>Xóa Chuyến đi</Text>
@@ -283,8 +389,10 @@ const styles = StyleSheet.create({
     fontFamily: 'BeVN'
   },
   touchableFavorite: {
+    display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   favoriteContainer: {
     width: 330,
@@ -343,6 +451,37 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
     marginBottom: 64
+  },
+  iconCheck: {
+    fontSize: 20,
+    color: '#000',
+    textAlign: 'left',
+    marginRight: '3%',
+    alignSelf: 'center'
+  },
+  touchableButton: {
+    height: 60,
+    justifyContent: 'center'
+  },
+  buttonContainer: {
+    alignItems: 'center'
+  },
+  button: {
+    height: 45,
+    width: '85%',
+    borderWidth: 1,
+    borderRadius: 16,
+    alignItems: 'center',
+    borderStyle: 'solid',
+    borderColor: '#767676',
+    justifyContent: 'center',
+    backgroundColor: '#bababa'
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: '600',
+    fontFamily: 'BeVNSemi'
   }
 })
 
