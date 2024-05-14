@@ -1,7 +1,9 @@
 import {
   Text,
   View,
+  Image,
   StyleSheet,
+  ScrollView,
   SafeAreaView,
   TouchableOpacity
 } from 'react-native'
@@ -28,13 +30,109 @@ const HomePagePlanning = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.title}>
+        <Text style={styles.titleText}>Danh sách yêu thích của bạn</Text>
+      </View>
+
+      {/* Danh sách yêu thích Mặc định */}
+      <TouchableOpacity style={styles.touchableFavorite}>
+        <View style={styles.favoriteContainer}>
+          {/* Ảnh đại diện */}
+          <Image
+            style={styles.imageFavorite}
+            contentFit='cover'
+            source={require('../Assets/HoChiMinhCity.png')}
+          />
+
+          {/* Thông tin */}
+          <View style={styles.informationFavorite}>
+            <Text style={styles.titleFavorite}>DS Yêu Thích</Text>
+
+            <View style={styles.statusContainer}>
+              <Text style={styles.countItems}>(Có 6 điểm đến)</Text>
+
+              <Text style={styles.updateStatus}>Thay đổi 6 phút trước</Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+
       {/* Tiêu đề */}
       <View style={styles.title}>
         <Text style={styles.titleText}>Chuyến đi của bạn</Text>
+
         <TouchableOpacity onPress={toggleModal}>
           <Text style={styles.buttonFunction}>pen-to-square</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Nội dung */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollContainer}
+      >
+        <View style={styles.subcontainer}>
+          <Text style={styles.icon}>circle-location-arrow</Text>
+          <Text style={styles.text}>Địa điểm bạn muốn đi</Text>
+        </View>
+
+        <View style={styles.subcontainer}>
+          <Text style={styles.icon}>pot-food</Text>
+          <Text style={styles.text}>Món ăn muốn thưởng thức</Text>
+        </View>
+
+        <View style={styles.subcontainer}>
+          <Text style={styles.icon}>hotel</Text>
+          <Text style={styles.text}>Nơi bạn muốn ở</Text>
+        </View>
+
+        <View style={styles.subcontainer}>
+          <Text style={styles.icon}>mountain-sun</Text>
+          <Text style={styles.text}>Trải nghiệm mới mẻ</Text>
+        </View>
+
+        <View style={styles.subcontainer}>
+          <Text style={styles.icon}>circle-bookmark</Text>
+          <Text style={styles.text}>Ghi chú</Text>
+        </View>
+
+        <View style={styles.subcontainer}>
+          <Text style={styles.icon}>circle-camera</Text>
+          <Text style={styles.text}>Thêm những khoảnh khắc đẹp</Text>
+        </View>
+
+        <View style={styles.subcontainer}>
+          <Text style={styles.icon}>circle-user</Text>
+          <Text style={styles.text}>Mời bạn bè</Text>
+        </View>
+
+        <View style={styles.subcontainer}>
+          <Text style={styles.icon}>user-group</Text>
+          <Text style={styles.text}>Chia sẻ lên cộng đồng</Text>
+        </View>
+
+        <TouchableOpacity style={styles.touchableFavorite}>
+          <View style={styles.favoriteContainer}>
+            {/* Ảnh đại diện */}
+            <Image
+              style={styles.imageFavorite}
+              contentFit='cover'
+              source={require('../Assets/HoChiMinhCity.png')}
+            />
+
+            {/* Thông tin */}
+            <View style={styles.informationFavorite}>
+              <Text style={styles.titleFavorite}>DS Yêu Thích</Text>
+
+              <View style={styles.statusContainer}>
+                <Text style={styles.countItems}>(Có 6 điểm đến)</Text>
+
+                <Text style={styles.updateStatus}>Thay đổi 6 phút trước</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </ScrollView>
 
       {/* Modal Toggle Functions */}
       <Modal
@@ -101,47 +199,6 @@ const HomePagePlanning = () => {
           </View>
         </View>
       </Modal>
-
-      {/* Nội dung */}
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>circle-location-arrow</Text>
-        <Text style={styles.text}>Địa điểm bạn muốn đi</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>pot-food</Text>
-        <Text style={styles.text}>Món ăn muốn thưởng thức</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>hotel</Text>
-        <Text style={styles.text}>Nơi bạn muốn ở</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>mountain-sun</Text>
-        <Text style={styles.text}>Trải nghiệm mới mẻ</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>circle-bookmark</Text>
-        <Text style={styles.text}>Ghi chú</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>circle-camera</Text>
-        <Text style={styles.text}>Thêm những khoảnh khắc đẹp</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>circle-user</Text>
-        <Text style={styles.text}>Mời bạn bè</Text>
-      </View>
-
-      <View style={styles.subcontainer}>
-        <Text style={styles.icon}>user-group</Text>
-        <Text style={styles.text}>Chia sẻ lên cộng đồng</Text>
-      </View>
     </SafeAreaView>
   )
 }
@@ -149,15 +206,14 @@ const HomePagePlanning = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderWidth: 1,
     alignItems: 'center',
     borderColor: 'black',
     backgroundColor: '#fff'
   },
   title: {
     width: '85%',
-    height: 'auto',
-    marginTop: '5%',
+    // height: 'auto',
+    marginVertical: 8,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between'
@@ -176,12 +232,12 @@ const styles = StyleSheet.create({
     width: 'auto',
     height: 'auto',
     display: 'flex',
-    marginTop: '5%',
+    marginTop: 24,
     marginLeft: '12%',
     alignItems: 'center',
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
-    justifyContent: 'flex-start'
+    flexDirection: 'row'
+    // alignSelf: 'flex-start',
+    // justifyContent: 'flex-start'
   },
   icon: {
     width: '13%',
@@ -225,6 +281,68 @@ const styles = StyleSheet.create({
     color: '#000',
     marginLeft: '5%',
     fontFamily: 'BeVN'
+  },
+  touchableFavorite: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  favoriteContainer: {
+    width: 330,
+    height: 280,
+    marginVertical: 16,
+    display: 'flex',
+    borderRadius: 7,
+    alignItems: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#dcdcdc'
+  },
+  scrollContainer: {
+    flex: 1,
+    width: '100%',
+    height: '100%'
+  },
+  imageFavorite: {
+    height: 220,
+    width: '100%'
+  },
+  informationFavorite: {
+    gap: 16,
+    marginTop: 8,
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  titleFavorite: {
+    fontSize: 18,
+    color: '#000',
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    fontFamily: 'BeVNSemi'
+  },
+  statusContainer: {
+    gap: 8,
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  countItems: {
+    fontSize: 12,
+    color: '#000',
+    fontWeight: '200',
+    letterSpacing: 0.4,
+    fontFamily: 'BeVNProExtraLight'
+  },
+  updateStatus: {
+    fontSize: 9,
+    color: '#000',
+    fontWeight: '100',
+    letterSpacing: 0.4,
+    fontStyle: 'italic',
+    fontFamily: 'BeVNProThinItalic'
+  },
+  scrollContainer: {
+    flex: 1,
+    marginBottom: 64
   }
 })
 
