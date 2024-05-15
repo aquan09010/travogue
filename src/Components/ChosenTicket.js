@@ -1,7 +1,7 @@
+import { Image } from 'expo-image'
+import Checkbox from 'expo-checkbox'
 import React, { useState } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import Checkbox from 'expo-checkbox'
-import { Image } from 'expo-image'
 
 const ChosenTicket = ({
   topRate,

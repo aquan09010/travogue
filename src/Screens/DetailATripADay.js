@@ -12,6 +12,7 @@ import {
 import { Image } from 'expo-image'
 import Modal from 'react-native-modal'
 import ChosenTicket from '../Components/ChosenTicket'
+import FriendTicket from '../Components/FriendTicket'
 import { useNavigation } from '@react-navigation/native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import DraggableFlatList from 'react-native-draggable-flatlist'
@@ -21,7 +22,61 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 const DetailATripADay = () => {
   const navigation = useNavigation()
 
-  // Mẫu data danh sách các điểm dừng chân
+  // Mẫu data danh sách Bạn bè
+  const listFriend = [
+    {
+      key: '1',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    },
+    {
+      key: '2',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    },
+    {
+      key: '3',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    },
+    {
+      key: '4',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    },
+    {
+      key: '5',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    },
+    {
+      key: '6',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    },
+    {
+      key: '7',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    },
+    {
+      key: '8',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    },
+    {
+      key: '9',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    },
+    {
+      key: '10',
+      avatar: require('../Assets/friend_avatar.png'),
+      nickName: 'jungkook_bighitentertainment'
+    }
+  ]
+
+  // Mẫu data danh sách các Điểm dừng chân
   const data = [
     {
       key: '1',
@@ -195,6 +250,13 @@ const DetailATripADay = () => {
     </TouchableOpacity>
   )
 
+  // Modal Toggle Share
+  const [isModalShareVisible, setModalShareVisible] = useState(false)
+
+  const toggleShareModal = async () => {
+    setModalShareVisible(!isModalShareVisible)
+  }
+
   // Modal Toggle Các Chức Năng (Đổi tên, Sắp xếp, Xóa)
   const [isModalEditVisible, setModalEditVisible] = useState(false)
 
@@ -264,8 +326,9 @@ const DetailATripADay = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Nút quay lại. Nút share. Nút Edit */}
+      {/* Nút quay lại. Nút share. Nút Các Chức Năng */}
       <View style={styles.headerContainer}>
+        {/* Nút Quay lại */}
         <TouchableOpacity
           style={styles.touchableBack}
           onPress={() => navigation.navigate('Lập kế hoạch')}
@@ -277,10 +340,15 @@ const DetailATripADay = () => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.touchableShare}>
+        {/* Nút Share */}
+        <TouchableOpacity
+          style={styles.touchableShare}
+          onPress={toggleShareModal}
+        >
           <Text style={styles.shareFromSquare}>share-from-square</Text>
         </TouchableOpacity>
 
+        {/* Nút Các Chức Năng (Đổi tên, Sắp xếp, Xóa) */}
         <TouchableOpacity
           style={styles.touchableEdit}
           onPress={toggleEditModal}
@@ -328,6 +396,7 @@ const DetailATripADay = () => {
         {/* Đường kẻ */}
         <View style={styles.line} />
 
+        {/* Danh sách các Điểm dừng chân */}
         <SwipeListView
           ListHeaderComponent={
             days.length > 1 && (
@@ -361,6 +430,52 @@ const DetailATripADay = () => {
           rightOpenValue={-75}
         />
       </View>
+
+      {/*  Modal Toggle Share */}
+      <Modal
+        style={{
+          flex: 1,
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          justifyContent: 'flex-end'
+        }}
+        avoidKeyboard={true}
+        isVisible={isModalShareVisible}
+        onSwipeComplete={toggleShareModal}
+        onBackdropPress={() => setModalShareVisible(false)}
+        onBackButtonPress={() => setModalShareVisible(false)}
+      >
+        <View
+          style={{
+            bottom: 0,
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: '#ffffff'
+          }}
+        >
+          {/* Danh sách bạn bè chia sẻ */}
+          <View style={styles.listFriendContainer}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.listFriend}
+            >
+              {listFriend.map(friend => (
+                <FriendTicket
+                  key={friend.key}
+                  avatar={friend.avatar}
+                  nickName={friend.nickName}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
 
       {/*  Modal Toggle Các Chức Năng (Đổi tên, Sắp xếp, Xóa) */}
       <Modal
@@ -540,10 +655,10 @@ const DetailATripADay = () => {
       {/* Modal Toggle Sắp xếp các điểm dừng chân */}
       <Modal
         style={{
+          flex: 1,
           margin: 0,
           padding: 0,
           width: '100%',
-          flex: 1,
           display: 'flex',
           flexDirection: 'column'
         }}
@@ -583,7 +698,7 @@ const DetailATripADay = () => {
           <View
             style={{
               ...styles.headerDays,
-              backgroundColor: '#e8e8e8',
+              backgroundColor: '#e8e8e8'
             }}
           >
             {/* Danh sách ngày */}
@@ -620,9 +735,7 @@ const DetailATripADay = () => {
             <DraggableFlatList
               data={dataDrag}
               renderItem={({ item, index, drag, isActive }) => (
-                <TouchableOpacity
-                  onLongPress={drag}
-                >
+                <TouchableOpacity onLongPress={drag}>
                   <ChosenTicket
                     topRate={item.topRate}
                     pic={item.pic}
@@ -803,8 +916,8 @@ const styles = StyleSheet.create({
   headerDays: {
     gap: 8,
     display: 'flex',
-    flexDirection: 'row',
     paddingVertical: 8,
+    flexDirection: 'row',
     paddingHorizontal: 16
   },
   listDay: {
@@ -1013,6 +1126,17 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#e8e8e8'
+  },
+  listFriendContainer: {
+    // flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  listFriend: {
+    // flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    margin: 16
   }
 })
 

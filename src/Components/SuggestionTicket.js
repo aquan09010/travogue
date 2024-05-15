@@ -14,6 +14,8 @@ const SuggestionTicket = ({
   category,
   admin
 }) => {
+
+  // Nút Check
   const [isChecked, setChecked] = useState(false)
 
   const handlePress = () => {
