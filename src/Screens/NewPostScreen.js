@@ -63,6 +63,7 @@ import { searchActivities } from "@/Hooks/TravelActivityHooks";
 import LineProfile from "@/Components/LineProfile";
 import { Camera, CameraType } from "expo-camera";
 import { addImageToPost, createPostHook } from "@/Hooks/PostHooks";
+import Swiper from "react-native-swiper";
 
 const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 const videoExtensions = ["mp4", "mov"];
@@ -79,12 +80,12 @@ export default function NewPostScreen({ route }) {
   };
 
   const handleTakeImage = (imageUri) => {
-    setImages([imageUri, ...images])
-  }
+    setImages([imageUri, ...images]);
+  };
 
   const gotoCameraScreen = (e) => {
     e.preventDefault();
-    navigation.navigate("CameraScreen", {handleTakeImage: handleTakeImage});
+    navigation.navigate("CameraScreen", { handleTakeImage: handleTakeImage });
   };
 
   const handleCheckout = () => {
@@ -137,6 +138,7 @@ export default function NewPostScreen({ route }) {
       console.log("Error occurred while launching the camera: ", error);
     }
   };
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -148,7 +150,7 @@ export default function NewPostScreen({ route }) {
     });
     console.log(result);
     if (!result.canceled) {
-      setImages(images => [...result.assets.map((asset) => asset.uri), ...images]);
+      setImages((images) => [...result.assets.map((asset) => asset.uri)]);
     }
   };
   const snapPoints = useMemo(() => ["95%"], []);
@@ -197,19 +199,24 @@ export default function NewPostScreen({ route }) {
     return formattedDate;
   }
 
-  const [caption, setCaption] = useState("")
+  const [caption, setCaption] = useState("");
 
   const { createPost, newPost, isCreatePostLoading } = createPostHook();
-  const { addImage, isAddImageLoading} = addImageToPost();
+  const { addImage, isAddImageLoading } = addImageToPost();
 
   const handleCreatePost = async () => {
-    const response = await createPost(accessToken, place ? place.id : null, caption, selectedItems.map(item => item.id))
+    const response = await createPost(
+      accessToken,
+      place ? place.id : null,
+      caption,
+      selectedItems.map((item) => item.id)
+    );
     console.log(response);
     for (const image of images) {
       await addImage(accessToken, response.data.id, image);
     }
-    navigation.navigate("ProfileScreen", { userId: user.id })
-  }
+    navigation.navigate("ProfileScreen", { userId: user.id });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -218,8 +225,10 @@ export default function NewPostScreen({ route }) {
           <SvgXml xml={ArrowLeftBlack} />
         </Pressable>
         <Text style={styles.title}>Đăng bài viết</Text>
-        <Pressable style={styles.button} onPress={() => handleCreatePost()}
-          disabled={isCreatePostLoading || isAddImageLoading}  
+        <Pressable
+          style={styles.button}
+          onPress={() => handleCreatePost()}
+          disabled={isCreatePostLoading || isAddImageLoading}
         >
           <Text style={styles.checkout}>Đăng</Text>
         </Pressable>
@@ -229,12 +238,15 @@ export default function NewPostScreen({ route }) {
         keyboardShouldPersistTaps="always"
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        {isAddImageLoading || isCreatePostLoading
-          ? <ActivityIndicator
-                  size="large"
-                  color="#ED2939"
-                  style={{ paddingVertical: 12 }}
-                /> : <></> }
+        {isAddImageLoading || isCreatePostLoading ? (
+          <ActivityIndicator
+            size="large"
+            color="#ED2939"
+            style={{ paddingVertical: 12 }}
+          />
+        ) : (
+          <></>
+        )}
         <View style={styles.status}>
           <Image
             style={{
@@ -329,7 +341,7 @@ export default function NewPostScreen({ route }) {
             placeholder="Bạn đang ở đâu đấy? "
             placeholderTextColor="grey"
             value={caption}
-            onChangeText={c => setCaption(c)}
+            onChangeText={(c) => setCaption(c)}
           />
         </TouchableWithoutFeedback>
         {/* <View>
@@ -349,7 +361,7 @@ export default function NewPostScreen({ route }) {
             title={isMuted ? "Unmute" : "Mute"}
           />
         </View> */}
-        <ScrollView style={{ height: "auto", flexDirection: "row" }}>
+        {/* <ScrollView style={{ height: "auto", flexDirection: "row" }}>
           {images ? (
             images.map((image) => {
               const extension = image.split(".").pop();
@@ -382,7 +394,72 @@ export default function NewPostScreen({ route }) {
           ) : (
             <></>
           )}
-        </ScrollView>
+        </ScrollView> */}
+        {images ? (
+          <Swiper
+            style={{ height: 300 }}
+            dot={
+              <View
+                style={{
+                  backgroundColor: "rgba(0,0,0,.2)",
+                  width: 4,
+                  height: 4,
+                  borderRadius: 4,
+                  marginLeft: 3,
+                  marginRight: 3,
+                  marginTop: 3,
+                }}
+              />
+            }
+            activeDot={
+              <View
+                style={{
+                  backgroundColor: "#007aff",
+                  width: 5,
+                  height: 5,
+                  borderRadius: 4,
+                  marginLeft: 3,
+                  marginRight: 3,
+                  marginTop: 3,
+                }}
+              />
+            }
+          >
+            {images.map((image, index) => {
+              const extension = image.split(".").pop();
+              if (imageExtensions.includes(extension)) {
+                return (
+                  <Image
+                    source={{ uri: image }}
+                    style={{
+                      width: "100%",
+                      height: 290,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    resizeMode="cover"
+                    key={index}
+                  />
+                );
+              } else if (videoExtensions.includes(extension)) {
+                return (
+                  <Video
+                    ref={ref}
+                    style={styles.slide1}
+                    resizeMode={ResizeMode.COVER}
+                    shouldPlay={false}
+                    isLooping
+                    useNativeControls
+                    source={{ uri: image }}
+                    key={index}
+                  />
+                );
+              }
+            })}
+          </Swiper>
+        ) : (
+          <></>
+        )}
         <Pressable
           style={{
             flexDirection: "row",

@@ -49,6 +49,7 @@ import { LocationDotIcon } from "@/Assets/Icons/LocationDot";
 import { Video } from "expo-av";
 import * as ImagePicker from "expo-image-picker";
 import { PictureIcon } from "@/Assets/Icons/Home";
+import Swiper from "react-native-swiper";
 
 const data = [
   { label: "Item 1", value: "1" },
@@ -108,10 +109,7 @@ export default function CreateNewExp({ route }) {
     });
     console.log(result);
     if (!result.canceled) {
-      setImages((images) => [
-        ...result.assets.map((asset) => asset.uri),
-        ...images,
-      ]);
+      setImages((images) => [...result.assets.map((asset) => asset.uri)]);
     }
   };
   return (
@@ -302,10 +300,7 @@ export default function CreateNewExp({ route }) {
           Thêm ảnh khác
         </Text>
         <View style={{ paddingVertical: 8, paddingHorizontal: 10 }}>
-          <Pressable style={styles.imageParent} onPress={pickImage}>
-            <SvgXml xml={PictureIcon} />
-          </Pressable>
-          {images ? (
+          {/* {images ? (
             images.map((image) => {
               const extension = image.split(".").pop();
               if (videoExtensions.includes(extension)) {
@@ -338,6 +333,80 @@ export default function CreateNewExp({ route }) {
             })
           ) : (
             <></>
+          )} */}
+          {images.length ? (
+            <Swiper
+              style={{ height: 300 }}
+              dot={
+                <View
+                  style={{
+                    backgroundColor: "rgba(0,0,0,.2)",
+                    width: 4,
+                    height: 4,
+                    borderRadius: 4,
+                    marginLeft: 3,
+                    marginRight: 3,
+                    marginTop: 3,
+                  }}
+                />
+              }
+              activeDot={
+                <View
+                  style={{
+                    backgroundColor: "#007aff",
+                    width: 5,
+                    height: 5,
+                    borderRadius: 4,
+                    marginLeft: 3,
+                    marginRight: 3,
+                    marginTop: 3,
+                  }}
+                />
+              }
+            >
+              {images.map((image, index) => {
+                const extension = image.split(".").pop();
+                if (imageExtensions.includes(extension)) {
+                  return (
+                    <Pressable onPress={pickImage}>
+                      <Image
+                        source={{ uri: image }}
+                        style={{
+                          width: "100%",
+                          height: 290,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        resizeMode="cover"
+                        key={index}
+                      />
+                    </Pressable>
+                  );
+                } else if (videoExtensions.includes(extension)) {
+                  return (
+                    <Video
+                      ref={ref}
+                      style={{
+                        width: "100%",
+                        height: 290,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      resizeMode={ResizeMode.COVER}
+                      shouldPlay={false}
+                      isLooping
+                      useNativeControls
+                      source={{ uri: image }}
+                      key={index}
+                    />
+                  );
+                }
+              })}
+            </Swiper>
+          ) : (
+            <Pressable style={styles.imageParent} onPress={pickImage}>
+              <SvgXml xml={PictureIcon} />
+            </Pressable>
           )}
         </View>
         <Pressable
