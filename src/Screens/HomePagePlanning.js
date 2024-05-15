@@ -56,7 +56,7 @@ const HomePagePlanning = () => {
     ].map(trip => ({ ...trip, isChecked: false }))
   )
 
-  // Nút Check
+  // Check Box
   const [isChecked, setChecked] = useState(false)
 
   const handlePress = () => {
@@ -75,18 +75,24 @@ const HomePagePlanning = () => {
     )
   }
 
-  // Kiểm tra xem có nhấn nút Sắp xếp chưa để hiển thị ô tick
+  // Kiểm tra xem có nhấn Function 'Xóa Chuyến đi' chưa -> để hiển thị ô tick
   const [isDeleting, setIsDeleting] = useState(false)
 
-  // Kiểm tra để hiển thị/ẩn nút Xóa
+  // Kiểm tra để hiển thị/ẩn nút 'Xóa Chuyến đi (0)'
   const [isDeleteButton, setIsDeleteButton] = useState(false)
 
   // Modal Toggle Chức năng (Sắp xếp + Tạo mới + Xóa)
   const [isModalVisible, setModalVisible] = useState(false)
 
-  const toggleModal = async e => {
-    e.preventDefault()
+  const toggleModal = async () => {
     setModalVisible(!isModalVisible)
+  }
+
+  // Modal Toggle "Xóa Chuyến đi (0)"
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false)
+
+  const toggleDeleteModal = async () => {
+    setDeleteModalVisible(!isDeleteModalVisible)
   }
 
   // Hàm trung gian vừa đóng được Modal vừa chuyển sang trang CreatePlanning
@@ -94,6 +100,9 @@ const HomePagePlanning = () => {
     setModalVisible(false)
     navigation.navigate(routeName)
   }
+
+  // Khi nhấn vào Function 'Xóa Chuyến đi' thì Nút Chức năng -> Chữ 'X'
+  const [buttonText, setButtonText] = useState('pen-to-square')
 
   return (
     <SafeAreaView style={styles.container}>
@@ -132,8 +141,18 @@ const HomePagePlanning = () => {
         <View style={styles.title}>
           <Text style={styles.titleText}>Chuyến đi của bạn</Text>
 
-          <TouchableOpacity onPress={toggleModal}>
-            <Text style={styles.buttonFunction}>pen-to-square</Text>
+          <TouchableOpacity
+            onPress={() => {
+              if (buttonText === 'X') {
+                setIsDeleting(false)
+                setIsDeleteButton(false)
+                setButtonText('pen-to-square')
+              } else {
+                toggleModal()
+              }
+            }}
+          >
+            <Text style={styles.buttonFunction}>{buttonText}</Text>
           </TouchableOpacity>
         </View>
 
@@ -191,6 +210,7 @@ const HomePagePlanning = () => {
                 style={styles.iconCheck}
                 onPress={() => handleCheckboxChange(trip.key, !trip.isChecked)}
                 color={trip.isChecked ? 'red' : undefined}
+                onValueChange={setChecked}
               />
             )}
 
@@ -221,8 +241,7 @@ const HomePagePlanning = () => {
           <TouchableOpacity
             style={styles.touchableButton}
             onPress={() => {
-              setIsDeleting(false)
-              setIsDeleteButton(false)
+              toggleDeleteModal()
             }}
           >
             <View style={styles.buttonContainer}>
@@ -295,12 +314,70 @@ const HomePagePlanning = () => {
                 setIsDeleting(true)
                 setModalVisible(false)
                 setIsDeleteButton(true)
+                setButtonText('X')
               }}
             >
               <View style={styles.subcontainer1}>
                 <Text style={styles.icon1}>trash</Text>
                 <Text style={styles.text1}>Xóa Chuyến đi</Text>
               </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal Toggle "Xóa Chuyến đi (0)" */}
+      <Modal
+        style={{
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        avoidKeyboard={true}
+        // swipeDirection='down'
+        // propagateSwipe={true}
+        isVisible={isDeleteModalVisible}
+        onSwipeComplete={toggleDeleteModal}
+        onBackdropPress={() => setDeleteModalVisible(false)}
+        onBackButtonPress={() => setDeleteModalVisible(false)}
+      >
+        <View
+          style={{
+            width: 320,
+            height: 200,
+            display: 'flex',
+            borderRadius: 20,
+            flexDirection: 'column',
+            backgroundColor: '#D9D9D9',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            gap: 24,
+            padding: 24
+          }}
+        >
+          <Text style={styles.deleteTitle}>Xóa các Chuyến đi này</Text>
+
+          <Text style={styles.deleteText}>
+            Bạn có muốn xóa hoàn toàn các Chuyến đi đã chọn ?
+          </Text>
+
+          <View style={styles.buttonDeleteContainer}>
+            <TouchableOpacity onPress={() => setDeleteModalVisible(false)}>
+              <Text style={styles.cancelTextDelete}>Hủy bỏ</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                setIsDeleting(false)
+                setIsDeleteButton(false)
+                setButtonText('pen-to-square')
+                toggleDeleteModal()
+              }}
+            >
+              <Text style={styles.acceptDeleteText}>Xóa bỏ</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -317,12 +394,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: 'black',
     backgroundColor: '#fff',
-    marginBottom: 49,
+    marginBottom: 49
   },
   scrollContainer: {
     flex: 1,
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   title: {
     width: '85%',
@@ -342,7 +419,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   favoriteContainer: {
     width: 330,
@@ -352,7 +429,7 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     alignItems: 'center',
     flexDirection: 'column',
-    backgroundColor: '#dcdcdc',
+    backgroundColor: '#dcdcdc'
   },
   imageFavorite: {
     height: 220,
@@ -404,20 +481,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     marginLeft: '12%',
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   icon: {
     width: '13%',
     fontSize: 30,
     color: '#000',
     marginRight: '1%',
-    fontFamily: 'FontAwesome6ProLight',
+    fontFamily: 'FontAwesome6ProLight'
   },
   text: {
     fontSize: 18,
     color: '#000',
     marginLeft: '2%',
-    fontFamily: 'BeVN',
+    fontFamily: 'BeVN'
   },
   iconCheck: {
     fontSize: 20,
@@ -428,7 +505,7 @@ const styles = StyleSheet.create({
   },
   touchableButton: {
     height: 60,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   buttonContainer: {
     alignItems: 'center'
@@ -481,6 +558,40 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     fontFamily: 'BeVN'
   },
+  deleteTitle: {
+    fontSize: 18,
+    color: '#000',
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    fontFamily: 'BeVNSemi'
+  },
+  deleteText: {
+    fontSize: 14,
+    color: '#000',
+    fontWeight: '300',
+    letterSpacing: 0.3,
+    fontFamily: 'BeVNProLight'
+  },
+  buttonDeleteContainer: {
+    gap: 32,
+    display: 'flex',
+    flexDirection: 'row',
+    alignSelf: 'flex-end'
+  },
+  cancelTextDelete: {
+    fontSize: 14,
+    color: '#ed2939',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+    fontFamily: 'BeVNProMedium'
+  },
+  acceptDeleteText: {
+    fontSize: 14,
+    color: '#0b3bb7',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+    fontFamily: 'BeVNProMedium'
+  }
 })
 
 export default HomePagePlanning

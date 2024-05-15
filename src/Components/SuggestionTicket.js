@@ -15,7 +15,7 @@ const SuggestionTicket = ({
   admin
 }) => {
 
-  // Nút Check
+  // Ckeck Box
   const [isChecked, setChecked] = useState(false)
 
   const handlePress = () => {
