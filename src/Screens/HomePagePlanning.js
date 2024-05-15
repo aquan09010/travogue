@@ -97,47 +97,47 @@ const HomePagePlanning = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.title}>
-        <Text style={styles.titleText}>Danh sách yêu thích của bạn</Text>
-      </View>
-
-      {/* Danh sách yêu thích Mặc định */}
-      <TouchableOpacity style={styles.touchableFavorite}>
-        <View style={styles.favoriteContainer}>
-          {/* Ảnh đại diện */}
-          <Image
-            style={styles.imageFavorite}
-            contentFit='cover'
-            source={require('../Assets/HoChiMinhCity.png')}
-          />
-
-          {/* Thông tin */}
-          <View style={styles.informationFavorite}>
-            <Text style={styles.titleFavorite}>DS Yêu Thích</Text>
-
-            <View style={styles.statusContainer}>
-              <Text style={styles.countItems}>(Có 6 điểm đến)</Text>
-
-              <Text style={styles.updateStatus}>Thay đổi 6 phút trước</Text>
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-
-      {/* Tiêu đề */}
-      <View style={styles.title}>
-        <Text style={styles.titleText}>Chuyến đi của bạn</Text>
-
-        <TouchableOpacity onPress={toggleModal}>
-          <Text style={styles.buttonFunction}>pen-to-square</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Nội dung */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollContainer}
       >
+        <View style={styles.title}>
+          <Text style={styles.titleText}>Danh sách yêu thích của bạn</Text>
+        </View>
+
+        {/* Danh sách yêu thích Mặc định */}
+        <TouchableOpacity style={styles.touchableFavorite}>
+          <View style={styles.favoriteContainer}>
+            {/* Ảnh đại diện */}
+            <Image
+              style={styles.imageFavorite}
+              contentFit='cover'
+              source={require('../Assets/HoChiMinhCity.png')}
+            />
+
+            {/* Thông tin */}
+            <View style={styles.informationFavorite}>
+              <Text style={styles.titleFavorite}>DS Yêu Thích</Text>
+
+              <View style={styles.statusContainer}>
+                <Text style={styles.countItems}>(Có 6 điểm đến)</Text>
+
+                <Text style={styles.updateStatus}>Thay đổi 6 phút trước</Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+
+        {/* Tiêu đề */}
+        <View style={styles.title}>
+          <Text style={styles.titleText}>Chuyến đi của bạn</Text>
+
+          <TouchableOpacity onPress={toggleModal}>
+            <Text style={styles.buttonFunction}>pen-to-square</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Nội dung */}
         <View style={styles.subcontainer}>
           <Text style={styles.icon}>circle-location-arrow</Text>
           <Text style={styles.text}>Địa điểm bạn muốn đi</Text>
@@ -312,15 +312,23 @@ const HomePagePlanning = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     borderColor: 'black',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    marginBottom: 49,
+  },
+  scrollContainer: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
   },
   title: {
     width: '85%',
-    // height: 'auto',
+    height: 'auto',
     marginVertical: 8,
-    alignItems: 'center',
+    alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
@@ -330,84 +338,21 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: 'BeVNSemi'
   },
-  buttonFunction: {
-    fontSize: 28,
-    fontFamily: 'FontAwesome6FreeRegular'
-  },
-  subcontainer: {
-    width: 'auto',
-    height: 'auto',
-    display: 'flex',
-    marginTop: 24,
-    marginLeft: '12%',
-    alignItems: 'center',
-    flexDirection: 'row'
-    // alignSelf: 'flex-start',
-    // justifyContent: 'flex-start'
-  },
-  icon: {
-    width: '13%',
-    fontSize: 30,
-    color: '#000',
-    marginRight: '1%',
-    fontFamily: 'FontAwesome6ProLight'
-  },
-  text: {
-    fontSize: 18,
-    color: '#000',
-    marginLeft: '2%',
-    fontFamily: 'BeVN'
-  },
-  function: {
-    gap: 24,
-    width: 'auto',
-    height: 'auto',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  subcontainer1: {
-    width: 'auto',
-    height: 'auto',
-    display: 'flex',
-    marginTop: '6%',
-    marginLeft: '8%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'center',
-    alignSelf: 'flex-start'
-  },
-  icon1: {
-    fontSize: 30,
-    color: '#000',
-    textAlign: 'center',
-    fontFamily: 'FontAwesome6ProLight'
-  },
-  text1: {
-    fontSize: 20,
-    color: '#000',
-    marginLeft: '5%',
-    fontFamily: 'BeVN'
-  },
   touchableFavorite: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   favoriteContainer: {
     width: 330,
     height: 280,
-    marginVertical: 16,
     display: 'flex',
-    borderRadius: 7,
+    borderRadius: 8,
+    marginVertical: 16,
     alignItems: 'center',
     flexDirection: 'column',
-    backgroundColor: '#dcdcdc'
-  },
-  scrollContainer: {
-    flex: 1,
-    width: '100%',
-    height: '100%'
+    backgroundColor: '#dcdcdc',
   },
   imageFavorite: {
     height: 220,
@@ -448,9 +393,31 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontFamily: 'BeVNProThinItalic'
   },
-  scrollContainer: {
-    flex: 1,
-    marginBottom: 64
+  buttonFunction: {
+    fontSize: 28,
+    fontFamily: 'FontAwesome6FreeRegular'
+  },
+  subcontainer: {
+    width: 'auto',
+    marginTop: 24,
+    height: 'auto',
+    display: 'flex',
+    marginLeft: '12%',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  icon: {
+    width: '13%',
+    fontSize: 30,
+    color: '#000',
+    marginRight: '1%',
+    fontFamily: 'FontAwesome6ProLight',
+  },
+  text: {
+    fontSize: 18,
+    color: '#000',
+    marginLeft: '2%',
+    fontFamily: 'BeVN',
   },
   iconCheck: {
     fontSize: 20,
@@ -461,7 +428,7 @@ const styles = StyleSheet.create({
   },
   touchableButton: {
     height: 60,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonContainer: {
     alignItems: 'center'
@@ -482,7 +449,38 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontFamily: 'BeVNSemi'
-  }
+  },
+
+  function: {
+    gap: 24,
+    width: 'auto',
+    height: 'auto',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  subcontainer1: {
+    width: 'auto',
+    height: 'auto',
+    display: 'flex',
+    marginTop: '6%',
+    marginLeft: '8%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'flex-start'
+  },
+  icon1: {
+    fontSize: 30,
+    color: '#000',
+    textAlign: 'center',
+    fontFamily: 'FontAwesome6ProLight'
+  },
+  text1: {
+    fontSize: 20,
+    color: '#000',
+    marginLeft: '5%',
+    fontFamily: 'BeVN'
+  },
 })
 
 export default HomePagePlanning
