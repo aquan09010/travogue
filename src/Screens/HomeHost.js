@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   Pressable,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -29,9 +29,14 @@ import { Animated } from "react-native";
 import { AddNewIcon, FilterHostIcon } from "@/Assets/Icons/Notification";
 import { getActivityByHost } from "@/Hooks/HostManage";
 import { useStateContext } from "@/Context/StateContext";
+import ExpHostCard from "@/Components/HostPage/ExpHostCard";
 
 export default function HomeHost() {
   const navigation = useNavigation();
+  const gotoNewExpScreen = async (e) => {
+    e.preventDefault();
+    navigation.navigate("NewExpScreen");
+  };
   const tabs = ["Đi đâu", "Ăn gì", "Ở đâu", "Trải Nghiệm"];
   const [selected, setSelected] = useState(0);
   const av = new Animated.Value(0);
@@ -41,15 +46,21 @@ export default function HomeHost() {
 
   const { accessToken, user } = useStateContext();
 
-  const { activities, isActivitiesLoading, activitiesError, refetchActivityByHost } =
-    getActivityByHost(accessToken, user.id);
+  const {
+    activities,
+    isActivitiesLoading,
+    activitiesError,
+    refetchActivityByHost,
+  } = getActivityByHost(accessToken, user.id);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainView}>
         <View style={styles.flex}>
           <Text style={styles.title}>Tổ chức trải nghiệm mới</Text>
-          <SvgXml xml={AddNewIcon} />
+          <Pressable onPress={gotoNewExpScreen}>
+            <SvgXml xml={AddNewIcon} />
+          </Pressable>
         </View>
         <View
           style={{
@@ -74,43 +85,43 @@ export default function HomeHost() {
           </View>
         </View>
 
-            {isActivitiesLoading ? (
-              <>
-                <ActivityIndicator
-                  size="large"
-                  color="#ED2939"
-                  style={{ paddingVertical: 12 }}
+        {isActivitiesLoading ? (
+          <>
+            <ActivityIndicator
+              size="large"
+              color="#ED2939"
+              style={{ paddingVertical: 12 }}
+            />
+          </>
+        ) : activitiesError ? (
+          <Text
+            style={{
+              color: "#A80027",
+              textAlign: "center",
+              paddingBottom: 20,
+              fontSize: 16,
+            }}
+          >
+            Something went wrong!
+          </Text>
+        ) : (
+          <ScrollView style={styles.cardListContainer}>
+            {activities.data.data.map((item, index) => {
+              return (
+                <ExpHostCard
+                  key={index}
+                  id={item.id}
+                  cardName={item.activityName}
+                  imgPath={item.mainImage}
+                  location={item.city.name}
+                  price={item.generalPrice}
+                  star={item.averageRating}
+                  isExperience={false}
                 />
-              </>
-            ) : activitiesError ? (
-              <Text
-                style={{
-                  color: "#A80027",
-                  textAlign: "center",
-                  paddingBottom: 20,
-                  fontSize: 16,
-                }}
-              >
-                Something went wrong!
-              </Text>
-            ) : (
-              <ScrollView style={styles.cardListContainer}>
-                {activities.data.data.map((item, index) => {
-                  return (
-                    <AccommodationCard
-                      key={index}
-                      id={item.id}
-                      cardName={item.activityName}
-                      imgPath={item.mainImage}
-                      location={item.city.name}
-                      price={item.generalPrice}
-                      star={item.averageRating}
-                      isExperience={false}
-                    />
-                  );
-                })}
-              </ScrollView>
-            )}
+              );
+            })}
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );

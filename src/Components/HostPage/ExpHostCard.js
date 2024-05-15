@@ -12,14 +12,14 @@ import { SearchIcon } from "@/Assets/Icons/Search";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { MiniLocation, StarIcon } from "@/Assets/Icons/Card";
-import HeartButton from "./HeartButton";
+import HeartButton from "../HeartButton";
 import { DeleteIcon, EditIcon } from "@/Assets/Icons/Proflie";
 
-export default function AccommodationCard(props) {
+export default function ExpHostCard(props) {
   const navigation = useNavigation();
   const goToDetail = async (e) => {
     e.preventDefault();
-    navigation.navigate("Detail", {
+    navigation.navigate("HostDetailScreen", {
       activityId: props.id,
       isExperience: props.isExperience,
     });
@@ -87,6 +87,22 @@ export default function AccommodationCard(props) {
             </Pressable>
           </View>
         </View>
+        <View style={styles.container}>
+          <Pressable
+            onPress={() => {
+              console.log("Edit");
+            }}
+          >
+            <SvgXml xml={EditIcon} />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              console.log("Delete");
+            }}
+          >
+            <SvgXml xml={DeleteIcon} />
+          </Pressable>
+        </View>
       </View>
 
       <HeartButton />
@@ -138,7 +154,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  actionPadding: {},
   avaImg: {
     height: 30,
     width: 30,

@@ -29,6 +29,9 @@ import NewPostScreen from "@/Screens/NewPostScreen";
 import CameraScreen from "@/Screens/CameraScreen";
 import ProfileSettingScreen from "@/Screens/ProfileSettingScreen";
 import HostNavigation from "./HostNavigation";
+import DetailHost from "@/Components/HostPage/DetailHost";
+import CreateNewExp from "@/Screens/Host/CreateNewExp";
+import SetTicketPrice from "@/Screens/Host/SetTicketPrice";
 // import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
@@ -184,6 +187,21 @@ export default function AppNavigation() {
           name="ProfileSettingScreen"
           options={{ headerShown: false }}
           component={ProfileSettingScreen}
+        />
+        <Stack.Screen
+          name="HostDetailScreen"
+          options={{ headerShown: false }}
+          component={DetailHost}
+        />
+        <Stack.Screen
+          name="NewExpScreen"
+          options={{ headerShown: false }}
+          component={CreateNewExp}
+        />
+        <Stack.Screen
+          name="SetTicketPriceScreen"
+          options={{ headerShown: false }}
+          component={SetTicketPrice}
         />
       </Stack.Navigator>
     </NavigationContainer>
