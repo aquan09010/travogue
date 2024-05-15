@@ -1,8 +1,6 @@
 import {
   Text,
   View,
-  SectionList,
-  FlatList,
   TextInput,
   ScrollView,
   StyleSheet,
@@ -639,7 +637,12 @@ const DetailATripADay = () => {
               <Text style={styles.cancelTextChangeName}>Hủy bỏ</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModalNameVisible(false)
+                setModalEditVisible(false)
+              }}
+            >
               <Text style={styles.acceptText}>Hoàn thành</Text>
             </TouchableOpacity>
           </View>
@@ -689,7 +692,12 @@ const DetailATripADay = () => {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModalSortVisible(false)
+                setModalEditVisible(false)
+              }}
+            >
               <Text style={styles.acceptText}>Hoàn thành</Text>
             </TouchableOpacity>
           </View>
@@ -767,8 +775,6 @@ const DetailATripADay = () => {
           justifyContent: 'center'
         }}
         avoidKeyboard={true}
-        swipeDirection='down'
-        propagateSwipe={true}
         isVisible={isModalDeleteTripVisible}
         onSwipeComplete={toggleDeleteTripModal}
         onBackdropPress={() => setModalDeleteTripVisible(false)}
@@ -800,7 +806,12 @@ const DetailATripADay = () => {
               <Text style={styles.cancelTextDelete}>Hủy bỏ</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setModalDeleteTripVisible(false)
+                setModalEditVisible(false)
+              }}
+            >
               <Text style={styles.acceptDeleteText}>Xóa bỏ</Text>
             </TouchableOpacity>
           </View>
@@ -1130,7 +1141,7 @@ const styles = StyleSheet.create({
   listFriendContainer: {
     // flex: 1,
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   listFriend: {
     // flex: 1,

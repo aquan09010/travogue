@@ -10,7 +10,9 @@ import {
 import Checkbox from 'expo-checkbox'
 import Modal from 'react-native-modal'
 import { useNavigation } from '@react-navigation/native'
+import DraggableFlatList from 'react-native-draggable-flatlist'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const HomePagePlanning = () => {
   const navigation = useNavigation()
@@ -56,6 +58,9 @@ const HomePagePlanning = () => {
     ].map(trip => ({ ...trip, isChecked: false }))
   )
 
+  // Danh sách các Chuyến đi trong danh mục Sắp xếp
+  const [tripsDrag, setTripsDrag] = useState(trips)
+
   // Check Box
   const [isChecked, setChecked] = useState(false)
 
@@ -86,6 +91,13 @@ const HomePagePlanning = () => {
 
   const toggleModal = async () => {
     setModalVisible(!isModalVisible)
+  }
+
+  // Modal Toggle Sắp xếp các Chuyến đi
+  const [isModalSortVisible, setModalSortVisible] = useState(false)
+
+  const toggleSortModal = async () => {
+    setModalSortVisible(!isModalSortVisible)
   }
 
   // Modal Toggle "Xóa Chuyến đi (0)"
@@ -293,7 +305,7 @@ const HomePagePlanning = () => {
 
           {/* Nội dung các chức năng */}
           <View style={styles.function}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={toggleSortModal}>
               <View style={styles.subcontainer1}>
                 <Text style={styles.icon1}>layer-group</Text>
                 <Text style={styles.text1}>Sắp xếp các Chuyến đi</Text>
@@ -323,6 +335,92 @@ const HomePagePlanning = () => {
               </View>
             </TouchableOpacity>
           </View>
+        </View>
+      </Modal>
+
+      {/* Modal Toggle Sắp xếp các Chuyến đi */}
+      <Modal
+        style={{
+          flex: 1,
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+        avoidKeyboard={true}
+        propagateSwipe={true}
+        isVisible={isModalSortVisible}
+        onBackdropPress={() => setModalSortVisible(false)}
+        onBackButtonPress={() => setModalSortVisible(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: '#ffffff'
+          }}
+        >
+          {/* Nút Quay lại + Nút Hoàn thành */}
+          <View style={styles.returnAndCompleteContainer}>
+            <TouchableOpacity onPress={() => setModalSortVisible(false)}>
+              <Image
+                style={styles.arrowLeftIcon}
+                contentFit='cover'
+                source={require('../Assets/arrowleft.png')}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                setModalSortVisible(false)
+                setModalVisible(false)
+              }}
+            >
+              <Text style={styles.acceptText}>Hoàn thành</Text>
+            </TouchableOpacity>
+          </View>
+
+          <GestureHandlerRootView style={styles.listTripsArrangeList}>
+            <DraggableFlatList
+              data={tripsDrag}
+              renderItem={({ item, index, drag, isActive }) => (
+                <TouchableOpacity
+                  key={item.key}
+                  onLongPress={drag}
+                  style={styles.touchableFavorite}
+                >
+                  <View style={styles.favoriteContainer}>
+                    {/* Ảnh đại diện */}
+                    <Image
+                      style={styles.imageFavorite}
+                      contentFit='cover'
+                      source={item.image}
+                    />
+
+                    {/* Thông tin */}
+                    <View style={styles.informationFavorite}>
+                      <Text style={styles.titleFavorite}>{item.titleName}</Text>
+
+                      <View style={styles.statusContainer}>
+                        <Text style={styles.countItems}>{item.countItems}</Text>
+
+                        <Text style={styles.updateStatus}>
+                          {item.updateStatus}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item, index) => `draggable-item-${item.key}`}
+              onDragEnd={({ data }) => setTripsDrag(data)}
+            />
+          </GestureHandlerRootView>
         </View>
       </Modal>
 
@@ -557,6 +655,34 @@ const styles = StyleSheet.create({
     color: '#000',
     marginLeft: '5%',
     fontFamily: 'BeVN'
+  },
+  returnAndCompleteContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingVertical: 16,
+    gap: 235,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  arrowLeftIcon: {
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  acceptText: {
+    fontSize: 17,
+    color: '#0b3bb7',
+    letterSpacing: 0.2,
+    fontWeight: '500',
+    fontFamily: 'BeVNProMedium'
+  },
+  listTripsArrangeList: {
+    flex: 1,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#e8e8e8'
   },
   deleteTitle: {
     fontSize: 18,
