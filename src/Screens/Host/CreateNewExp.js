@@ -51,16 +51,6 @@ import * as ImagePicker from "expo-image-picker";
 import { PictureIcon } from "@/Assets/Icons/Home";
 import Swiper from "react-native-swiper";
 
-const data = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" },
-];
 const options = [
   "Nghệ thuật và văn hoá",
   "Thể thao",
@@ -73,7 +63,6 @@ const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 const videoExtensions = ["mp4", "mov"];
 export default function CreateNewExp({ route }) {
   const navigation = useNavigation();
-  const [city, setCity] = useState(null);
   const [selectedOption, setSelectedOption] = useState([]);
   const gotoSetTicket = async (e) => {
     e.preventDefault();
@@ -83,6 +72,18 @@ export default function CreateNewExp({ route }) {
   const [detail, setDetail] = useState("");
   const [images, setImages] = useState([]);
   const [image, setImage] = useState(null);
+  const data = [
+    { label: "Item 1", value: "1" },
+    { label: "Item 2", value: "2" },
+    { label: "Item 3", value: "3" },
+    { label: "Item 4", value: "4" },
+    { label: "Item 5", value: "5" },
+    { label: "Item 6", value: "6" },
+    { label: "Item 7", value: "7" },
+    { label: "Item 8", value: "8" },
+  ];
+  const [value, setValue] = useState(null);
+
   const pickMainImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -175,20 +176,20 @@ export default function CreateNewExp({ route }) {
           <View style={{ paddingVertical: 8, paddingHorizontal: 10 }}>
             <Dropdown
               style={styles.dropdown}
-              placeholderStyle={{ color: "grey", fontSize: 14 }}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
+              placeholderStyle={[styles.th714, styles.th714FlexBox]}
+              selectedTextStyle={[styles.th714, styles.th714FlexBox]}
+              inputSearchStyle={[styles.th714, styles.th714FlexBox]}
               iconStyle={styles.iconStyle}
               data={data}
               search
               maxHeight={300}
               labelField="label"
-              valueField="city"
-              placeholder="Chọn thành phố"
+              valueField="value"
+              placeholder="Select item"
               searchPlaceholder="Search..."
-              value={city}
+              value={value}
               onChange={(item) => {
-                setCity(item.value);
+                setValue(item.value);
               }}
               renderLeftIcon={() => (
                 <>
@@ -522,5 +523,19 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderRadius: 7,
     overflow: "hidden",
+  },
+  th714FlexBox: {
+    textAlign: "left",
+    color: "#000",
+  },
+  calendar: {
+    fontFamily: "Font Awesome 6 Pro",
+    fontSize: 16,
+    color: "#000",
+  },
+  th714: {
+    fontSize: 13,
+    fontFamily: "BeVietnamPro-Regular",
+    marginLeft: 6,
   },
 });
