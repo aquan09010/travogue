@@ -25,6 +25,7 @@ import ProfileScreen from "@/Screens/ProfileScreen";
 import CloneSceen from "@/Screens/CloneDetail";
 import HomePagePlanning from "@/Screens/HomePagePlanning";
 import HomeHost from "@/Screens/HomeHost";
+import ScheduleScreen from "@/Screens/Host/SheduleScreen";
 
 const HostNavigation = () => {
   const Tab = createBottomTabNavigator();
@@ -80,7 +81,7 @@ const HostNavigation = () => {
           headerTitle: (props) => <TabHeader {...props} />,
         }}
       />
-      <Tab.Screen name="Lịch trình" component={CommunityScreen} />
+      <Tab.Screen name="Lịch trình" component={ScheduleScreen} />
       <Tab.Screen name="Thông báo" component={HomeScreen} />
       <Tab.Screen
         name="Hồ sơ"
