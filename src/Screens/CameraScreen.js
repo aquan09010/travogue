@@ -1,4 +1,4 @@
-import { Camera, CameraType } from "expo-camera";
+import { Camera, CameraType } from "expo-camera/legacy";
 import React, { useLayoutEffect, useState, useEffect, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as MediaLibrary from "expo-media-library";
@@ -32,7 +32,7 @@ import {
   XFlashIcon,
 } from "@/Assets/Icons/DetailIcon";
 export default function CameraScreen({ route }) {
-  const {handleTakeImage} = route.params
+  const { handleTakeImage } = route.params;
   const navigation = useNavigation();
   const goToPreviousTab = () => {
     navigation.goBack();
