@@ -10,6 +10,7 @@ import Onboarding from "react-native-onboarding-swiper";
 import Lottie from "lottie-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { setItem } from "@/Utils/asyncStorage";
+import LottieView from "lottie-react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -87,13 +88,12 @@ export default function OnboardingScreen() {
           {
             backgroundColor: "white",
             image: (
-              <View style={styles.lottie}>
-                <Lottie
-                  source={require("../Assets/animation/screen1.json")}
-                  autoPlay
-                  loop
-                />
-              </View>
+              <LottieView
+                style={styles.lottie}
+                source={require("../Assets/animation/screen1.json")}
+                autoPlay
+                loop
+              />
             ),
             title: "Tìm kiếm địa điểm",
             subtitle:
@@ -102,13 +102,12 @@ export default function OnboardingScreen() {
           {
             backgroundColor: "white",
             image: (
-              <View style={styles.lottie}>
-                <Lottie
-                  source={require("../Assets/animation/screen2.json")}
-                  autoPlay
-                  loop
-                />
-              </View>
+              <LottieView
+                style={styles.lottie}
+                source={require("../Assets/animation/screen2.json")}
+                autoPlay
+                loop
+              />
             ),
             title: "Đặt vé Trải nghiệm",
             subtitle:
@@ -117,13 +116,12 @@ export default function OnboardingScreen() {
           {
             backgroundColor: "white",
             image: (
-              <View style={styles.lottie}>
-                <Lottie
-                  source={require("../Assets/animation/screen3.json")}
-                  autoPlay
-                  loop
-                />
-              </View>
+              <LottieView
+                style={styles.lottie}
+                source={require("../Assets/animation/screen3.json")}
+                autoPlay
+                loop
+              />
             ),
             title: "Khám phá Travogue nào !",
             subtitle:
