@@ -20,12 +20,13 @@ const styles = StyleSheet.create({
     gap: 16,
     width: 301,
     height: 53,
+    borderWidth: 1,
     display: 'flex',
     borderRadius: 16,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#d9d9d9'
+    backgroundColor: '#d9d9d9',
   },
   locationPlus: {
     fontSize: 25,

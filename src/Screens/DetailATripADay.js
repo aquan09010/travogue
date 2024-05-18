@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { Image } from 'expo-image'
 import Modal from 'react-native-modal'
+import Button1 from '../Components/Button1'
 import ChosenTicket from '../Components/ChosenTicket'
 import FriendTicket from '../Components/FriendTicket'
 import { useNavigation } from '@react-navigation/native'
@@ -397,17 +398,22 @@ const DetailATripADay = () => {
         {/* Danh sách các Điểm dừng chân */}
         <SwipeListView
           ListHeaderComponent={
-            days.length > 1 && (
-              <View style={styles.filterAndDelete}>
-                {/* Nút xóa 1 ngày */}
-                <TouchableOpacity
-                  style={styles.touchableTrash}
-                  onPress={toggleDeleteModal}
-                >
-                  <Text style={styles.trash}>trash</Text>
-                </TouchableOpacity>
+            <>
+              {days.length > 1 && (
+                <View style={styles.filterAndDelete}>
+                  {/* Nút xóa 1 ngày */}
+                  <TouchableOpacity
+                    style={styles.touchableTrash}
+                    onPress={toggleDeleteModal}
+                  >
+                    <Text style={styles.trash}>trash</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              <View style={styles.buttonAddPlaceContainer}>
+                <Button1 navigation={navigation} />
               </View>
-            )
+            </>
           }
           style={styles.listDestinations}
           data={data}
@@ -970,6 +976,10 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderStyle: 'solid',
     borderColor: '#bababa'
+  },
+  buttonAddPlaceContainer: {
+    alignItems: 'center',
+    marginVertical: '5%'
   },
   listDestinations: {
     flex: 1,
