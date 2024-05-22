@@ -30,6 +30,7 @@ import { AddNewIcon, FilterHostIcon } from "@/Assets/Icons/Notification";
 import { getActivityByHost } from "@/Hooks/HostManage";
 import { useStateContext } from "@/Context/StateContext";
 import ExpHostCard from "@/Components/HostPage/ExpHostCard";
+import { RefreshControl } from "react-native-gesture-handler";
 
 export default function HomeHost() {
   const navigation = useNavigation();
@@ -105,7 +106,9 @@ export default function HomeHost() {
             Something went wrong!
           </Text>
         ) : (
-          <ScrollView style={styles.cardListContainer}>
+              <ScrollView style={styles.cardListContainer}
+                refreshControl={<RefreshControl refreshing={ isActivitiesLoading} onRefresh={refetchActivityByHost}/>}
+              >
             {activities.data.data.map((item, index) => {
               return (
                 <ExpHostCard

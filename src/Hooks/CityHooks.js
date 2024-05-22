@@ -49,7 +49,7 @@ const searchCities = (accessToken, keyword) => {
 
   const options = {
     method: 'GET',
-    url: `https://travogue-production.up.railway.app/travogue-service/cities/search?keyword=${keyword}&pageNumber=0&pageSize=10&sortField=name`,
+    url: `https://travogue-production.up.railway.app/travogue-service/cities/search?keyword=${keyword}&pageNumber=0&pageSize=100&sortField=name`,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

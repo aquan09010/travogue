@@ -50,6 +50,9 @@ import { Video } from "expo-av";
 import * as ImagePicker from "expo-image-picker";
 import { PictureIcon } from "@/Assets/Icons/Home";
 import Swiper from "react-native-swiper";
+import { searchCities } from "@/Hooks/CityHooks";
+import { useStateContext } from "@/Context/StateContext";
+import { getChildCategories } from "@/Hooks/TravelActivityHooks";
 
 const options = [
   "Nghệ thuật và văn hoá",
@@ -57,32 +60,42 @@ const options = [
   "Lịch sử",
   "Ẩm thực",
   "Vận dộng",
+  "Hoang sơ",
+  "Hiện đại",
   "Khác",
 ];
 const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 const videoExtensions = ["mp4", "mov"];
 export default function CreateNewExp({ route }) {
   const navigation = useNavigation();
-  const [selectedOption, setSelectedOption] = useState([]);
   const gotoSetTicket = async (e) => {
     e.preventDefault();
-    navigation.navigate("SetTicketPriceScreen");
+    navigation.navigate("SetTicketPriceScreen", 
+      {
+        activityName: activityName,
+        description: description,
+        tags: selectedTags.join(';'),
+        cityId: city,
+        categoryId: categoryId
+      }
+    );
   };
-  const [nameExp, setNameExp] = useState("");
-  const [detail, setDetail] = useState("");
+  const [activityName, setActivityName] = useState("");
+  const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
   const [image, setImage] = useState(null);
-  const data = [
-    { label: "Item 1", value: "1" },
-    { label: "Item 2", value: "2" },
-    { label: "Item 3", value: "3" },
-    { label: "Item 4", value: "4" },
-    { label: "Item 5", value: "5" },
-    { label: "Item 6", value: "6" },
-    { label: "Item 7", value: "7" },
-    { label: "Item 8", value: "8" },
-  ];
-  const [value, setValue] = useState(null);
+  const [city, setCity] = useState(null);
+  const [categoryId, setCategoryId] = useState(null);
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  const { accessToken } = useStateContext();
+
+  const { cities, isCitiesLoading, citiesError } = searchCities(
+    accessToken,
+    ""
+  );
+
+  const { childCategories, isLoading, error, refetchChildCategories } = getChildCategories(accessToken, "df8762e6-e127-4e75-ac55-da372c2fcb09");
 
   const pickMainImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -158,9 +171,9 @@ export default function CreateNewExp({ route }) {
                 }}
                 placeholder="Đặt tên cho trải nghiệm của bạn "
                 placeholderTextColor="grey"
-                value={nameExp}
+                value={activityName}
                 onChangeText={(c) => {
-                  setNameExp(c);
+                  setActivityName(c);
                 }}
               />
             </View>
@@ -180,16 +193,51 @@ export default function CreateNewExp({ route }) {
               selectedTextStyle={[styles.th714, styles.th714FlexBox]}
               inputSearchStyle={[styles.th714, styles.th714FlexBox]}
               iconStyle={styles.iconStyle}
-              data={data}
+              data={isCitiesLoading ? [] : cities.data.data}
               search
               maxHeight={300}
-              labelField="label"
-              valueField="value"
+              labelField="name"
+              valueField="id"
               placeholder="Select item"
               searchPlaceholder="Search..."
-              value={value}
+              value={city}
               onChange={(item) => {
-                setValue(item.value);
+                setCity(item.id);
+              }}
+              renderLeftIcon={() => (
+                <>
+                  <SvgXml xml={LocationDotIcon} />
+                  <Text> </Text>
+                </>
+              )}
+            />
+          </View>
+
+          <Text
+            style={[
+              styles.title1,
+              { paddingVertical: 8, paddingHorizontal: 10 },
+            ]}
+          >
+            Loại hoạt động
+          </Text>
+          <View style={{ paddingVertical: 8, paddingHorizontal: 10 }}>
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={[styles.th714, styles.th714FlexBox]}
+              selectedTextStyle={[styles.th714, styles.th714FlexBox]}
+              inputSearchStyle={[styles.th714, styles.th714FlexBox]}
+              iconStyle={styles.iconStyle}
+              data={isLoading ? [] : childCategories.data.childCategories}
+              search
+              maxHeight={300}
+              labelField="categoryName"
+              valueField="id"
+              placeholder="Select item"
+              searchPlaceholder="Search..."
+              value={categoryId}
+              onChange={(item) => {
+                setCategoryId(item.id);
               }}
               renderLeftIcon={() => (
                 <>
@@ -203,7 +251,7 @@ export default function CreateNewExp({ route }) {
         <Text
           style={[styles.title1, { paddingVertical: 8, paddingHorizontal: 10 }]}
         >
-          Loại hoạt động
+          Tags
         </Text>
         <View style={styles.listKind}>
           {options.map((option, index) => (
@@ -212,11 +260,11 @@ export default function CreateNewExp({ route }) {
               style={[
                 styles.option,
                 {
-                  borderColor: selectedOption.includes(option) ? "red" : "gray",
+                  borderColor: selectedTags.includes(option) ? "red" : "gray",
                 },
               ]}
               onPress={() => {
-                setSelectedOption((prevOptions) => {
+                setSelectedTags((prevOptions) => {
                   if (prevOptions.includes(option)) {
                     // If the option is already selected, remove it from the array
                     return prevOptions.filter(
@@ -233,7 +281,7 @@ export default function CreateNewExp({ route }) {
                 style={[
                   styles.optionText,
                   {
-                    color: selectedOption.includes(option) ? "red" : "gray",
+                    color: selectedTags.includes(option) ? "red" : "gray",
                   },
                 ]}
               >
@@ -266,8 +314,8 @@ export default function CreateNewExp({ route }) {
               }}
               placeholder="Đặt tên cho trải nghiệm của bạn "
               placeholderTextColor="grey"
-              value={detail}
-              onChangeText={(c) => setDetail(c)}
+              value={description}
+              onChangeText={(c) => setDescription(c)}
             />
           </View>
         </TouchableWithoutFeedback>

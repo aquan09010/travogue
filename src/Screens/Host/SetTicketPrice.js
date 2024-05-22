@@ -15,7 +15,7 @@ import {
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { ParkIconActive } from "@/Assets/Icons/Where";
-import React, { useLayoutEffect, useState, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import {
   SearchIcon,
   ArrowLeft,
@@ -52,6 +52,8 @@ import * as ImagePicker from "expo-image-picker";
 import { AddCircleIcon, PictureIcon } from "@/Assets/Icons/Home";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { DeleteIcon } from "@/Assets/Icons/Proflie";
+import { getInsurances } from "@/Hooks/HostManageHook";
+import { useStateContext } from "@/Context/StateContext";
 
 const data = [
   { label: "10:30 - 11:30", value: "1" },
@@ -85,7 +87,6 @@ export default function SetTicketPrice({ route }) {
   const navigation = useNavigation();
   const [city, setCity] = useState(null);
   const [selectedOption, setSelectedOption] = useState([]);
-  const [selectedOption1, setSelectedOption1] = useState([]);
 
   const gotoHost = async (e) => {
     e.preventDefault();
@@ -93,6 +94,7 @@ export default function SetTicketPrice({ route }) {
   };
   const [selected, setSelected] = useState("");
   const [openSchedule, setOpenSchedule] = useState(false);
+
   const [days, setDays] = useState({});
   const removeDayByKey = (keyToRemove) => {
     setDays((prevDays) => {
@@ -109,12 +111,19 @@ export default function SetTicketPrice({ route }) {
     });
   };
   const [value, setValue] = useState(null);
-  const [lang, setLang] = useState(null);
-  const [count, setCount] = useState("");
-  const [note, setNote] = useState("");
-  const [ticket1, setTicket1] = useState("");
-  const [ticket2, setTicket2] = useState("");
-  const [ticket3, setTicket3] = useState("");
+  const [languages, setLang] = useState(null);
+  const [maximumGuests, setMaximumGuests] = useState("");
+  const [hostNotes, setNote] = useState("");
+  const [adultsPrice, setAdultsPrice] = useState(0);
+  const [childrenPrice, setChildrenPrice] = useState(0);
+  const [babyPrice, setBabyPrice] = useState(0);
+  const [selectedInsurances, setSelectedInsurances] = useState([]);
+
+  useEffect(() => console.log(days), [days])
+
+  const { accessToken } = useStateContext();
+
+  const { insurances, isGetInsurancesLoading, getInsurancesError, refetchGetInsurances } = getInsurances(accessToken);
 
   const renderItem = (item) => {
     return (
@@ -310,7 +319,7 @@ export default function SetTicketPrice({ route }) {
             valueField="value"
             placeholder=" Chọn ngôn ngữ"
             searchPlaceholder="Search..."
-            value={lang}
+            value={languages}
             onChange={(item) => {
               setLang(item.value);
             }}
@@ -347,9 +356,9 @@ export default function SetTicketPrice({ route }) {
                 width: 40,
               }}
               placeholderTextColor="grey"
-              value={count}
+              value={maximumGuests}
               onChangeText={(c) => {
-                setCount(c);
+                setMaximumGuests(c);
               }}
             />
           </TouchableWithoutFeedback>
@@ -399,7 +408,7 @@ export default function SetTicketPrice({ route }) {
               }}
               placeholder="Lưu ý dành cho du khách"
               placeholderTextColor="grey"
-              value={note}
+              value={hostNotes}
               onChangeText={(c) => {
                 setNote(c);
               }}
@@ -458,9 +467,9 @@ export default function SetTicketPrice({ route }) {
                     flex: 1,
                   }}
                   placeholderTextColor="grey"
-                  value={ticket1}
+                  value={adultsPrice}
                   onChangeText={(c) => {
-                    setTicket1(c);
+                    setAdultsPrice(c);
                   }}
                 />
                 <Text style={[styles.th714, styles.th714FlexBox]}>đ</Text>
@@ -515,9 +524,9 @@ export default function SetTicketPrice({ route }) {
                     flex: 1,
                   }}
                   placeholderTextColor="grey"
-                  value={ticket2}
+                  value={childrenPrice}
                   onChangeText={(c) => {
-                    setTicket2(c);
+                    setChildrenPrice(c);
                   }}
                 />
                 <Text style={[styles.th714, styles.th714FlexBox]}>đ</Text>
@@ -572,9 +581,9 @@ export default function SetTicketPrice({ route }) {
                     flex: 1,
                   }}
                   placeholderTextColor="grey"
-                  value={ticket3}
+                  value={babyPrice}
                   onChangeText={(c) => {
-                    setTicket3(c);
+                    setBabyPrice(c);
                   }}
                 />
                 <Text style={[styles.th714, styles.th714FlexBox]}>đ</Text>
@@ -582,7 +591,7 @@ export default function SetTicketPrice({ route }) {
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <Text
+        {/* <Text
           style={[styles.title1, { paddingVertical: 8, paddingHorizontal: 10 }]}
         >
           Chính sách về vé và giá
@@ -623,7 +632,7 @@ export default function SetTicketPrice({ route }) {
               </Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </View> */}
         <Pressable
           style={{
             alignSelf: "flex-end",
@@ -675,27 +684,27 @@ export default function SetTicketPrice({ route }) {
           Các bên bảo hiểm
         </Text>
         <View style={styles.listKind}>
-          {options1.map((option, index) => (
+          {isGetInsurancesLoading ? <></> : insurances.data.map((insurance, index) => (
             <TouchableOpacity
               key={index}
               style={[
                 styles.option,
                 {
-                  borderColor: selectedOption1.includes(option)
+                  borderColor: selectedInsurances.includes(insurance.id)
                     ? "red"
                     : "gray",
                 },
               ]}
               onPress={() => {
-                setSelectedOption1((prevOptions) => {
-                  if (prevOptions.includes(option)) {
+                setSelectedInsurances((prevOptions) => {
+                  if (prevOptions.includes(insurance.id)) {
                     // If the option is already selected, remove it from the array
                     return prevOptions.filter(
-                      (prevOption) => prevOption !== option
+                      (prevOption) => prevOption !== insurance.id
                     );
                   } else {
                     // If the option is not selected, add it to the array
-                    return [...prevOptions, option];
+                    return [...prevOptions, insurance.id];
                   }
                 });
               }}
@@ -704,12 +713,23 @@ export default function SetTicketPrice({ route }) {
                 style={[
                   styles.optionText,
                   {
-                    color: selectedOption1.includes(option) ? "red" : "gray",
+                    color: selectedInsurances.includes(insurance.id) ? "red" : "gray",
                   },
                 ]}
               >
-                {option}
+                {insurance.name} : {insurance.bestOffer}.000đ
               </Text>
+
+              {insurance.benefits.split(';').map(item => 
+                <Text
+                  style={[
+                    styles.th714,
+                    {color: "gray"}
+                  ]}
+                >
+                  {item}, 
+                </Text>
+              )}
             </TouchableOpacity>
           ))}
         </View>
