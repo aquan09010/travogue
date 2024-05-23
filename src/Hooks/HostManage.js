@@ -26,7 +26,7 @@ const getActivityByHost = (accessToken, hostId) => {
       try {
         const response = await axios.request(options);
   
-        setActivities(response.data); // Assuming the response contains the child categories
+        setActivities(response.data.data.data); // Assuming the response contains the child categories
         setIsLoading(false);
       } catch (error) {
         setError(error);
@@ -45,7 +45,7 @@ const getActivityByHost = (accessToken, hostId) => {
       fetchData();
     };
   
-    return { activities, isActivitiesLoading, activitiesError, refetchActivityByHost };
+    return { activities, setActivities, isActivitiesLoading, activitiesError, refetchActivityByHost };
 };
   
 export { getActivityByHost };

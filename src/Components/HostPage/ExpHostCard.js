@@ -14,6 +14,8 @@ import { useNavigation } from "@react-navigation/native";
 import { MiniLocation, StarIcon } from "@/Assets/Icons/Card";
 import HeartButton from "../HeartButton";
 import { DeleteIcon, EditIcon } from "@/Assets/Icons/Proflie";
+import { deleteExperienceHook } from "@/Hooks/HostManageHook";
+import { useStateContext } from "@/Context/StateContext";
 
 export default function ExpHostCard(props) {
   const navigation = useNavigation();
@@ -35,6 +37,14 @@ export default function ExpHostCard(props) {
     e.preventDefault();
     navigation.navigate("HostProfile");
   };
+
+  const { accessToken } = useStateContext();
+
+  const {
+    deleteExperience,
+    isDeleteExperienceLoading,
+    deleteExperienceError
+  } = deleteExperienceHook();
 
   return (
     <TouchableOpacity
@@ -92,13 +102,17 @@ export default function ExpHostCard(props) {
             onPress={() => {
               console.log("Edit");
             }}
+            disabled={isDeleteExperienceLoading}
           >
             <SvgXml xml={EditIcon} />
           </Pressable>
           <Pressable
             onPress={() => {
+              props.handleDelete(props.id);
+              deleteExperience(accessToken, props.id);
               console.log("Delete");
             }}
+            disabled={isDeleteExperienceLoading}
           >
             <SvgXml xml={DeleteIcon} />
           </Pressable>

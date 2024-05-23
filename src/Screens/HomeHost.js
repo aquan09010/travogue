@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect, useState, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import SearchLocation from "@/Components/SearchLocation";
 import CategoryTab from "@/Components/CategoryTab";
 import WhereScreen from "./WhereScreen";
@@ -31,6 +31,7 @@ import { getActivityByHost } from "@/Hooks/HostManage";
 import { useStateContext } from "@/Context/StateContext";
 import ExpHostCard from "@/Components/HostPage/ExpHostCard";
 import { RefreshControl } from "react-native-gesture-handler";
+import { deleteExperienceHook } from "@/Hooks/HostManageHook";
 
 export default function HomeHost() {
   const navigation = useNavigation();
@@ -49,10 +50,16 @@ export default function HomeHost() {
 
   const {
     activities,
+    setActivities,
     isActivitiesLoading,
     activitiesError,
     refetchActivityByHost,
   } = getActivityByHost(accessToken, user.id);
+
+  const handleDelete = (deletedId) => {
+    setActivities((activities) => activities.filter(activity => activity.id !== deletedId))
+  }
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -106,23 +113,27 @@ export default function HomeHost() {
             Something went wrong!
           </Text>
         ) : (
-              <ScrollView style={styles.cardListContainer}
+              <ScrollView 
                 refreshControl={<RefreshControl refreshing={ isActivitiesLoading} onRefresh={refetchActivityByHost}/>}
               >
-            {activities.data.data.map((item, index) => {
-              return (
-                <ExpHostCard
-                  key={index}
-                  id={item.id}
-                  cardName={item.activityName}
-                  imgPath={item.mainImage}
-                  location={item.city.name}
-                  price={item.generalPrice}
-                  star={item.averageRating}
-                  isExperience={false}
-                />
-              );
-            })}
+                <View style={styles.cardListContainer}>
+                {activities.map((item, index) => {
+                  return (
+                    <ExpHostCard
+                      key={index}
+                      id={item.id}
+                      cardName={item.activityName}
+                      imgPath={item.mainImage}
+                      location={item.city.name}
+                      price={item.generalPrice}
+                      star={item.averageRating}
+                      isExperience={false}
+                      handleDelete={handleDelete}
+                    />
+                  );
+                })}
+                </View>
+            
           </ScrollView>
         )}
       </View>
@@ -170,5 +181,11 @@ const styles = StyleSheet.create({
     gap: 6,
     alignItems: "center",
     paddingBottom: 16,
+  },
+  cardListContainer: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between", // Evenly distribute cards
   },
 });

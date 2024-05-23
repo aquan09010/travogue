@@ -76,7 +76,9 @@ export default function CreateNewExp({ route }) {
         description: description,
         tags: selectedTags.join(';'),
         cityId: city,
-        categoryId: categoryId
+        categoryId: categoryId,
+        image: image,
+        images: images
       }
     );
   };

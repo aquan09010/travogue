@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
+  ActivityIndicator
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -52,18 +53,18 @@ import * as ImagePicker from "expo-image-picker";
 import { AddCircleIcon, PictureIcon } from "@/Assets/Icons/Home";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { DeleteIcon } from "@/Assets/Icons/Proflie";
-import { getInsurances } from "@/Hooks/HostManageHook";
+import { addMainImage, addOtherImageHook, createExperienceHook, getInsurances } from "@/Hooks/HostManageHook";
 import { useStateContext } from "@/Context/StateContext";
 
 const data = [
-  { label: "10:30 - 11:30", value: "1" },
-  { label: "11:30 - 12:30", value: "2" },
-  { label: "12:30 - 13:30", value: "3" },
-  { label: "13:30 - 14:30", value: "4" },
-  { label: "14:30 - 15:30", value: "5" },
-  { label: "15:30 - 16:30", value: "6" },
-  { label: "16:30 - 17:30", value: "7" },
-  { label: "17:30 - 18:30", value: "8" },
+  { label: "10:30 - 11:30", value: "1", startH: 10, startM: 30, endH: 11, endM: 30 },
+  { label: "11:30 - 12:30", value: "2", startH: 11, startM: 30, endH: 12, endM: 30  },
+  { label: "12:30 - 13:30", value: "3", startH: 12, startM: 30, endH: 13, endM: 30  },
+  { label: "13:30 - 14:30", value: "4", startH: 13, startM: 30, endH: 14, endM: 30  },
+  { label: "14:30 - 15:30", value: "5", startH: 14, startM: 30, endH: 15, endM: 30  },
+  { label: "15:30 - 16:30", value: "6", startH: 15, startM: 30, endH: 16, endM: 30  },
+  { label: "16:30 - 17:30", value: "7", startH: 16, startM: 30, endH: 17, endM: 30  },
+  { label: "17:30 - 18:30", value: "8", startH: 17, startM: 30, endH: 18, endM: 30  },
 ];
 const lang123 = [
   { label: "Tiếng Việt", value: "1" },
@@ -73,20 +74,12 @@ const lang123 = [
   { label: "Tiếng Nhật", value: "5" },
   { label: "Tiếng Hàn", value: "6" },
 ];
-const options = [
-  "Hoàn 100% tiền vé nếu huỷ trước 24 giờ bắt đầu",
-  "Đã bao gồm phí cho tất cả các dịch vụ trong suốt trải nghiệm",
-  "Giảm 10% khi đăng ký từ 2 người trở lên",
-  "Cho phép thanh toán tại điểm đến",
-  "Chưa bao gồm tiền ...",
-];
+
 const options1 = ["ABC", "123", "AQ", "zzz", "kuronami"];
 const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 const videoExtensions = ["mp4", "mov"];
 export default function SetTicketPrice({ route }) {
   const navigation = useNavigation();
-  const [city, setCity] = useState(null);
-  const [selectedOption, setSelectedOption] = useState([]);
 
   const gotoHost = async (e) => {
     e.preventDefault();
@@ -95,22 +88,19 @@ export default function SetTicketPrice({ route }) {
   const [selected, setSelected] = useState("");
   const [openSchedule, setOpenSchedule] = useState(false);
 
-  const [days, setDays] = useState({});
-  const removeDayByKey = (keyToRemove) => {
-    setDays((prevDays) => {
-      const updatedDays = { ...prevDays };
-      delete updatedDays[keyToRemove];
-      return updatedDays;
-    });
+  const [days, setDays] = useState([]);
+  const removeDayByKey = (dateToRemove) => {
+    setDays((days) => days.filter(item => item.date !== dateToRemove));
   };
   const addNewDay = (newDay) => {
-    setDays((prevDays) => {
-      const nextKey = Object.keys(prevDays).length + 1; // Determine the next key
-      const updatedDays = { ...prevDays, [nextKey]: newDay }; // Create a new object with the new day
-      return updatedDays;
-    });
+    const newDayObject = {
+      date: newDay,
+      time: null,
+      startAt: null,
+      endAt: null
+    }
+    setDays([ ...days, newDayObject ]); // Create a new object with the new day);
   };
-  const [value, setValue] = useState(null);
   const [languages, setLang] = useState(null);
   const [maximumGuests, setMaximumGuests] = useState("");
   const [hostNotes, setNote] = useState("");
@@ -125,13 +115,35 @@ export default function SetTicketPrice({ route }) {
 
   const { insurances, isGetInsurancesLoading, getInsurancesError, refetchGetInsurances } = getInsurances(accessToken);
 
-  const renderItem = (item) => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.selectedTextStyle}>{item.label}</Text>
-      </View>
-    );
-  };
+  const basicInfo = route.params;
+
+  const { createExperience, newExperience, isCreateExperienceLoading } = createExperienceHook();
+  const { addOtherImage, isAddOtherImageLoading } = addOtherImageHook();
+  const { addImage, isAddImageLoading } = addMainImage();
+
+  const handleSubmitCreate = async () => {
+    const activityTimeFramesCreate = days.map(day => {
+      day.startAt = day.date + 'T' + day.time.substr(0, 2) + ':' + day.time.substr(3, 2) + ':' + '00Z'
+      day.endAt = day.date + 'T' + day.time.substr(8, 2) + ':' + day.time.substr(11, 2) + ':' + '00Z'
+      const { time, ...newDay } = day
+      return {...newDay, maximumGuests, languages, hostNotes, adultsPrice, childrenPrice, babyPrice}
+    })
+    const body = {
+      activityName: basicInfo.activityName, 
+      description: basicInfo.description,
+      tags: basicInfo.tags,
+      activityTimeFramesCreate: activityTimeFramesCreate,
+      insurances: selectedInsurances
+    }
+    const response = await createExperience(accessToken, basicInfo.categoryId, basicInfo.cityId, body);
+    console.log(response);
+    await addImage(accessToken, response.data.id, basicInfo.image)
+    for (const image of basicInfo.images) {
+      await addOtherImage(accessToken, response.data.id, image);
+    }
+    navigation.navigate("HomeHost");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.statusBar}>
@@ -190,7 +202,7 @@ export default function SetTicketPrice({ route }) {
         )}
         {days ? (
           <>
-            {Object.keys(days).map((key) => {
+            {days.map((item, index) => {
               return (
                 <View style={[styles.frameParent, styles.frameParentFlexBox]}>
                   <View style={[styles.frameGroup, styles.frameParentFlexBox]}>
@@ -199,7 +211,7 @@ export default function SetTicketPrice({ route }) {
                         CALENDAR
                       </Text>
                       <Text style={[styles.th714, styles.th714FlexBox]}>
-                        {days[key]}
+                        {item.date}
                       </Text>
                     </View>
                     <Text style={[styles.check, styles.th714FlexBox]}>
@@ -228,9 +240,14 @@ export default function SetTicketPrice({ route }) {
                     valueField="value"
                     placeholder=" Chọn giờ"
                     searchPlaceholder="Search..."
-                    value={value}
                     onChange={(item) => {
-                      setValue(item.value);
+                      setDays((prevDays) => {
+                        // Create a copy of the previous array
+                        const newDays = [...prevDays];
+                        // Update the object at the specified index
+                        newDays[index].time = item.label;
+                        return newDays;
+                      });
                     }}
                     renderLeftIcon={() => (
                       <>
@@ -253,7 +270,7 @@ export default function SetTicketPrice({ route }) {
                       angle-down
                     </Text>
                   </View> */}
-                  <Pressable onPress={() => removeDayByKey(key)}>
+                  <Pressable onPress={() => removeDayByKey(item.date)}>
                     <SvgXml xml={DeleteIcon} />
                   </Pressable>
                 </View>
@@ -316,12 +333,12 @@ export default function SetTicketPrice({ route }) {
             search
             maxHeight={300}
             labelField="label"
-            valueField="value"
+            valueField="label"
             placeholder=" Chọn ngôn ngữ"
             searchPlaceholder="Search..."
             value={languages}
             onChange={(item) => {
-              setLang(item.value);
+              setLang(item.label);
             }}
             renderLeftIcon={() => (
               <>
@@ -355,6 +372,7 @@ export default function SetTicketPrice({ route }) {
                 marginLeft: 20,
                 width: 40,
               }}
+              keyboardType="numeric"
               placeholderTextColor="grey"
               value={maximumGuests}
               onChangeText={(c) => {
@@ -466,6 +484,7 @@ export default function SetTicketPrice({ route }) {
                     marginLeft: 10,
                     flex: 1,
                   }}
+                  keyboardType="numeric"
                   placeholderTextColor="grey"
                   value={adultsPrice}
                   onChangeText={(c) => {
@@ -523,6 +542,7 @@ export default function SetTicketPrice({ route }) {
                     marginLeft: 10,
                     flex: 1,
                   }}
+                  keyboardType="numeric"
                   placeholderTextColor="grey"
                   value={childrenPrice}
                   onChangeText={(c) => {
@@ -580,6 +600,7 @@ export default function SetTicketPrice({ route }) {
                     marginLeft: 10,
                     flex: 1,
                   }}
+                  keyboardType="numeric"
                   placeholderTextColor="grey"
                   value={babyPrice}
                   onChangeText={(c) => {
@@ -633,6 +654,17 @@ export default function SetTicketPrice({ route }) {
             </TouchableOpacity>
           ))}
         </View> */}
+
+        {isCreateExperienceLoading || isAddImageLoading || isAddOtherImageLoading ? (
+          <ActivityIndicator
+            size="large"
+            color="#ED2939"
+            style={{ paddingVertical: 12 }}
+          />
+        ) : (
+          <></>
+        )}
+
         <Pressable
           style={{
             alignSelf: "flex-end",
@@ -650,6 +682,7 @@ export default function SetTicketPrice({ route }) {
             overflow: "hidden",
             width: 100,
           }}
+          disabled={isCreateExperienceLoading || isAddImageLoading || isAddOtherImageLoading}
           onPress={() => {}}
         >
           <Text style={{ color: "#fff", fontSize: 14, alignSelf: "center" }}>
@@ -672,7 +705,8 @@ export default function SetTicketPrice({ route }) {
             overflow: "hidden",
             width: 100,
           }}
-          onPress={() => {}}
+          disabled={isCreateExperienceLoading || isAddImageLoading || isAddOtherImageLoading}
+          onPress={handleSubmitCreate}
         >
           <Text style={{ color: "#fff", fontSize: 14, alignSelf: "center" }}>
             Hoàn thành{" "}
