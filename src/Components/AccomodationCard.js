@@ -14,6 +14,9 @@ import { useNavigation } from "@react-navigation/native";
 import { MiniLocation, StarIcon } from "@/Assets/Icons/Card";
 import HeartButton from "./HeartButton";
 import { DeleteIcon, EditIcon } from "@/Assets/Icons/Proflie";
+import { addToWishlistHook, removeFromWishlistHook } from "@/Hooks/WishlistHook";
+import { useStateContext } from "@/Context/StateContext";
+import { useState } from "react";
 
 export default function AccommodationCard(props) {
   const navigation = useNavigation();
@@ -22,6 +25,7 @@ export default function AccommodationCard(props) {
     navigation.navigate("Detail", {
       activityId: props.id,
       isExperience: props.isExperience,
+      isLiked: props.liked
     });
   };
   // const goToDetail = async (e) => {
@@ -35,6 +39,24 @@ export default function AccommodationCard(props) {
     e.preventDefault();
     navigation.navigate("HostProfile");
   };
+
+  const { accessToken, user } = useStateContext();
+
+  const { addToWishlist,
+    isAddToWishlistLoading,
+    addWishlistError } = addToWishlistHook();
+  
+  const { removeFromWishlist,
+    isRemoveFromWishlistLoading,
+    removeWishlistError } = removeFromWishlistHook();
+    
+  const handleAddToWishlist = async () => {
+    await addToWishlist(accessToken, user.id, props.id);
+  }
+
+  const handleRemoveFromWishlist = async () => {
+    await removeFromWishlist(accessToken, user.id, props.id);
+  }
 
   return (
     <TouchableOpacity
@@ -89,7 +111,7 @@ export default function AccommodationCard(props) {
         </View>
       </View>
 
-      <HeartButton />
+      <HeartButton isLiked={props.liked} handleAddToWishlist={handleAddToWishlist} handleRemoveFromWishlist={ handleRemoveFromWishlist} />
     </TouchableOpacity>
   );
 }

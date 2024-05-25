@@ -35,6 +35,7 @@ import SetTicketPrice from "@/Screens/Host/SetTicketPrice";
 import TicketSchedule from "@/Screens/Host/TicketSchedule";
 import TicketInfo from "@/Screens/Host/TicketInfo";
 import HomeHost from "@/Screens/HomeHost";
+import WishlistScreen from "@/Screens/WishlistScreen";
 // import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
@@ -220,6 +221,11 @@ export default function AppNavigation() {
           name="HomeHost"
           options={{ headerShown: false }}
           component={HomeHost}
+        />
+        <Stack.Screen
+          name="WishlistScreen"
+          options={{ headerShown: false }}
+          component={WishlistScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

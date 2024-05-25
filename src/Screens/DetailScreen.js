@@ -21,6 +21,7 @@ import {
   CheckIcon,
   CommentIcon,
   HeartIcon,
+  HeartLiked,
   LanguageIcon,
   MiniLocation1,
   MinusIcon,
@@ -41,6 +42,7 @@ import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
 import { ResizeMode, Video } from "expo-av";
 import { current } from "@reduxjs/toolkit";
+import { addToWishlistHook, removeFromWishlistHook } from "@/Hooks/WishlistHook";
 
 const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 const videoExtensions = ["mp4", "mov"];
@@ -84,6 +86,27 @@ export default function DetailScreen({ route }) {
     accessToken,
     route.params.activityId
   );
+
+  
+  const { addToWishlist,
+    isAddToWishlistLoading,
+    addWishlistError } = addToWishlistHook();
+  
+  const { removeFromWishlist,
+    isRemoveFromWishlistLoading,
+    removeWishlistError } = removeFromWishlistHook();
+
+  const [liked, setLiked] = useState(route.params.isLiked);
+
+  const handlePressHeart = async () => {
+    if (liked) {
+      setLiked(false)
+      await removeFromWishlist(accessToken, user.id, route.params.activityId);
+    } else {
+      setLiked(true)
+      await addToWishlist(accessToken, user.id, route.params.activityId);
+    }
+  };
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalTicketVisible, setModalTicketVisible] = useState(false);
@@ -286,8 +309,8 @@ export default function DetailScreen({ route }) {
               </Pressable>
             )}
 
-            <Pressable style={styles.actionPadding}>
-              <SvgXml xml={HeartIcon} />
+            <Pressable style={styles.actionPadding} onPress={handlePressHeart}>
+              {liked ? <SvgXml xml={HeartLiked} /> : <SvgXml xml={HeartIcon} />} 
             </Pressable>
             <Pressable
               onPress={toggleModal}

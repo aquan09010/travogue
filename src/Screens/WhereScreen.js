@@ -57,6 +57,7 @@ export default function WhereScreen() {
       location={item.city.name}
       price={item.generalPrice}
       star={item.averageRating}
+      liked={item.liked}
       isExperience={false}
     />
   );
@@ -241,6 +242,7 @@ export default function WhereScreen() {
                     location={item.city.name}
                     price={item.generalPrice}
                     star={item.averageRating}
+                    liked={item.liked}
                     isExperience={false}
                   />
                 );

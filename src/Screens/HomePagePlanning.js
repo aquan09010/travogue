@@ -123,11 +123,13 @@ const HomePagePlanning = () => {
         style={styles.scrollContainer}
       >
         <View style={styles.title}>
-          <Text style={styles.titleText}>Danh sách yêu thích của bạn</Text>
+          <Text style={styles.titleText}>Đã lưu</Text>
         </View>
 
         {/* Danh sách yêu thích Mặc định */}
-        <TouchableOpacity style={styles.touchableFavorite}>
+        <TouchableOpacity style={styles.touchableFavorite}
+          onPress={() => navigation.navigate("WishlistScreen")}
+        >
           <View style={styles.favoriteContainer}>
             {/* Ảnh đại diện */}
             <Image
@@ -138,7 +140,7 @@ const HomePagePlanning = () => {
 
             {/* Thông tin */}
             <View style={styles.informationFavorite}>
-              <Text style={styles.titleFavorite}>DS Yêu Thích</Text>
+              <Text style={styles.titleFavorite}>DS đã lưu</Text>
 
               <View style={styles.statusContainer}>
                 <Text style={styles.countItems}>(Có 6 điểm đến)</Text>

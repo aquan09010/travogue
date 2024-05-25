@@ -59,6 +59,7 @@ export default function ExperienceScreen() {
       star={item.averageRating}
       host={item.host.avatar}
       category={item.activityCategory.categoryName}
+      liked={item.liked}
       isExperience={true}
     />
   );
@@ -245,6 +246,9 @@ export default function ExperienceScreen() {
                     location={item.city.name}
                     price={item.generalPrice}
                     star={item.averageRating}
+                    host={item.host.avatar}
+                    category={item.activityCategory.categoryName}
+                    liked={item.liked}
                     isExperience={true}
                   />
                 );

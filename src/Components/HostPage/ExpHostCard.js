@@ -119,7 +119,7 @@ export default function ExpHostCard(props) {
         </View>
       </View>
 
-      <HeartButton />
+      {/* <HeartButton /> */}
     </TouchableOpacity>
   );
 }
