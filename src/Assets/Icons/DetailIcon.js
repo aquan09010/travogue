@@ -16,6 +16,25 @@ const HeartIcon = `<svg width="36" height="33" viewBox="0 0 36 33" fill="none" x
 </defs>
 </svg>`;
 
+const HeartLiked = `<svg width="36" height="33" viewBox="0 0 36 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_258_4256)">
+<path d="M4 8.94531V8.67188C4 4.84375 6.73438 1.5625 10.5078 0.960938C12.9688 0.523438 15.5391 1.34375 17.3438 3.14844L18 3.75L18.6016 3.14844C20.4062 1.34375 22.9766 0.523438 25.4375 0.960938C29.2109 1.5625 32 4.84375 32 8.67188V8.94531C32 11.2422 31.0156 13.4297 29.375 14.9609L19.4766 24.2031C19.0938 24.5859 18.5469 24.75 18 24.75C17.3984 24.75 16.8516 24.5859 16.4688 24.2031L6.57031 14.9609C4.92969 13.4297 4 11.2422 4 8.94531Z" fill="#ED2939"/>
+</g>
+<defs>
+<filter id="filter0_d_258_4256" x="0" y="0.523438" width="36" height="32.2266" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_258_4256"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_258_4256" result="shape"/>
+</filter>
+</defs>
+</svg>
+`;
+
 const CommentIcon = `<svg width="36" height="33" viewBox="0 0 36 33" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d_1205_5116)">
 <path d="M18 0.25C25.7109 0.25 31.9453 5.39062 31.9453 11.625C31.9453 17.8594 25.7656 23 18 23C15.9219 23 13.9531 22.5625 12.1484 21.9062C10.7266 23 8.10156 24.75 4.4375 24.75C4.27344 24.75 4.10938 24.6406 4.05469 24.4766C4 24.3125 4 24.0938 4.16406 23.9844C4.16406 23.9844 6.46094 21.5234 7.11719 18.7344C5.20312 16.8203 4 14.3047 4 11.625C4 5.33594 10.2344 0.25 18 0.25ZM10.9453 13.375C11.9297 13.375 12.6953 12.6094 12.6953 11.625C12.6953 10.6953 11.875 9.875 10.9453 9.875C9.96094 9.875 9.19531 10.75 9.19531 11.625C9.19531 12.5547 9.96094 13.375 10.9453 13.375ZM18 13.375C18.9297 13.375 19.6953 12.6094 19.6953 11.625C19.6953 10.6953 18.875 9.875 18 9.875C17.0703 9.875 16.25 10.75 16.25 11.625C16.25 12.5547 17.0156 13.375 18 13.375ZM24.9453 13.375C25.9297 13.375 26.6953 12.6094 26.6953 11.625C26.6953 10.6953 25.875 9.875 24.9453 9.875C23.9609 9.875 23.1953 10.75 23.1953 11.625C23.1953 12.5547 23.9609 13.375 24.9453 13.375Z" fill="white"/>
@@ -194,6 +213,7 @@ const PlusIcon = `<svg width="11" height="11" viewBox="0 0 11 11" fill="none" xm
 export {
   CheckIcon,
   HeartIcon,
+  HeartLiked,
   CommentIcon,
   ShareIcon,
   MiniStar,

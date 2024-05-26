@@ -1,12 +1,19 @@
 import { StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { useStateContext } from "@/Context/StateContext";
 
-export default function HeartButton() {
-  const [liked, setLiked] = useState(false);
+export default function HeartButton({isLiked, handleAddToWishlist, handleRemoveFromWishlist}) {
+  const [liked, setLiked] = useState(isLiked);
 
   const handlePress = () => {
-    setLiked(!liked);
+    if (liked) {
+      setLiked(false)
+      handleRemoveFromWishlist();
+    } else {
+      setLiked(true)
+      handleAddToWishlist();
+    }
   };
 
   return (

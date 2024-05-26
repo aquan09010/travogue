@@ -57,6 +57,7 @@ export default function EatScreen() {
       location={item.city.name}
       price={item.generalPrice}
       star={item.averageRating}
+      liked={item.liked}
       isExperience={false}
     />
   );
@@ -245,6 +246,7 @@ export default function EatScreen() {
                     location={item.city.name}
                     price={item.generalPrice}
                     star={item.averageRating}
+                    liked={item.liked}
                     isExperience={false}
                   />
                 );
