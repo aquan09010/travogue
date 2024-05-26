@@ -35,7 +35,7 @@ import {
 import CircleCard from "@/Components/CircleCard";
 import { getHostInfo } from "@/Hooks/UserHook";
 import { useStateContext } from "@/Context/StateContext";
-export default function HostProfile({ route }) {
+export default function HostProfileScreen({ route }) {
   const navigation = useNavigation();
   const renderCircleItem = ({ item }) => (
     <CircleCard

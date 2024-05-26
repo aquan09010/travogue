@@ -26,6 +26,10 @@ export default function ExpHostCard(props) {
       isExperience: props.isExperience,
     });
   };
+  const gotoEditScreen = async (e) => {
+    e.preventDefault();
+    navigation.navigate("EditScreen");
+  };
   // const goToDetail = async (e) => {
   //   e.preventDefault();
   //   navigation.navigate("CloneScreen", {
@@ -40,11 +44,8 @@ export default function ExpHostCard(props) {
 
   const { accessToken } = useStateContext();
 
-  const {
-    deleteExperience,
-    isDeleteExperienceLoading,
-    deleteExperienceError
-  } = deleteExperienceHook();
+  const { deleteExperience, isDeleteExperienceLoading, deleteExperienceError } =
+    deleteExperienceHook();
 
   return (
     <TouchableOpacity
@@ -99,9 +100,7 @@ export default function ExpHostCard(props) {
         </View>
         <View style={styles.container}>
           <Pressable
-            onPress={() => {
-              console.log("Edit");
-            }}
+            onPress={gotoEditScreen}
             disabled={isDeleteExperienceLoading}
           >
             <SvgXml xml={EditIcon} />

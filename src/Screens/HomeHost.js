@@ -39,6 +39,7 @@ export default function HomeHost() {
     e.preventDefault();
     navigation.navigate("NewExpScreen");
   };
+
   const tabs = ["Đi đâu", "Ăn gì", "Ở đâu", "Trải Nghiệm"];
   const [selected, setSelected] = useState(0);
   const av = new Animated.Value(0);
@@ -57,9 +58,10 @@ export default function HomeHost() {
   } = getActivityByHost(accessToken, user.id);
 
   const handleDelete = (deletedId) => {
-    setActivities((activities) => activities.filter(activity => activity.id !== deletedId))
-  }
-
+    setActivities((activities) =>
+      activities.filter((activity) => activity.id !== deletedId)
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -113,27 +115,31 @@ export default function HomeHost() {
             Something went wrong!
           </Text>
         ) : (
-              <ScrollView 
-                refreshControl={<RefreshControl refreshing={ isActivitiesLoading} onRefresh={refetchActivityByHost}/>}
-              >
-                <View style={styles.cardListContainer}>
-                {activities.map((item, index) => {
-                  return (
-                    <ExpHostCard
-                      key={index}
-                      id={item.id}
-                      cardName={item.activityName}
-                      imgPath={item.mainImage}
-                      location={item.city.name}
-                      price={item.generalPrice}
-                      star={item.averageRating}
-                      isExperience={false}
-                      handleDelete={handleDelete}
-                    />
-                  );
-                })}
-                </View>
-            
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={isActivitiesLoading}
+                onRefresh={refetchActivityByHost}
+              />
+            }
+          >
+            <View style={styles.cardListContainer}>
+              {activities.map((item, index) => {
+                return (
+                  <ExpHostCard
+                    key={index}
+                    id={item.id}
+                    cardName={item.activityName}
+                    imgPath={item.mainImage}
+                    location={item.city.name}
+                    price={item.generalPrice}
+                    star={item.averageRating}
+                    isExperience={false}
+                    handleDelete={handleDelete}
+                  />
+                );
+              })}
+            </View>
           </ScrollView>
         )}
       </View>
