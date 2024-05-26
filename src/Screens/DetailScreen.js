@@ -42,7 +42,10 @@ import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
 import { ResizeMode, Video } from "expo-av";
 import { current } from "@reduxjs/toolkit";
-import { addToWishlistHook, removeFromWishlistHook } from "@/Hooks/WishlistHook";
+import {
+  addToWishlistHook,
+  removeFromWishlistHook,
+} from "@/Hooks/WishlistHook";
 
 const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 const videoExtensions = ["mp4", "mov"];
@@ -77,7 +80,7 @@ export default function DetailScreen({ route }) {
     });
   };
   const gotoHost = (hostId) => {
-    navigation.navigate("HostProfile", {hostId: hostId});
+    navigation.navigate("HostProfile", { hostId: hostId });
   };
 
   const { accessToken, user } = useStateContext();
@@ -87,23 +90,23 @@ export default function DetailScreen({ route }) {
     route.params.activityId
   );
 
-  
-  const { addToWishlist,
-    isAddToWishlistLoading,
-    addWishlistError } = addToWishlistHook();
-  
-  const { removeFromWishlist,
+  const { addToWishlist, isAddToWishlistLoading, addWishlistError } =
+    addToWishlistHook();
+
+  const {
+    removeFromWishlist,
     isRemoveFromWishlistLoading,
-    removeWishlistError } = removeFromWishlistHook();
+    removeWishlistError,
+  } = removeFromWishlistHook();
 
   const [liked, setLiked] = useState(route.params.isLiked);
 
   const handlePressHeart = async () => {
     if (liked) {
-      setLiked(false)
+      setLiked(false);
       await removeFromWishlist(accessToken, user.id, route.params.activityId);
     } else {
-      setLiked(true)
+      setLiked(true);
       await addToWishlist(accessToken, user.id, route.params.activityId);
     }
   };
@@ -127,19 +130,19 @@ export default function DetailScreen({ route }) {
     getCommentsByActivity();
 
   const { postComments, newComment, isPostCommentLoading, postCommentError } =
-  postCommentsByActivity();
+    postCommentsByActivity();
 
   const handlePostComment = async (e) => {
     e.preventDefault();
 
-    await postComments(accessToken, activity.data.id, currentRating, userCmt)
+    await postComments(accessToken, activity.data.id, currentRating, userCmt);
     // setCurrentRating(4);
-    setUserCmt('');
+    setUserCmt("");
   };
 
   const [currentRating, setCurrentRating] = useState(4);
-  const [userCmt, setUserCmt] = useState('');
-  const [commentList, setCommentList] = useState([]); 
+  const [userCmt, setUserCmt] = useState("");
+  const [commentList, setCommentList] = useState([]);
 
   useEffect(() => {
     if (comments) setCommentList(comments.data);
@@ -179,6 +182,7 @@ export default function DetailScreen({ route }) {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [value, setValue] = useState(null);
 
   const renderDateItem = (item) => {
     return (
@@ -237,7 +241,7 @@ export default function DetailScreen({ route }) {
 
   const ref = useRef(null);
   const [status, setStatus] = useState({});
-  
+
   return (
     <View style={styles.container}>
       {isActivityLoading ? (
@@ -266,32 +270,32 @@ export default function DetailScreen({ route }) {
         <>
           <View style={{ flex: 1 }}>
             <Swiper>
-              {activity.data.images.split(";")
-                    .map((image, index) => {
-                      const extension = image.split(".").pop()
-                      if (imageExtensions.includes(extension)) {
-                        return <Image
-                          source={{ uri: image }}
-                          style={styles.backgroundContainer}
-                          resizeMode="contain"
-                          key={index}
-                        />
-                      } else if (videoExtensions.includes(extension)) {
-                        return <Video
-                          ref={ref}
-                          style={styles.container}
-                          resizeMode={ResizeMode.COVER}
-                          shouldPlay={false}
-                          isLooping
-                          useNativeControls
-                          source={{ uri: image }}
-                          key={index}
-                        />
-                      }
-                      
-                })
-              }
-              
+              {activity.data.images.split(";").map((image, index) => {
+                const extension = image.split(".").pop();
+                if (imageExtensions.includes(extension)) {
+                  return (
+                    <Image
+                      source={{ uri: image }}
+                      style={styles.backgroundContainer}
+                      resizeMode="contain"
+                      key={index}
+                    />
+                  );
+                } else if (videoExtensions.includes(extension)) {
+                  return (
+                    <Video
+                      ref={ref}
+                      style={styles.container}
+                      resizeMode={ResizeMode.COVER}
+                      shouldPlay={false}
+                      isLooping
+                      useNativeControls
+                      source={{ uri: image }}
+                      key={index}
+                    />
+                  );
+                }
+              })}
             </Swiper>
           </View>
 
@@ -310,7 +314,7 @@ export default function DetailScreen({ route }) {
             )}
 
             <Pressable style={styles.actionPadding} onPress={handlePressHeart}>
-              {liked ? <SvgXml xml={HeartLiked} /> : <SvgXml xml={HeartIcon} />} 
+              {liked ? <SvgXml xml={HeartLiked} /> : <SvgXml xml={HeartIcon} />}
             </Pressable>
             <Pressable
               onPress={toggleModal}
@@ -484,7 +488,7 @@ export default function DetailScreen({ route }) {
           ) : commentList.length > 0 ? (
             <View style={{ height: 270 }}>
               <ScrollView>
-                    {commentList.map((item) => (
+                {commentList.map((item) => (
                   <Pressable
                     style={{
                       flexDirection: "row",
@@ -645,11 +649,14 @@ export default function DetailScreen({ route }) {
                   labelField="date"
                   valueField="id"
                   placeholder=" Chọn ngày"
-                  value={selectedDate?.date}
+                  value={selectedDate?.id}
                   onChange={(item) => {
+                    console.log("zzzzzzzzzzzz", item);
                     setSelectedDate(item);
                   }}
-                  renderLeftIcon={() => <SvgXml xml={CalendarIcon} />}
+                  renderLeftIcon={() => (
+                    <SvgXml style={{ marginRight: 10 }} xml={CalendarIcon} />
+                  )}
                   renderItem={renderDateItem}
                 />
 
@@ -671,18 +678,21 @@ export default function DetailScreen({ route }) {
                   labelField="timeRange"
                   valueField="id"
                   placeholder=" Chọn giờ"
-                  value={
-                    selectedTime
-                      ? formatTimeRange(
-                          selectedTime.startAt,
-                          selectedTime.endAt
-                        )
-                      : "Chưa có"
-                  }
+                  // value={
+                  //   selectedTime
+                  //     ? formatTimeRange(
+                  //         selectedTime.startAt,
+                  //         selectedTime.endAt
+                  //       )
+                  //     : "Chưa có"
+                  // }
+                  value={selectedTime.id}
                   onChange={(item) => {
                     setSelectedTime(item);
                   }}
-                  renderLeftIcon={() => <SvgXml xml={CalendarIcon} />}
+                  renderLeftIcon={() => (
+                    <SvgXml style={{ marginRight: 10 }} xml={CalendarIcon} />
+                  )}
                   renderItem={renderTimeItem}
                 />
               </View>

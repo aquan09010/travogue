@@ -35,6 +35,9 @@ import SetTicketPrice from "@/Screens/Host/SetTicketPrice";
 import TicketSchedule from "@/Screens/Host/TicketSchedule";
 import TicketInfo from "@/Screens/Host/TicketInfo";
 import HomeHost from "@/Screens/HomeHost";
+import EditTicketPrice from "@/Screens/Host/EditTicketPrice";
+import WishlistScreen from "@/Screens/WishlistScreen";
+import EditScreen from "@/Screens/Host/EditScreen";
 // import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
