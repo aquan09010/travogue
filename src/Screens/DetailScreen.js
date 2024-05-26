@@ -59,10 +59,13 @@ export default function DetailScreen({ route }) {
     e.preventDefault();
     navigation.navigate("OrderConfirm", {
       activity: {
+        id: activity.data.id,
         name: activity.data.activityName,
         mainImage: activity.data.mainImage,
         date: selectedDate.date,
         time: formatTimeRange(selectedTime.startAt, selectedTime.endAt),
+        insurances: activity.data.insuranceActivities,
+        activityTimeFrameId: selectedTime.id
       },
       host: activity.data.host,
       data: {
@@ -643,7 +646,7 @@ export default function DetailScreen({ route }) {
                   data={activity.data?.activityDates}
                   maxHeight={300}
                   labelField="date"
-                  valueField="id"
+                  valueField="date"
                   placeholder=" Chọn ngày"
                   value={selectedDate?.date}
                   onChange={(item) => {
@@ -669,7 +672,7 @@ export default function DetailScreen({ route }) {
                   }
                   maxHeight={300}
                   labelField="timeRange"
-                  valueField="id"
+                  valueField="timeRange"
                   placeholder=" Chọn giờ"
                   value={
                     selectedTime

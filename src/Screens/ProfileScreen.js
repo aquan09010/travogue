@@ -51,6 +51,7 @@ import { ArrowLeftBlack } from "@/Assets/Icons/Navigation";
 import { getUserProfile } from "@/Hooks/UserHook";
 import { followUserHook, unFollowUserHook } from "@/Hooks/FollowHooks";
 import { BarIcon } from "../Assets/Icons/Proflie";
+import { getTicketsByUser } from "@/Hooks/TicketHooks";
 
 const timeAgo = (dateString) => {
   const now = new Date();
@@ -181,6 +182,8 @@ export default function ProfileScreen({ route }) {
 
   const { followUser, isFollowUserLoading } = followUserHook();
   const { unFollowUser, isUnFollowUserLoading } = unFollowUserHook();
+
+  const { tickets, isTicketsLoading, refetchGetTicketsByUser } = getTicketsByUser(accessToken, userId);
 
   return (
     <SafeAreaView
@@ -510,16 +513,19 @@ export default function ProfileScreen({ route }) {
                 ))}
               </View>
             )
-          ) : (
-            <>
-              <View>
-                <TicketCard />
-                <TicketCard />
-                <TicketCard />
-                <TicketCard />
-                <TicketCard />
-                <TicketCard />
-              </View>
+            ) : (
+                <>
+                  {isTicketsLoading ?
+                    <ActivityIndicator
+                      size="large"
+                      color="#ED2939"
+                      style={{ paddingVertical: 12 }}
+                    /> : 
+                    tickets.data.map(ticket => 
+                      <TicketCard data={ticket} />
+                    )
+                  }
+              
             </>
           )}
         </ScrollView>

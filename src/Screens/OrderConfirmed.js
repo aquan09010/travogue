@@ -9,11 +9,12 @@ import {
   ImageBackground,
   Pressable,
   SafeAreaView,
+  ActivityIndicator
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { ParkIconActive } from '@/Assets/Icons/Where';
-import React, { useLayoutEffect, useState, useRef } from 'react';
+import React, { useLayoutEffect, useState, useRef, useEffect } from 'react';
 import {
   SearchIcon,
   ArrowLeft,
@@ -42,6 +43,9 @@ import {
   TimeIcon,
   VisaIcon,
 } from '@/Assets/Icons/OrderConfirm';
+import { checkDiscountCodeHook } from '@/Hooks/PromotionHook';
+import { useStateContext } from '@/Context/StateContext';
+import { buyTicketAPI } from '@/Hooks/TicketHooks';
 export default function OrderConfirm({ route }) {
   const navigation = useNavigation();
   const gotoHost = async (e) => {
@@ -49,13 +53,46 @@ export default function OrderConfirm({ route }) {
     navigation.navigate('HostProfile');
   };
 
-  const handleCheckout = () => {
+  const { activity, host, data } = route.params;
+  const { accessToken, user } = useStateContext();
+
+  const [selectedInsurance, setSelectedInsurance] = useState(null);
+
+  const [discountCode, setDiscountCode] = useState(null);
+
+  const { checkDiscount,
+    discount,
+    isCheckDiscountLoading,
+    checkDiscountError } = checkDiscountCodeHook();
+  
+  const { buyTicket,
+    ticket,
+    isTicketLoading,
+    ticketError } = buyTicketAPI();
+  
+  const handleCheckDiscountCode = async () => {
+    await checkDiscount(accessToken, activity.id, discountCode);
+  }
+
+  const handleCheckout = async () => {
+    const body = {
+      ...data,
+      insuranceCost: selectedInsurance ? selectedInsurance.bestOffer : 0,
+      totalDiscountCode: discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
+        data.numOfChildren * data.childrenPrice +
+        data.numOfBabies * data.babyPrice) : 0,
+      totalDiscountEvent: 0,
+      totalPay: (data.numOfAdults * data.adultsPrice +
+        data.numOfChildren * data.childrenPrice +
+        data.numOfBabies * data.babyPrice + (selectedInsurance ? selectedInsurance.bestOffer : 0)
+        - (discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
+          data.numOfChildren * data.childrenPrice +
+          data.numOfBabies * data.babyPrice) : 0)),
+      insuranceId: selectedInsurance ? selectedInsurance.id : null,
+    }
+    await buyTicket(accessToken, null, activity.activityTimeFrameId, body);
     navigation.navigate('Main');
   };
-
-  const { activity, host, data } = route.params;
-
-  console.log(activity);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -102,7 +139,7 @@ export default function OrderConfirm({ route }) {
                 <Image
                   style={styles.avaImg}
                   resizeMode="cover"
-                  source={require('../Assets/ava1.jpg')}
+                  source={{uri: host.avatar}}
                 />
               </View>
             </Pressable>
@@ -127,19 +164,29 @@ export default function OrderConfirm({ route }) {
             <TextInput
               style={styles.inputArea}
               placeholder="Nhập mã giảm giá"
+              value={discountCode}
+              onChangeText={(e) => setDiscountCode(e)}
             ></TextInput>
-            <View style={styles.button}>
+            <Pressable style={styles.button} onPress={handleCheckDiscountCode}>
               <Text>Áp dụng</Text>
-            </View>
+            </Pressable>
           </View>
-          <View style={styles.line3}>
-            <Text style={{}}>Đã áp dụng mã giảm giá ABCDEF</Text>
-            <Text style={{}}>-đ20.000</Text>
-          </View>
-          <View style={styles.line3}>
-            <Text style={{}}>Đã áp dụng mã giảm giá ABCDEF</Text>
-            <Text style={{}}>-đ20.000</Text>
-          </View>
+          {isCheckDiscountLoading ?
+                    <ActivityIndicator
+                    size="large"
+                    color="#ED2939"
+                    style={{ paddingVertical: 12 }}
+                  /> :  checkDiscountError ?
+            <View style={styles.line3}>
+              <Text style={{}}>{ checkDiscountError.message}</Text>
+            </View> :
+            discount ? <View style={styles.line3}>
+              <Text style={{}}>Đã áp dụng mã {discountCode}</Text>
+              <Text style={{}}>giảm {discount}%</Text>
+              </View> : <></>
+          }
+          
+          
         </View>
         <View style={styles.mainView}>
           <View style={[styles.line]}>
@@ -165,27 +212,37 @@ export default function OrderConfirm({ route }) {
             <Text style={{}}>x{data.numOfBabies}</Text>
             <Text style={{}}>đ{data.babyPrice.toLocaleString()}</Text>
           </View>
-          <View style={styles.line3}>
-            <Text style={{}}>Giảm giá từ event của app</Text>
-            <Text style={{}}>-đ20.000</Text>
-          </View>
+
           <View style={styles.line3}>
             <Text style={{}}>Tổng cộng Voucher giảm giá</Text>
-            <Text style={{}}>-đ40.000</Text>
+            <Text style={{}}>-đ{(discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
+                data.numOfChildren * data.childrenPrice +
+                data.numOfBabies * data.babyPrice) : 0).toLocaleString()}</Text>
           </View>
+          {selectedInsurance && 
+          <View style={styles.line3}>
+            <Text style={{}}>{selectedInsurance.name}</Text>
+            <Text style={{}}>-đ{selectedInsurance.bestOffer}</Text>
+          </View>
+          }
+          
           <View style={styles.line3}>
             <Text style={{ fontWeight: '600', fontSize: 16 }}>
               Tổng thanh toán:
             </Text>
             <Text style={{ fontWeight: '600', fontSize: 16, color: '#ed2939' }}>
               đ
-              {data.numOfAdults * data.adultsPrice +
+              {(data.numOfAdults * data.adultsPrice +
                 data.numOfChildren * data.childrenPrice +
-                data.numOfBabies * data.babyPrice -
-                40000}
+                data.numOfBabies * data.babyPrice + (selectedInsurance ? selectedInsurance.bestOffer : 0)
+                - (discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
+                  data.numOfChildren * data.childrenPrice +
+                  data.numOfBabies * data.babyPrice) : 0)).toLocaleString()
+              }
             </Text>
           </View>
         </View>
+
         <View style={styles.mainView}>
           <View style={[styles.line]}>
             <SvgXml xml={CashIcon} />
@@ -203,48 +260,54 @@ export default function OrderConfirm({ route }) {
             <Text style={{}}> Apple Pay</Text>
           </View>
         </View>
-        <View style={styles.mainView}>
-          <Text style={{ fontWeight: '600', fontSize: 16 }}>
-            {' '}
-            Chính sách về vé và giá
-          </Text>
+        
+        <View style={styles.listKind}>
           <View style={[styles.line]}>
-            <SvgXml xml={SuccessIcon} />
-            <Text style={{ color: '#1d800e', textAlign: 'left' }}>
+            <SvgXml xml={CashIcon} />
+            <Text style={{ fontWeight: '600', fontSize: 16 }}>
               {' '}
-              Hoàn 100% tiền vé nếu huỷ trước 24 giờ bắt đầu
+              Bảo hiểm du lịch
             </Text>
           </View>
-          <View style={[styles.line]}>
-            <SvgXml xml={SuccessIcon} />
-            <Text style={{ color: '#1d800e', textAlign: 'left' }}>
-              {' '}
-              Đã bao gồm phí cho tất cả các dịch vụ trong suốt trải nghiệm
-            </Text>
-          </View>
-          <View style={[styles.line]}>
-            <SvgXml xml={SuccessIcon} />
-            <Text style={{ color: '#1d800e', textAlign: 'left' }}>
-              {' '}
-              Giảm 10% khi đăng ký từ 2 người trở lên, Giảm 10% khi đăng ký từ 2
-              người trở lên
-            </Text>
-          </View>
-          <View style={[styles.line]}>
-            <SvgXml xml={FailIcon} />
-            <Text style={{ color: '#ff0000', textAlign: 'left' }}>
-              {' '}
-              Chưa bao gồm tiền ...
-            </Text>
-          </View>
-          <View style={[styles.line]}>
-            <SvgXml xml={FailIcon} />
-            <Text style={{ color: '#ff0000', textAlign: 'left' }}>
-              {' '}
-              Huỷ không hoàn tiền
-            </Text>
-          </View>
+
+          {activity.insurances.map((insurance, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.option,
+                {
+                  borderColor: selectedInsurance && selectedInsurance.id === insurance.insurance.id
+                    ? "red"
+                    : "gray",
+                },
+              ]}
+              onPress={() => setSelectedInsurance(insurance.insurance)}
+            >
+              <Text
+                style={[
+                  styles.optionText,
+                  {
+                    color: selectedInsurance && selectedInsurance.id === insurance.insurance.id ? "red" : "gray",
+                  },
+                ]}
+              >
+                {insurance.insurance.name} : {insurance.insurance.bestOffer}đ
+              </Text>
+
+              {insurance.insurance.benefits.split(';').map(item => 
+                <Text
+                  style={[
+                    styles.th714,
+                    {color: "gray"}
+                  ]}
+                >
+                  {item}, 
+                </Text>
+              )}
+            </TouchableOpacity>
+          ))}
         </View>
+
         <View style={styles.mainView}>
           <View style={[styles.line]}>
             <SvgXml xml={BoxCheckIcon} />
@@ -260,13 +323,21 @@ export default function OrderConfirm({ route }) {
         <View style={{}}>
           <Text style={{}}>Tổng thanh toán</Text>
           <Text style={{ fontWeight: '600', fontSize: 16, color: '#ed2939' }}>
-            đ
-            {data.numOfAdults * data.adultsPrice +
-              data.numOfChildren * data.childrenPrice +
-              data.numOfBabies * data.babyPrice -
-              40000}
+              đ
+              {(data.numOfAdults * data.adultsPrice +
+                data.numOfChildren * data.childrenPrice +
+                data.numOfBabies * data.babyPrice + (selectedInsurance ? selectedInsurance.bestOffer : 0)
+                - (discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
+                  data.numOfChildren * data.childrenPrice +
+                  data.numOfBabies * data.babyPrice) : 0)).toLocaleString()
+              }
           </Text>
         </View>
+        {isTicketLoading ? <ActivityIndicator
+                    size="large"
+                    color="#ED2939"
+                    style={{ paddingVertical: 12 }}
+                  /> : <></>}
         <Pressable style={[styles.button1]} onPress={handleCheckout}>
           <Text style={{ color: '#fff' }}>Thanh toán</Text>
         </Pressable>
@@ -384,5 +455,23 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     overflow: 'hidden',
+  },
+  th714: {
+    fontSize: 12,
+    fontFamily: "BeVietnamPro-Regular",
+    marginLeft: 6,
+  },
+  listKind: {
+    width: "100%",
+    flexWrap: "wrap",
+    flexDirection: "column",
+    gap: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+  },
+  optionText: {
+    fontSize: 16,
+    fontWeight: "600",
+    letterSpacing: 0.5,
   },
 });

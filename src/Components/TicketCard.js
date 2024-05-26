@@ -21,42 +21,51 @@ import {
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 
-export default function TicketCard({}) {
+const formatTimeRange = (startAt, endAt) => {
+  const formattedStart = startAt.slice(11, 16); // Extract "18:22"
+  const formattedEnd = endAt.slice(11, 16);
+
+  return `${formattedStart} - ${formattedEnd}`;
+};
+
+export default function TicketCard({data}) {
   return (
     <View style={styles.container}>
       <Image
         style={styles.frameChild}
         resizeMode="cover"
-        source={require("../Assets/detail1.jpg")}
+        source={{uri: data.activity.mainImage}}
       />
       <View style={styles.marginLeftTicket}>
         <Text style={[styles.titleTicket]}>
-          Khám phá kiến trúc Kinh thành Huế
+          {data.activity.activityName}
         </Text>
         <View style={styles.parentFlexBox}>
           <SvgXml xml={CalendarIcon} />
-          <Text style={[styles.th714]}>Th 7, 14 thg 10, 2023</Text>
+          <Text style={[styles.th714]}>{data.ticket.activityTimeFrame.startAt.substr(0,10) }</Text>
         </View>
         <View style={[styles.clockParent, styles.parentFlexBox]}>
           <SvgXml xml={TimeIcon} />
-          <Text style={[styles.th714]}>17:30 - 20:30</Text>
+          <Text style={[styles.th714]}>{formatTimeRange(data.ticket.activityTimeFrame.startAt, data.ticket.activityTimeFrame.endAt) }</Text>
         </View>
         <View style={[styles.clockParent, styles.parentFlexBox]}>
           <SvgXml xml={PeopleIcon} />
-          <Text style={[styles.th714]}>2 người lớn, 1 trẻ em, 1 em bé</Text>
+          <Text style={[styles.th714]}>{data.ticket.numOfAdults} người lớn, {data.ticket.numOfChildren} trẻ em, {data.ticket.numOfBabies} em bé</Text>
         </View>
         <View style={[styles.clockParent, styles.parentFlexBox]}>
           <Text style={[styles.hostContainer]}>
             <Text style={styles.hostTitle}>Host:</Text>
-            <Text style={styles.hostName}> Martin Nguyen</Text>
+            <Text style={styles.hostName}> {data.activity.host.firstName + ' ' + data.activity.host.lastName}</Text>
           </Text>
           <Image
             style={styles.avaImg}
             resizeMode="cover"
-            source={require("../Assets/ava1.jpg")}
+            source={{uri: data.activity.host.avatar}}
           />
         </View>
-        <View style={[styles.clockParent, styles.parentFlexBox]}>
+        
+        {data.ticket.ticketStatus === "PAID" ?
+          <View style={[styles.clockParent, styles.parentFlexBox]}>
           <SvgXml xml={SuccessIcon} />
           <Text
             style={{
@@ -69,8 +78,22 @@ export default function TicketCard({}) {
           >
             Đã thanh toán
           </Text>
-        </View>
+          </View> : data.ticket.ticketStatus === "PAY_AT_PICK_UP" ? 
         <View style={[styles.clockParent, styles.parentFlexBox]}>
+        <SvgXml xml={WaitIcon} />
+        <Text
+          style={{
+            marginLeft: 6,
+            fontSize: 12,
+            flex: 1,
+            color: "#ffc107",
+            textAlign: "left",
+          }}
+        >
+          Thanh toán tại điểm đến
+        </Text>
+      </View> :
+          <View style={[styles.clockParent, styles.parentFlexBox]}>
           <SvgXml xml={FailIcon} />
           <Text
             style={{
@@ -83,21 +106,9 @@ export default function TicketCard({}) {
           >
             Đã huỷ
           </Text>
-        </View>
-        <View style={[styles.clockParent, styles.parentFlexBox]}>
-          <SvgXml xml={WaitIcon} />
-          <Text
-            style={{
-              marginLeft: 6,
-              fontSize: 12,
-              flex: 1,
-              color: "#ffc107",
-              textAlign: "left",
-            }}
-          >
-            Thanh toán tại điểm đến
-          </Text>
-        </View>
+        </View>} 
+        
+        
       </View>
     </View>
   );
