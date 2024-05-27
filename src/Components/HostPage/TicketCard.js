@@ -14,8 +14,9 @@ import {
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import React, { useLayoutEffect, useState, useRef } from "react";
+import { WaitIcon } from "@/Assets/Icons/OrderConfirm";
 
-export default function TicketCard() {
+export default function TicketCard({data}) {
   const navigation = useNavigation();
   const [selectedOption, setSelectedOption] = useState([]);
   const gotoTicketInfo = async (e) => {
@@ -28,15 +29,15 @@ export default function TicketCard() {
         <Image
           style={styles.frameChild}
           resizeMode="cover"
-          source={require("../../Assets/ava1.jpg")}
+          source={{uri: data.user.avatar}}
         />
         <View style={styles.frameGroup}>
           <View style={[styles.anhQuanParent, styles.anhQuanParentFlexBox]}>
-            <Text style={[styles.anhQuan, styles.usersClr]}>Anh Quan</Text>
+            <Text style={[styles.anhQuan, styles.usersClr]}>{data.user.email.split('@')[0]}</Text>
             <Text style={[styles.ticket, styles.usersClr]}>
               <Text style={styles.textTypo}>
                 <Text style={styles.text1}>{` `}</Text>
-                <Text style={styles.text2}>{`3 `}</Text>
+                <Text style={styles.text2}>{data.numOfAdults + data.numOfChildren + data.numOfBabies}</Text>
               </Text>
               <Text style={styles.text1}>
                 <Text style={styles.textTypo}>{` `}</Text>
@@ -47,27 +48,64 @@ export default function TicketCard() {
           <View style={styles.usersParent}>
             <Text style={[styles.users, styles.usersClr]}>users</Text>
             <Text style={[styles.ngiLn1, styles.usersClr]}>
-              2 người lớn, 1 trẻ em, 1 em bé
+              {data.numOfAdults} người lớn, {data.numOfChildren} trẻ em, {data.numOfBabies} em bé
             </Text>
           </View>
           <View style={[styles.frameContainer, styles.anhQuanParentFlexBox]}>
             <View style={[styles.vnWrapper, styles.vnWrapperFlexBox]}>
-              <Text style={styles.vn}>296.000vnđ</Text>
+              <Text style={styles.vn}>{ data.totalPay.toLocaleString()}đ</Text>
             </View>
             <View style={styles.vnWrapperFlexBox}>
-              <Text style={[styles.checkCircle, styles.thanhTonTypo]}>
-                check-circle
-              </Text>
-              <Text style={[styles.thanhTon, styles.thanhTonTypo]}>
+            {data.ticketStatus === "PAID" ?
+              <View style={[styles.clockParent, styles.parentFlexBox]}>
+              <SvgXml xml={SuccessIcon} />
+              <Text
+                style={{
+                  marginLeft: 6,
+                  fontSize: 12,
+                  flex: 1,
+                  color: "#1d800e",
+                  textAlign: "left",
+                }}
+              >
                 Đã thanh toán
               </Text>
+              </View> : data.ticketStatus === "PAY_AT_PICK_UP" ? 
+            <View style={[styles.clockParent, styles.parentFlexBox]}>
+            <SvgXml xml={WaitIcon} />
+            <Text
+              style={{
+                marginLeft: 6,
+                fontSize: 12,
+                flex: 1,
+                color: "#ffc107",
+                textAlign: "left",
+              }}
+            >
+              Thanh toán tại điểm đến
+            </Text>
+          </View> :
+              <View style={[styles.clockParent, styles.parentFlexBox]}>
+              <SvgXml xml={FailIcon} />
+              <Text
+                style={{
+                  marginLeft: 6,
+                  fontSize: 12,
+                  flex: 1,
+                  color: "#ff0000",
+                  textAlign: "left",
+                }}
+              >
+                Đã huỷ
+              </Text>
+            </View>} 
             </View>
           </View>
         </View>
       </View>
       <Text
         style={styles.liNhnLi}
-      >{`Lời nhắn Lời nhắn Lời nhắn Lời nhắn Lời nhắn Lời nhắn Lời nhắn Lời nhắn Lời nhắn Lời nhắn Lời nhắn Lời nhắn `}</Text>
+      >{data.notes}</Text>
     </Pressable>
   );
 }
@@ -179,5 +217,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     width: "100%",
-  },
+  }
 });

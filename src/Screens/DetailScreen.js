@@ -652,7 +652,7 @@ export default function DetailScreen({ route }) {
                   labelField="date"
                   valueField="date"
                   placeholder=" Chọn ngày"
-                  value={selectedDate?.id}
+                  value={selectedDate}
                   onChange={(item) => {
                     console.log("zzzzzzzzzzzz", item);
                     setSelectedDate(item);
@@ -689,7 +689,7 @@ export default function DetailScreen({ route }) {
                   //       )
                   //     : "Chưa có"
                   // }
-                  value={selectedTime.id}
+                  value={selectedTime}
                   onChange={(item) => {
                     setSelectedTime(item);
                   }}

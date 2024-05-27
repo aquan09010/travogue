@@ -9,6 +9,7 @@ import {
   ImageBackground,
   Pressable,
   SafeAreaView,
+  ActivityIndicator,
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
@@ -51,6 +52,15 @@ import * as ImagePicker from "expo-image-picker";
 import { PictureIcon } from "@/Assets/Icons/Home";
 import Swiper from "react-native-swiper";
 import TicketCard from "@/Components/HostPage/TicketCard";
+import { useStateContext } from "@/Context/StateContext";
+import { getTicketsOfATimeFrame } from "@/Hooks/ScheduleHook";
+
+const formatTimeRange = (startAt, endAt) => {
+  const formattedStart = startAt.slice(11, 16); // Extract "18:22"
+  const formattedEnd = endAt.slice(11, 16);
+
+  return `${formattedStart} - ${formattedEnd}`;
+};
 
 export default function TicketSchedule({ route }) {
   const navigation = useNavigation();
@@ -72,13 +82,18 @@ export default function TicketSchedule({ route }) {
   ];
   const [value, setValue] = useState(null);
 
+  const { activity } = route.params;
+
+  const { accessToken } = useStateContext();
+  const { tickets, isGetTicketsLoading, error, refetchGetTicketsOfATimeFrame } = getTicketsOfATimeFrame(accessToken, activity.activityTimeFrameId);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.statusBar}>
         <Pressable onPress={() => navigation.goBack()}>
           <SvgXml xml={ArrowLeftBlack} />
         </Pressable>
-        <Text style={styles.title}>Khám phá kiến trúc Kinh thành Huế</Text>
+        <Text style={styles.title}>{activity.activityName}</Text>
         <Pressable onPress={() => {}}></Pressable>
       </View>
 
@@ -97,45 +112,25 @@ export default function TicketSchedule({ route }) {
                 CALENDAR
               </Text>
               <Text style={[styles.th714, styles.th714FlexBox]}>
-                2024-05-22
+                {activity.startAt.split('T')[0]}
               </Text>
             </View>
             <Text style={[styles.check, styles.th714FlexBox]}>check</Text>
           </View>
 
-          <Dropdown
-            style={{
-              width: 140,
-              height: 40,
-              borderRadius: 7,
-              borderStyle: "solid",
-              borderColor: "#1b1b1b",
-              borderWidth: 1,
-              padding: 8,
-            }}
-            placeholderStyle={[styles.th714, styles.th714FlexBox]}
-            selectedTextStyle={[styles.th714, styles.th714FlexBox]}
-            inputSearchStyle={[styles.th714, styles.th714FlexBox]}
-            iconStyle={styles.iconStyle}
-            data={data}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder=" Chọn giờ"
-            searchPlaceholder="Search..."
-            value={value}
-            onChange={(item) => {
-              setValue(item.value);
-            }}
-            renderLeftIcon={() => (
-              <>
-                <Text style={[styles.calendar, styles.th714FlexBox]}>
-                  clock
-                </Text>
-              </>
-            )}
-          />
+          <View style={[styles.frameGroup, styles.frameParentFlexBox]}>
+            <View style={styles.frameParentFlexBox}>
+              <Text style={[styles.calendar, styles.th714FlexBox]}>
+                clock
+              </Text>
+              <Text style={[styles.th714, styles.th714FlexBox]}>
+                {formatTimeRange(activity.startAt, activity.endAt)}
+              </Text>
+            </View>
+            <Text style={[styles.check, styles.th714FlexBox]}>check</Text>
+          </View>
+
+          
         </View>
         <View
           style={{
@@ -156,12 +151,19 @@ export default function TicketSchedule({ route }) {
               textAlign: "left",
             }}
           >
-            9/10
+            {activity.guestSize}/{activity.maxGuest}
           </Text>
         </View>
-        <TicketCard />
-        <TicketCard />
-        <TicketCard />
+
+        {isGetTicketsLoading ? 
+          <ActivityIndicator
+            size="large"
+            color="#ED2939"
+            style={{ paddingVertical: 12 }}
+          /> :
+          tickets.content.map(item => <TicketCard data={item} />) 
+        }
+    
       </ScrollView>
     </SafeAreaView>
   );

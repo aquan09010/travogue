@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect, useState, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 const Tab = createMaterialTopTabNavigator();
 import { Animated } from "react-native";
@@ -24,6 +24,7 @@ import ExpHostCard from "@/Components/HostPage/ExpHostCard";
 import { Calendar } from "react-native-calendars";
 import { Dropdown } from "react-native-element-dropdown";
 import ExpCard from "@/Components/HostPage/ExpCard";
+import { getActiveDates, getSchedule } from "@/Hooks/ScheduleHook";
 
 const data = [
   { label: "10:30 - 11:30", value: "1" },
@@ -43,23 +44,31 @@ export default function ScheduleScreen() {
   );
   let markedDates1 = {};
   const [value, setValue] = useState(null);
-  const [days, setDays] = useState(["2024-05-22", "2024-05-23", "2024-05-24"]);
-  days.map((item) => {
-    markedDates1[item] = {
-      marked: true,
-      dotColor: "#50cebb",
-    };
-  });
+  const [days, setDays] = useState([]);
+  
   markedDates1[selected] = {
     selected: true,
     disableTouchEvent: false,
     selectedDotColor: "orange",
   };
-  console.log(markedDates1);
+  // console.log(markedDates1);
   const av = new Animated.Value(0);
   av.addListener(() => {
     return;
   });
+
+  const { accessToken, user } = useStateContext();
+
+  const { activeDates, isGetActiveDatesLoading, error, refetchGetActiveDates } = getActiveDates(accessToken, user.id);
+
+  activeDates.map((item) => {
+    markedDates1[item] = {
+      marked: true,
+      dotColor: "#50cebb",
+    };
+  });
+  
+  const { schedule, isGetScheduleLoading, refetchGetSchedule } = getSchedule(accessToken, user.id, selected);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,12 +78,20 @@ export default function ScheduleScreen() {
         Lịch trình của bạn
       </Text>
       <ScrollView>
-        <Calendar
-          onDayPress={(day) => {
-            setSelected(day.dateString);
-          }}
-          markedDates={markedDates1}
-        />
+        {isGetActiveDatesLoading ? 
+          <ActivityIndicator
+            size="large"
+            color="#ED2939"
+            style={{ paddingVertical: 12 }}
+          /> :
+          <Calendar
+            onDayPress={(day) => {
+              setSelected(day.dateString);
+            }}
+            markedDates={markedDates1}
+          />
+        }
+        
 
         <View
           style={[
@@ -98,12 +115,18 @@ export default function ScheduleScreen() {
         <Text
           style={[styles.c4Hot, { paddingVertical: 10, paddingHorizontal: 10 }]}
         >
-          Có 4 hoạt động trong ngày, 2 hoạt động đã hoàn thành
+          Có {schedule?.data.length} hoạt động trong ngày
         </Text>
-        <ExpCard />
-        <ExpCard />
-        <ExpCard />
-        <ExpCard />
+        {isGetScheduleLoading ? 
+          <ActivityIndicator
+            size="large"
+            color="#ED2939"
+            style={{ paddingVertical: 12 }}
+          /> : 
+          schedule.data.map(item =>
+            <ExpCard data={ item} />
+          )
+        }
         <View style={{ marginBottom: 90 }}></View>
       </ScrollView>
     </SafeAreaView>

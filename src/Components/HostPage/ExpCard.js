@@ -15,30 +15,38 @@ import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import React, { useLayoutEffect, useState, useRef } from "react";
 
-export default function ExpCard() {
+
+const formatTimeRange = (startAt, endAt) => {
+  const formattedStart = startAt.slice(11, 16); // Extract "18:22"
+  const formattedEnd = endAt.slice(11, 16);
+
+  return `${formattedStart} - ${formattedEnd}`;
+};
+
+export default function ExpCard({data}) {
   const navigation = useNavigation();
   const [selectedOption, setSelectedOption] = useState([]);
   const gotoTicketSchedule = async (e) => {
     e.preventDefault();
-    navigation.navigate("TicketSchedule");
+    navigation.navigate("TicketSchedule", {activity: data});
   };
   return (
     <Pressable onPress={gotoTicketSchedule} style={styles.rectangleParent}>
       <Image
         style={styles.frameChild}
         resizeMode="cover"
-        source={require("../../Assets/card1.jpg")}
+        source={{uri: data.mainImage}}
       />
       <View style={styles.frameParent}>
         <View style={styles.wrapper}>
-          <Text style={styles.text}>8:30 - 9:30</Text>
+          <Text style={styles.text}>{formatTimeRange(data.startAt, data.endAt)}</Text>
         </View>
         <Text style={[styles.khmPhKin, styles.khmPhKinSpaceBlock]}>
-          Khám phá kiến trúc Kinh thành Huế
+          {data.activityName}
         </Text>
         <View style={[styles.usersParent, styles.khmPhKinSpaceBlock]}>
           <Text style={[styles.users, styles.usersClr]}>users</Text>
-          <Text style={[styles.text1, styles.usersClr]}>9/10</Text>
+          <Text style={[styles.text1, styles.usersClr]}>{data.guestSize}/{data.maxGuest}</Text>
         </View>
       </View>
     </Pressable>
