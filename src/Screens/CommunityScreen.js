@@ -21,11 +21,14 @@ import {
 } from "react-native";
 import PostCard from "@/Components/PostCard";
 import { useStateContext } from "@/Context/StateContext";
-import { getCommentsByPost, getFeed, getPostsByUser, postCommentsByPost } from "@/Hooks/PostHooks";
+import {
+  getCommentsByPost,
+  getFeed,
+  getPostsByUser,
+  postCommentsByPost,
+} from "@/Hooks/PostHooks";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import BottomSheet, {
-  BottomSheetBackdrop,
-} from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 
 const timeAgo = (dateString) => {
   const now = new Date();
@@ -44,9 +47,7 @@ const timeAgo = (dateString) => {
   for (const [name, seconds] of intervals) {
     const intervalCount = Math.floor(differenceInSeconds / seconds);
     if (intervalCount >= 1) {
-      return `${intervalCount} ${
-        intervalCount === 1 ? name : name + "s"
-      } ago`;
+      return `${intervalCount} ${intervalCount === 1 ? name : name + "s"} ago`;
     }
   }
 
@@ -91,17 +92,19 @@ export default function CommunityScreen() {
 
   const { feed, isFeedLoading, error, refetchFeed } = getFeed(accessToken);
 
-  const { getComments, comments, isCommentLoading, commentError } = getCommentsByPost();
+  const { getComments, comments, isCommentLoading, commentError } =
+    getCommentsByPost();
 
   const [activePost, setActivePost] = useState();
-  const [commentList, setCommentList] = useState([]); 
-  const { postComments, newComment, isPostCommentLoading, postCommentError } = postCommentsByPost();
-  const [userCmt, setUserCmt] = useState('');
+  const [commentList, setCommentList] = useState([]);
+  const { postComments, newComment, isPostCommentLoading, postCommentError } =
+    postCommentsByPost();
+  const [userCmt, setUserCmt] = useState("");
   const handlePostComment = async (e) => {
     e.preventDefault();
-    
+
     await postComments(accessToken, activePost, userCmt);
-    setUserCmt('');
+    setUserCmt("");
   };
 
   useEffect(() => {
@@ -113,7 +116,6 @@ export default function CommunityScreen() {
       setCommentList([newComment.data, ...commentList]);
     }
   }, [newComment]);
-
 
   return (
     <SafeAreaView
@@ -129,36 +131,33 @@ export default function CommunityScreen() {
           paddingBottom: 60,
         }}
         refreshControl={
-          <RefreshControl
-            refreshing={isFeedLoading}
-            onRefresh={refetchFeed}
-          />
+          <RefreshControl refreshing={isFeedLoading} onRefresh={refetchFeed} />
         }
       >
-        
         {isFeedLoading ? (
-            <>
-              <ActivityIndicator
-                size="large"
-                color="#ED2939"
-                style={{ paddingVertical: 12 }}
+          <>
+            <ActivityIndicator
+              size="large"
+              color="#ED2939"
+              style={{ paddingVertical: 12 }}
+            />
+          </>
+        ) : feed.data.data.length == 0 ? (
+          <View>
+            <Text style={{ textAlign: "center" }}>Chưa có bài viết nào</Text>
+          </View>
+        ) : (
+          <View>
+            {feed.data.data.map((post, index) => (
+              <PostCard
+                handleOpenPress={() => handleOpenPress(post.id)}
+                data={post}
+                key={index}
               />
-            </>
-          ) : feed.data.data.length == 0 ? (
-            <View>
-              <Text style={{ textAlign: "center" }}>Chưa có bài viết nào</Text>
-            </View>
-          ) : (
-            <View>
-                {feed.data.data.map((post, index) =>(<PostCard
-                  handleOpenPress={() => handleOpenPress(post.id)}
-                  data={post}
-                  key={index}
-                />)
-                )}
-            </View>
-          )
-        }
+            ))}
+            <View style={{ marginBottom: 100 }}></View>
+          </View>
+        )}
       </ScrollView>
 
       <BottomSheet
@@ -185,55 +184,64 @@ export default function CommunityScreen() {
             <Text style={styles.containerHeadlineModal}>Bình luận</Text>
           </View>
 
-          {isCommentLoading ? <>
+          {isCommentLoading ? (
+            <>
               <ActivityIndicator
                 size="large"
                 color="#ED2939"
                 style={{ paddingVertical: 12 }}
               />
-          </> : commentList?.length == 0 ?
+            </>
+          ) : commentList?.length == 0 ? (
             <View>
-            <Text style={{ marginVertical: 20, textAlign: "center" }}>Hãy là người bình luận đầu tiên</Text>
-          </View> : commentList?.map(item => <View style={{ height: 55 }}>
-              <Pressable
-                style={{
-                  flexDirection: "row",
-                  paddingHorizontal: 18,
-                  paddingVertical: 12,
-                }}
-              >
+              <Text style={{ marginVertical: 20, textAlign: "center" }}>
+                Hãy là người bình luận đầu tiên
+              </Text>
+            </View>
+          ) : (
+            commentList?.map((item) => (
+              <View style={{ height: 55 }}>
                 <Pressable
-                  onPress={() => {}}
-                  style={[styles.avatar, styles.actionPadding]}
+                  style={{
+                    flexDirection: "row",
+                    paddingHorizontal: 18,
+                    paddingVertical: 12,
+                  }}
                 >
-                  <Image
-                    style={[styles.avaImg, { marginRight: 10 }]}
-                    resizeMode="cover"
-                    source={{uri: item.user.avatar}}
-                  />
-                </Pressable>
-                <View style={{}}>
-                  <View style={styles.line1}>
-                    <Text>
+                  <Pressable
+                    onPress={() => {}}
+                    style={[styles.avatar, styles.actionPadding]}
+                  >
+                    <Image
+                      style={[styles.avaImg, { marginRight: 10 }]}
+                      resizeMode="cover"
+                      source={{ uri: item.user.avatar }}
+                    />
+                  </Pressable>
+                  <View style={{}}>
+                    <View style={styles.line1}>
+                      <Text>
+                        {" "}
+                        {item.user.email.split("@")[0]} •{" "}
+                        {timeAgo(item.updatedAt)}
+                      </Text>
+                    </View>
+                    <Text style={{ paddingTop: 3, paddingRight: 45 }}>
                       {" "}
-                      {item.user.email.split("@")[0]} • {timeAgo(item.updatedAt)}
+                      {item.comment}
                     </Text>
                   </View>
-                  <Text style={{ paddingTop: 3, paddingRight: 45 }}>
-                    {" "}
-                    {item.comment}
-                  </Text>
-                </View>
-              </Pressable>
-            </View>) }
-          
+                </Pressable>
+              </View>
+            ))
+          )}
         </View>
         <View style={{}}>
           <View style={styles.searchSection}>
             <Image
               style={[styles.avaImg, { marginRight: 10 }]}
               resizeMode="cover"
-              source={{uri: user.avatar}}
+              source={{ uri: user.avatar }}
             />
             <TextInput
               style={[styles.input, { width: "90%" }]}
@@ -243,11 +251,12 @@ export default function CommunityScreen() {
               value={userCmt}
               onChangeText={setUserCmt}
             />
-            <Pressable onPress={handlePostComment}
-              disabled={isPostCommentLoading}>
+            <Pressable
+              onPress={handlePostComment}
+              disabled={isPostCommentLoading}
+            >
               <SvgXml style={{ marginLeft: 5 }} xml={sendCommentIcon} />
             </Pressable>
-            
           </View>
         </View>
       </BottomSheet>
@@ -317,8 +326,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
 });
-
-
 
 // import {
 //   StyleSheet,
