@@ -7,10 +7,17 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView,
 } from "react-native";
 
-import React, { useState, useRef, useCallback, useMemo, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+  useEffect,
+} from "react";
 
 import { SvgXml } from "react-native-svg";
 
@@ -31,7 +38,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { ArrowLeftBlack } from "@/Assets/Icons/Navigation";
@@ -59,19 +66,18 @@ const optionsComment = ["5 - 4", "4 - 2", "2 - 0"];
  * This screen allows users to search for locations based on different criteria.
  * @returns {JSX.Element} The Whereabout Search Screen component.
  */
-export default function WhereaboutSearchScreen({route}) {
+export default function WhereaboutSearchScreen({ route }) {
   // Tabs.
   const tabs = ["Đi đâu", "Ăn gì", "Ở đâu", "Trải Nghiệm"];
 
   const [selected, setSelected] = useState(0);
 
-    // Kiểm tra danh sách Loại hoạt động
-    const [selectedOption, setSelectedOption] = useState([]);
+  // Kiểm tra danh sách Loại hoạt động
+  const [selectedOption, setSelectedOption] = useState([]);
 
-    // Kiểm tra danh sách Đánh giá
+  // Kiểm tra danh sách Đánh giá
   const [selectedComment, setSelectedComment] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState(null);
-  
 
   // Bottom Sheet Model.
   const bottomSheetModalRef = useRef(null);
@@ -138,345 +144,373 @@ export default function WhereaboutSearchScreen({route}) {
 
   const { accessToken, mainCategories } = useStateContext();
 
-  const { city } = route.params
-  
-  const [mainCategory, setMainCategory] = useState('c7a2fe12-21ee-4757-a36d-ed429743b472');
+  const { city } = route.params;
+
+  const [mainCategory, setMainCategory] = useState(
+    "c7a2fe12-21ee-4757-a36d-ed429743b472"
+  );
 
   const [filter, setFilter] = useState("");
   const [keyword, setKeyword] = useState("");
-  
-  const { activities, isActivitiesLoading, activitiesError, refetchActivityByCategory } =
-    getActivityByCategoryInACity(accessToken, city.id, mainCategory, filter, keyword);
-  
-  const { childCategories, isLoading, error } = getChildCategories(accessToken, mainCategory);
+
+  const {
+    activities,
+    isActivitiesLoading,
+    activitiesError,
+    refetchActivityByCategory,
+  } = getActivityByCategoryInACity(
+    accessToken,
+    city.id,
+    mainCategory,
+    filter,
+    keyword
+  );
+
+  const { childCategories, isLoading, error } = getChildCategories(
+    accessToken,
+    mainCategory
+  );
 
   const handleApplyFilter = () => {
     let filterString = ""; // Initialize an empty string to store the filters
-      // Build filters with proper handling of empty values
-      if (selectedOption.length > 0) {
-        filterString += "type=" + selectedOption.map(childCategory => childCategory.id).join(';');
-      }
+    // Build filters with proper handling of empty values
+    if (selectedOption.length > 0) {
+      filterString +=
+        "type=" +
+        selectedOption.map((childCategory) => childCategory.id).join(";");
+    }
 
-      if (selectedPrice) {
-        filterString += (filterString.length > 0 ? "&" : "") + // Add "&" only if filterString is not empty
-                      "price=" + selectedPrice[0]*1000 + "-" + selectedPrice[1]*1000;
-      }
+    if (selectedPrice) {
+      filterString +=
+        (filterString.length > 0 ? "&" : "") + // Add "&" only if filterString is not empty
+        "price=" +
+        selectedPrice[0] * 1000 +
+        "-" +
+        selectedPrice[1] * 1000;
+    }
 
-      if (selectedComment) {
-        filterString += (filterString.length > 0 ? "&" : "") + // Add "&" only if filterString is not empty
-                      "rating=" + selectedComment[0] + ":" + selectedComment[4];
-      }
+    if (selectedComment) {
+      filterString +=
+        (filterString.length > 0 ? "&" : "") + // Add "&" only if filterString is not empty
+        "rating=" +
+        selectedComment[0] +
+        ":" +
+        selectedComment[4];
+    }
 
-      setFilter(filterString);
+    setFilter(filterString);
     console.log("FILTER STRING: " + filterString);
-    
+
     bottomSheetModalRef.current?.close();
-  }
-  
+  };
 
   return (
     <SafeAreaView>
-      <BottomSheetModalProvider>
-        <SafeAreaView style={styles.headTitle}>
-          <Pressable onPress={() => navigation.goBack()} style={styles.arrow}>
-            <SvgXml xml={ArrowLeftBlack} />
-          </Pressable>
+      <SafeAreaView style={styles.headTitle}>
+        <Pressable onPress={() => navigation.goBack()} style={styles.arrow}>
+          <SvgXml xml={ArrowLeftBlack} />
+        </Pressable>
 
-          <Text style={{ fontSize: 18, fontWeight: "600" }}>{ city.name}</Text>
+        <Text style={{ fontSize: 18, fontWeight: "600" }}>{city.name}</Text>
 
-          <SvgXml xml={SearchBlackIcon} style={styles.search} />
-        </SafeAreaView>
-        <SafeAreaView>
-          <View>
-            <View style={styles.header}>
-              {tabs.map((e, i) => (
-                <Pressable key={i} onPress={() => {
+        <SvgXml xml={SearchBlackIcon} style={styles.search} />
+      </SafeAreaView>
+      <SafeAreaView>
+        <View>
+          <View style={styles.header}>
+            {tabs.map((e, i) => (
+              <Pressable
+                key={i}
+                onPress={() => {
                   setSelected(i);
-                  if (i == 0) setMainCategory(mainCategories.didau.id)
-                  else if (i == 1) setMainCategory(mainCategories.angi.id)
-                  else if (i == 2) setMainCategory(mainCategories.odau.id)
-                  else setMainCategory(mainCategories.trainghiem.id)
-                }}>
-                  <Text
-                    style={[
-                      styles.titleTab,
-                      selected == i && {
-                        color: "#151515",
-                      },
-                    ]}
-                  >
-                    {e}
-                  </Text>
+                  if (i == 0) setMainCategory(mainCategories.didau.id);
+                  else if (i == 1) setMainCategory(mainCategories.angi.id);
+                  else if (i == 2) setMainCategory(mainCategories.odau.id);
+                  else setMainCategory(mainCategories.trainghiem.id);
+                }}
+              >
+                <Text
+                  style={[
+                    styles.titleTab,
+                    selected == i && {
+                      color: "#151515",
+                    },
+                  ]}
+                >
+                  {e}
+                </Text>
 
-                  {selected == i && <View style={styles.line}></View>}
-                </Pressable>
-              ))}
-            </View>
+                {selected == i && <View style={styles.line}></View>}
+              </Pressable>
+            ))}
+          </View>
+        </View>
+
+        <View>
+          <View style={styles.filter}>
+            <TouchableOpacity onPress={handlePresentModalPress}>
+              <SvgXml xml={BarsFilterIcon} style={styles.barsFilter} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.kind}
+              onPress={handlePresentModalPress}
+            >
+              <Text>Bộ lọc</Text>
+
+              <SvgXml xml={DownArrow} style={styles.downArrow} />
+            </TouchableOpacity>
           </View>
 
-          <View>
-            <View style={styles.filter}>
-              <TouchableOpacity onPress={handlePresentModalPress}>
-                <SvgXml xml={BarsFilterIcon} style={styles.barsFilter} />
-              </TouchableOpacity>
+          <BottomSheetModal
+            index={2}
+            snapPoints={snapPoints}
+            ref={bottomSheetModalRef}
+            onChange={handleSheetChanges}
+            backgroundStyle={{ borderRadius: 30 }}
+            backdropComponent={BottomSheetBackdrop}
+          >
+            <View style={styles.bottomSheetContainer}>
+              <View style={styles.bottomSheetHead}>
+                <Text style={styles.bottomSheetTitle}>Bộ lọc</Text>
 
-              <TouchableOpacity
-                style={styles.kind}
-                onPress={handlePresentModalPress}
-              >
-                <Text>Bộ lọc</Text>
+                <TouchableOpacity
+                  onPress={() => bottomSheetModalRef.current?.close()}
+                >
+                  <SvgXml xml={CloseButton} style={styles.closeButton} />
+                </TouchableOpacity>
+              </View>
 
-                <SvgXml xml={DownArrow} style={styles.downArrow} />
-              </TouchableOpacity>
+              <View style={{ marginBottom: 8 }}></View>
 
-            </View>
+              <View style={styles.kindContainer}>
+                <Text style={styles.kindText}>Loại hoạt động</Text>
 
-            <BottomSheetModal
-              index={2}
-              snapPoints={snapPoints}
-              ref={bottomSheetModalRef}
-              onChange={handleSheetChanges}
-              backgroundStyle={{ borderRadius: 30 }}
-              backdropComponent={BottomSheetBackdrop}
-            >
-              <View style={styles.bottomSheetContainer}>
-                <View style={styles.bottomSheetHead}>
-                  <Text style={styles.bottomSheetTitle}>Bộ lọc</Text>
-
-                  <TouchableOpacity
-                    onPress={() => bottomSheetModalRef.current?.close()}
-                  >
-                    <SvgXml xml={CloseButton} style={styles.closeButton} />
-                  </TouchableOpacity>
-                </View>
-
-                <View style={{ marginBottom: 8 }}></View>
-
-                <View style={styles.kindContainer}>
-                  <Text style={styles.kindText}>Loại hoạt động</Text>
-
-                  <View style={styles.listKind}>
-                    {isLoading ? <></>
-                      : childCategories?.data.childCategories.map((option, index) => (
-                      <TouchableOpacity
-                        key={index}
-                        style={[
-                          styles.option,
-                          {
-                            borderColor: selectedOption.includes(option)
-                              ? "red"
-                              : "gray",
-                          },
-                        ]}
-                        onPress={() => {
-                          setSelectedOption((prevOptions) => {
-                            if (prevOptions.includes(option)) {
-                              // If the option is already selected, remove it from the array
-                              return prevOptions.filter(
-                                (prevOption) => prevOption !== option
-                              );
-                            } else {
-                              // If the option is not selected, add it to the array
-                              return [...prevOptions, option];
-                            }
-                          });
-                        }}
-                      >
-                        <Text
+                <View style={styles.listKind}>
+                  {isLoading ? (
+                    <></>
+                  ) : (
+                    childCategories?.data.childCategories.map(
+                      (option, index) => (
+                        <TouchableOpacity
+                          key={index}
                           style={[
-                            styles.optionText,
+                            styles.option,
                             {
-                              color: selectedOption.includes(option)
+                              borderColor: selectedOption.includes(option)
                                 ? "red"
                                 : "gray",
                             },
                           ]}
+                          onPress={() => {
+                            setSelectedOption((prevOptions) => {
+                              if (prevOptions.includes(option)) {
+                                // If the option is already selected, remove it from the array
+                                return prevOptions.filter(
+                                  (prevOption) => prevOption !== option
+                                );
+                              } else {
+                                // If the option is not selected, add it to the array
+                                return [...prevOptions, option];
+                              }
+                            });
+                          }}
                         >
-                          {option.categoryName}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
+                          <Text
+                            style={[
+                              styles.optionText,
+                              {
+                                color: selectedOption.includes(option)
+                                  ? "red"
+                                  : "gray",
+                              },
+                            ]}
+                          >
+                            {option.categoryName}
+                          </Text>
+                        </TouchableOpacity>
+                      )
+                    )
+                  )}
+                </View>
+              </View>
+
+              <View style={{ marginBottom: 8 }}></View>
+
+              <View style={styles.priceContainer}>
+                <Text style={styles.priceText}>Giá</Text>
+
+                <View style={styles.sliderContainer}>
+                  <Text style={styles.minValue}>50k</Text>
+                  <MultiSlider
+                    snapped
+                    min={50}
+                    step={50}
+                    max={1000}
+                    sliderLength={280}
+                    allowOverlap={false}
+                    values={sliderValues}
+                    minMarkerOverlapDistance={50}
+                    onValuesChange={handleValuesChange}
+                    onValuesChangeFinish={(values) => setSelectedPrice(values)}
+                    markerStyle={{
+                      ...Platform.select({
+                        ios: {
+                          width: 15,
+                          height: 15,
+                          borderWidth: 2,
+                          borderRadius: 15,
+                          borderColor: "#FF0000",
+                          backgroundColor: "#FFFFFF",
+                        },
+                        android: {
+                          width: 15,
+                          height: 15,
+                          borderWidth: 2,
+                          borderRadius: 50,
+                          borderColor: "#FF0000",
+                          backgroundColor: "#FFFFFF",
+                        },
+                      }),
+                    }}
+                    pressedMarkerStyle={{
+                      ...Platform.select({
+                        ios: {
+                          width: 20,
+                          height: 20,
+                          borderWidth: 2,
+                          borderRadius: 15,
+                          borderColor: "#FF0000",
+                          backgroundColor: "#FFFFFF",
+                        },
+                        android: {
+                          width: 20,
+                          height: 20,
+                          borderWidth: 2,
+                          borderRadius: 50,
+                          borderColor: "#FF0000",
+                          backgroundColor: "#FFFFFF",
+                        },
+                      }),
+                    }}
+                    selectedStyle={{
+                      backgroundColor: "#FF0000",
+                    }}
+                  />
+                  <Text style={styles.maxValue}>1000k</Text>
                 </View>
 
-                <View style={{ marginBottom: 8 }}></View>
-
-                <View style={styles.priceContainer}>
-                  <Text style={styles.priceText}>Giá</Text>
-
-                  <View style={styles.sliderContainer}>
-                    <Text style={styles.minValue}>50k</Text>
-                    <MultiSlider
-                      snapped
-                      min={50}
-                      step={50}
-                      max={1000}
-                      sliderLength={280}
-                      allowOverlap={false}
-                      values={sliderValues}
-                      minMarkerOverlapDistance={50}
-                      onValuesChange={handleValuesChange}
-                      onValuesChangeFinish={(values) => setSelectedPrice(values)}
-                      markerStyle={{
-                        ...Platform.select({
-                          ios: {
-                            width: 15,
-                            height: 15,
-                            borderWidth: 2,
-                            borderRadius: 15,
-                            borderColor: "#FF0000",
-                            backgroundColor: "#FFFFFF",
-                          },
-                          android: {
-                            width: 15,
-                            height: 15,
-                            borderWidth: 2,
-                            borderRadius: 50,
-                            borderColor: "#FF0000",
-                            backgroundColor: "#FFFFFF",
-                          },
-                        }),
-                      }}
-                      pressedMarkerStyle={{
-                        ...Platform.select({
-                          ios: {
-                            width: 20,
-                            height: 20,
-                            borderWidth: 2,
-                            borderRadius: 15,
-                            borderColor: "#FF0000",
-                            backgroundColor: "#FFFFFF",
-                          },
-                          android: {
-                            width: 20,
-                            height: 20,
-                            borderWidth: 2,
-                            borderRadius: 50,
-                            borderColor: "#FF0000",
-                            backgroundColor: "#FFFFFF",
-                          },
-                        }),
-                      }}
-                      selectedStyle={{
-                        backgroundColor: "#FF0000",
-                      }}
-                    />
-                    <Text style={styles.maxValue}>1000k</Text>
-                  </View>
-
-                  <View style={styles.sliderValues}>
-                    <Text
-                      style={[
-                        styles.sliderValue,
-                        { left: sliderValuePositions[0] },
-                      ]}
-                    >
-                      {sliderValues[0]}k
-                    </Text>
-                    <Text
-                      style={[
-                        styles.sliderValue,
-                        { left: sliderValuePositions[1] },
-                      ]}
-                    >
-                      {sliderValues[1]}k
-                    </Text>
-                  </View>
+                <View style={styles.sliderValues}>
+                  <Text
+                    style={[
+                      styles.sliderValue,
+                      { left: sliderValuePositions[0] },
+                    ]}
+                  >
+                    {sliderValues[0]}k
+                  </Text>
+                  <Text
+                    style={[
+                      styles.sliderValue,
+                      { left: sliderValuePositions[1] },
+                    ]}
+                  >
+                    {sliderValues[1]}k
+                  </Text>
                 </View>
+              </View>
 
-                <View style={{ marginBottom: 8 }}></View>
+              <View style={{ marginBottom: 8 }}></View>
 
-                <View style={styles.commentContainer}>
-                  <Text style={styles.commentText}>Đánh giá</Text>
+              <View style={styles.commentContainer}>
+                <Text style={styles.commentText}>Đánh giá</Text>
 
-                  <View style={styles.listComment}>
-                    {optionsComment.map((option, index) => (
-                      <TouchableOpacity
-                        key={index}
+                <View style={styles.listComment}>
+                  {optionsComment.map((option, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[
+                        styles.optionsComment,
+                        {
+                          borderColor:
+                            selectedComment == option ? "red" : "gray",
+                        },
+                      ]}
+                      onPress={() => {
+                        if (selectedComment == option) {
+                          setSelectedComment(null);
+                        } else {
+                          setSelectedComment(option);
+                        }
+                      }}
+                    >
+                      <Text
                         style={[
-                          styles.optionsComment,
+                          styles.optionText,
                           {
-                            borderColor:
-                              selectedComment == option ? "red" : "gray",
+                            color: selectedComment == option ? "red" : "gray",
+                            marginRight: 4,
                           },
                         ]}
-                        onPress={() => {
-                          if (selectedComment == option) {
-                            setSelectedComment(null);
-                          } else {
-                            setSelectedComment(option);
-                          }
-                        }}
                       >
-                        <Text
-                          style={[
-                            styles.optionText,
-                            {
-                              color: selectedComment == option ? "red" : "gray",
-                              marginRight: 4,
-                            },
-                          ]}
-                        >
-                          {option}
-                        </Text>
+                        {option}
+                      </Text>
 
-                        <SvgXml xml={Star} style={styles.star} />
-                      </TouchableOpacity>
-                    ))}
-                  </View>
+                      <SvgXml xml={Star} style={styles.star} />
+                    </TouchableOpacity>
+                  ))}
                 </View>
-
-                <Pressable style={styles.button}
-                 onPress={handleApplyFilter}
-                >
-                  <Text>Áp dụng</Text>
-                </Pressable>
               </View>
-            </BottomSheetModal>
-          </View>
-          
-          <View style={styles.mainView}>
-            {isActivitiesLoading ? (
-              <>
-                <ActivityIndicator
-                  size="large"
-                  color="#ED2939"
-                  style={{ paddingVertical: 12 }}
-                />
-              </>
-            ) : activitiesError ? (
-              <Text
-                style={{
-                  color: "#A80027",
-                  textAlign: "center",
-                  paddingBottom: 20,
-                  fontSize: 16,
-                }}
-              >
-                Something went wrong!
-              </Text>
-            ) : (
-              <ScrollView style={styles.cardListContainer}>
-                {activities.data.data.map((item, index) => {
-                  return (
-                    <AccommodationCard
-                      key={index}
-                      id={item.id}
-                      cardName={item.activityName}
-                      imgPath={item.mainImage}
-                      location={item.city.name}
-                      price={item.generalPrice}
-                      star={item.averageRating}
-                      liked={item.liked}
-                      isExperience={false}
-                    />
-                  );
-                })}
-              </ScrollView>
-            )}
-          </View>
-        </SafeAreaView>
-      </BottomSheetModalProvider>
+
+              <Pressable style={styles.button} onPress={handleApplyFilter}>
+                <Text>Áp dụng</Text>
+              </Pressable>
+            </View>
+          </BottomSheetModal>
+        </View>
+
+        <View style={styles.mainView}>
+          {isActivitiesLoading ? (
+            <>
+              <ActivityIndicator
+                size="large"
+                color="#ED2939"
+                style={{ paddingVertical: 12 }}
+              />
+            </>
+          ) : activitiesError ? (
+            <Text
+              style={{
+                color: "#A80027",
+                textAlign: "center",
+                paddingBottom: 20,
+                fontSize: 16,
+              }}
+            >
+              Something went wrong!
+            </Text>
+          ) : (
+            <ScrollView style={styles.cardListContainer}>
+              {activities.data.data.map((item, index) => {
+                return (
+                  <AccommodationCard
+                    key={index}
+                    id={item.id}
+                    cardName={item.activityName}
+                    imgPath={item.mainImage}
+                    location={item.city.name}
+                    price={item.generalPrice}
+                    star={item.averageRating}
+                    liked={item.liked}
+                    isExperience={false}
+                  />
+                );
+              })}
+              <View style={{ marginBottom: 400 }}></View>
+            </ScrollView>
+          )}
+        </View>
+      </SafeAreaView>
     </SafeAreaView>
   );
 }
@@ -538,7 +572,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     justifyContent: "center",
     justifyContent: "flex-start",
-    gap: 10
+    gap: 10,
   },
   barsFilter: {},
   kind: {
@@ -701,19 +735,22 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 0,
     backgroundColor: "#fff",
-    height: '100%'
+    height: "100%",
   },
   button: {
     borderRadius: 7,
-    backgroundColor: '#fff',
-    borderStyle: 'solid',
-    borderColor: '#151515',
+    backgroundColor: "#fff",
+    borderStyle: "solid",
+    borderColor: "#151515",
     borderWidth: 1,
-    overflow: 'hidden',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
+    overflow: "hidden",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
+  },
+  cardListContainer: {
+    height: "100%",
   },
 });

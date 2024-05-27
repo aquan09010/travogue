@@ -89,6 +89,7 @@ export default function SearchCityScreen() {
       ) : (
         <View style={styles.mainView}>
           <FlatList
+            style={{ marginBottom: 150 }}
             data={cities.data.data}
             renderItem={({ item }) => (
               <TouchableOpacity
@@ -101,8 +102,10 @@ export default function SearchCityScreen() {
               </TouchableOpacity>
             )}
           />
+          <View style={{ marginBottom: 1000 }}></View>
         </View>
       )}
+      <View style={{ marginBottom: 1000 }}></View>
     </SafeAreaView>
   );
 }

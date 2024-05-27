@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { Image } from 'expo-image'
-import { useNavigation } from '@react-navigation/native'
+import * as React from "react";
+import { Image } from "expo-image";
+import { useNavigation } from "@react-navigation/native";
 import {
   Text,
   StyleSheet,
@@ -9,13 +9,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
-  TextInput
-} from 'react-native'
-import { useStateContext } from '@/Context/StateContext'
-import { searchCities } from '@/Hooks/CityHooks'
+  TextInput,
+} from "react-native";
+import { useStateContext } from "@/Context/StateContext";
+import { searchCities } from "@/Hooks/CityHooks";
 
-const SearchDestination = ({route}) => {
-  const navigation = useNavigation()
+const SearchDestination = ({ route }) => {
+  const navigation = useNavigation();
 
   const { accessToken } = useStateContext();
 
@@ -34,12 +34,12 @@ const SearchDestination = ({route}) => {
         {/* Nút quay lại */}
         <TouchableOpacity
           style={styles.touchable}
-          onPress={() => navigation.navigate('CreatePlanning')}
+          onPress={() => navigation.navigate("CreatePlanning")}
         >
           <Image
             style={styles.arrowLeftIcon}
-            contentFit='cover'
-            source={require('../Assets/arrowleft.png')}
+            contentFit="cover"
+            source={require("../Assets/arrowleft.png")}
           />
         </TouchableOpacity>
 
@@ -90,20 +90,19 @@ const SearchDestination = ({route}) => {
               <TouchableOpacity
                 style={styles.suggestionItem}
                 onPress={() => {
-                  setSelectedCity(prevOptions => {
+                  setSelectedCity((prevOptions) => {
                     if (prevOptions.includes(item.name)) {
                       // If the option is already selected, remove it from the array
                       return prevOptions.filter(
-                        prevOption => prevOption !== item.name
-                      )
+                        (prevOption) => prevOption !== item.name
+                      );
                     } else {
                       // If the option is not selected, add it to the array
-                      return [...prevOptions, item.name]
+                      return [...prevOptions, item.name];
                     }
-                  })
+                  });
                   navigation.goBack();
-                }
-                }
+                }}
               >
                 <Text style={styles.suggestionText}>{item.name}</Text>
               </TouchableOpacity>
@@ -112,8 +111,8 @@ const SearchDestination = ({route}) => {
         </View>
       )}
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   mainView: {
@@ -122,70 +121,70 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
-    backgroundColor: '#fff'
+    width: "100%",
+    height: "100%",
+    overflow: "hidden",
+    backgroundColor: "#fff",
   },
   headerContainer: {
-    width: '100%',
-    display: 'flex',
-    marginVertical: '5%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: "100%",
+    display: "flex",
+    marginVertical: "5%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   touchable: {
     width: 30,
-    height: 30
+    height: 30,
   },
   arrowLeftIcon: {
     width: 30,
-    height: 30
+    height: 30,
   },
   inputArea: {
     width: 291,
     height: 50,
     borderWidth: 1,
-    display: 'flex',
-    marginLeft: '6%',
+    display: "flex",
+    marginLeft: "6%",
     borderRadius: 15,
-    alignItems: 'center',
-    borderStyle: 'solid',
-    flexDirection: 'row',
-    borderColor: '#767676',
-    backgroundColor: '#fff',
-    paddingLeft: 16
+    alignItems: "center",
+    borderStyle: "solid",
+    flexDirection: "row",
+    borderColor: "#767676",
+    backgroundColor: "#fff",
+    paddingLeft: 16,
   },
   magnifyingGlass: {
     width: 20,
     fontSize: 14,
-    color: '#767676',
-    marginLeft: '10%',
-    fontFamily: 'FontAwesome6ProLight'
+    color: "#767676",
+    marginLeft: "10%",
+    fontFamily: "FontAwesome6ProLight",
   },
   inputText: {
     fontSize: 14,
-    color: '#000',
-    marginLeft: '6%',
+    color: "#000",
+    marginLeft: "6%",
     letterSpacing: 0.1,
-    alignItems: 'center',
-    fontFamily: 'BeVN'
+    alignItems: "center",
+    fontFamily: "BeVN",
   },
   line: {
     height: 1,
-    width: '100%',
+    width: "100%",
     borderTopWidth: 1,
-    borderStyle: 'solid',
-    marginVertical: '1%',
-    borderColor: '#e8e8e8'
+    borderStyle: "solid",
+    marginVertical: "1%",
+    borderColor: "#e8e8e8",
   },
   location: {
     fontSize: 17,
-    color: '#000',
-    fontFamily: 'BeVN',
-    marginVertical: '3%',
-    marginHorizontal: '11%'
+    color: "#000",
+    fontFamily: "BeVN",
+    marginVertical: "3%",
+    marginHorizontal: "11%",
   },
   suggestionText: {
     padding: 15,
@@ -196,6 +195,6 @@ const styles = StyleSheet.create({
     borderColor: "#e8e8e8",
     borderStyle: "solid",
   },
-})
+});
 
-export default SearchDestination
+export default SearchDestination;

@@ -35,16 +35,22 @@ export default function WhereScreen() {
 
   const { mainCategories, accessToken } = useStateContext();
 
-  const { childCategories, isLoading, error, refetchChildCategories } = getChildCategories(
-    accessToken,
-    mainCategories.didau.id
-  );
+  const { childCategories, isLoading, error, refetchChildCategories } =
+    getChildCategories(accessToken, mainCategories.didau.id);
 
-  const { popularActivities, isPopularLoading, popularError, refetchPopularByCategory } =
-    getPopularByCategory(accessToken, mainCategories.didau.id);
+  const {
+    popularActivities,
+    isPopularLoading,
+    popularError,
+    refetchPopularByCategory,
+  } = getPopularByCategory(accessToken, mainCategories.didau.id);
 
-  const { activities, isActivitiesLoading, activitiesError, refetchActivityByCategory } =
-    getActivityByCategory(accessToken, selected);
+  const {
+    activities,
+    isActivitiesLoading,
+    activitiesError,
+    refetchActivityByCategory,
+  } = getActivityByCategory(accessToken, selected);
 
   const { topCities, isTopCitiesLoading, topCitiesError, refetchTopCities } =
     getTopCities(accessToken);
@@ -71,14 +77,22 @@ export default function WhereScreen() {
     refetchActivityByCategory();
     refetchPopularByCategory();
     refetchTopCities();
-  }
+  };
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
-      <ScrollView showsVerticalScrollIndicator={false}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={isLoading || isPopularLoading || isActivitiesLoading || isTopCitiesLoading}
-            onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={
+              isLoading ||
+              isPopularLoading ||
+              isActivitiesLoading ||
+              isTopCitiesLoading
+            }
+            onRefresh={onRefresh}
+          />
         }
       >
         <View style={styles.mainView}>
@@ -250,6 +264,7 @@ export default function WhereScreen() {
             </View>
           )}
         </View>
+        <View style={{ marginBottom: 50 }}></View>
       </ScrollView>
     </View>
   );
