@@ -183,7 +183,8 @@ export default function ProfileScreen({ route }) {
   const { followUser, isFollowUserLoading } = followUserHook();
   const { unFollowUser, isUnFollowUserLoading } = unFollowUserHook();
 
-  const { tickets, isTicketsLoading, refetchGetTicketsByUser } = getTicketsByUser(accessToken, userId);
+  const { tickets, isTicketsLoading, refetchGetTicketsByUser } =
+    getTicketsByUser(accessToken, userId);
 
   return (
     <SafeAreaView
@@ -260,7 +261,6 @@ export default function ProfileScreen({ route }) {
               >
                 {userProfile.email.split("@")[0]}
               </Text>
-              <Text style={{ alignSelf: "center" }}>Young Killua</Text>
             </View>
             <View
               style={{
@@ -391,7 +391,7 @@ export default function ProfileScreen({ route }) {
                         {"Đăng bài viết"}
                       </Text>
                     </TouchableOpacity>
-                    <View
+                    <Pressable
                       style={{
                         width: 108,
                         alignItems: "center",
@@ -400,6 +400,7 @@ export default function ProfileScreen({ route }) {
                         paddingVertical: 8,
                         height: 30,
                       }}
+                      onPress={() => navigation.navigate("EditProfile")}
                     >
                       <Text
                         style={{
@@ -411,7 +412,7 @@ export default function ProfileScreen({ route }) {
                       >
                         {"Chỉnh sửa"}
                       </Text>
-                    </View>
+                    </Pressable>
                   </>
                 ) : (
                   <>
@@ -513,19 +514,17 @@ export default function ProfileScreen({ route }) {
                 ))}
               </View>
             )
-            ) : (
-                <>
-                  {isTicketsLoading ?
-                    <ActivityIndicator
-                      size="large"
-                      color="#ED2939"
-                      style={{ paddingVertical: 12 }}
-                    /> : 
-                    tickets.data.map(ticket => 
-                      <TicketCard data={ticket} />
-                    )
-                  }
-              
+          ) : (
+            <>
+              {isTicketsLoading ? (
+                <ActivityIndicator
+                  size="large"
+                  color="#ED2939"
+                  style={{ paddingVertical: 12 }}
+                />
+              ) : (
+                tickets.data.map((ticket) => <TicketCard data={ticket} />)
+              )}
             </>
           )}
         </ScrollView>
