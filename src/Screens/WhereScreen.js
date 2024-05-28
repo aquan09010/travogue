@@ -26,6 +26,7 @@ import {
   getPopularByCategory,
 } from "@/Hooks/TravelActivityHooks";
 import { getTopCities } from "@/Hooks/CityHooks";
+import { useNavigation } from "@react-navigation/native";
 
 export default function WhereScreen() {
   const [selected, setSelected] = useState(
@@ -68,8 +69,10 @@ export default function WhereScreen() {
     />
   );
 
+  const navigation = useNavigation();
+
   const renderCityItem = ({ item }) => (
-    <CityCard cardName={item.name} imgPath={item.images} />
+    <CityCard item={item} />   
   );
 
   const onRefresh = () => {
@@ -157,7 +160,7 @@ export default function WhereScreen() {
             >
               Something went wrong!
             </Text>
-          ) : (
+            ) : (
             <FlatList
               data={topCities.data}
               renderItem={renderCityItem}

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { Platform } from 'react-native';
 
 const getUserProfile = (accessToken, userId) => {
     const [userProfile, setUser] = useState([]);
@@ -83,6 +84,58 @@ const getHostInfo = (accessToken, hostId) => {
   return { host, isHostLoading, error, refetchHostInfo };
 };
 
+const updateAvatarHook = () => {
+  const [userProfile, setUser] = useState(null);
+  const [isUpdateAvatarLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const updateAvatar = useCallback(
+    async (accessToken, userId, photoUri) => {
+      setIsLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("image", {
+        name: "image.jpg",
+        type: "image/jpeg",
+        uri: Platform.OS === "ios" ? photoUri.replace("file://", "") : photoUri,
+      });
+
+      try {
+        const response = await fetch(
+          `https://travogue-production.up.railway.app/travogue-service/users/${userId}/avatars`,
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "multipart/form-data",
+            }, // Assuming imageFile is a File object or similar
+          }
+        );
+        let responseJson = await response.json();
+        console.log("POST IMAGE: ". responseJson);
+        setUser(responseJson)
+        setIsLoading(false);
+        return responseJson;
+      } catch (error) {
+        setError(error.response.data);
+        console.log("POST IMAGE ERROR: ", error)
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  const refetch = () => {
+    setIsLoading(true);
+    updateAvatar();
+  };
+
+  return { updateAvatar, userProfile, isUpdateAvatarLoading, error, refetch };
+};
 
 
-export {getUserProfile, getHostInfo}
+
+export { getUserProfile, getHostInfo, updateAvatarHook };

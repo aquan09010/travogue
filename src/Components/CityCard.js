@@ -13,18 +13,20 @@ import { useNavigation } from '@react-navigation/native';
 import { MiniLocation, StarIcon } from '@/Assets/Icons/Card';
 import HeartButton from './HeartButton';
 
-export default function CityCard(props) {
+export default function CityCard({item}) {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
-      style={[styles.itemContainer, props.style]}
-      key={props.id}
-      onPress={() => {}}
+      style={[styles.itemContainer]}
+      key={item.id}
+      onPress={() =>
+        navigation.navigate("WhereaboutSearch", { city: item })
+      }
     >
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: props.imgPath }} />
-        <Text style={styles.imageText}>{props.cardName}</Text>
+        <Image style={styles.image} source={{ uri: item.images }} />
+        <Text style={styles.imageText}>{item.name}</Text>
       </View>
     </TouchableOpacity>
   );

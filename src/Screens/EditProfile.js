@@ -53,6 +53,7 @@ import Swiper from "react-native-swiper";
 import { searchCities } from "@/Hooks/CityHooks";
 import { useStateContext } from "@/Context/StateContext";
 import { getChildCategories } from "@/Hooks/TravelActivityHooks";
+import { updateAvatarHook } from "@/Hooks/UserHook";
 
 const options = [
   "Nghệ thuật và văn hoá",
@@ -68,37 +69,15 @@ const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
 const videoExtensions = ["mp4", "mov"];
 export default function EditProfile({ route }) {
   const navigation = useNavigation();
-  const gotoSetTicket = async (e) => {
-    e.preventDefault();
-    navigation.navigate("EditTicketPrice", {
-      activityName: activityName,
-      description: description,
-      tags: selectedTags.join(";"),
-      cityId: city,
-      categoryId: categoryId,
-      image: image,
-      images: images,
-    });
-  };
-  const [activityName, setActivityName] = useState("");
-  const [description, setDescription] = useState("");
-  const [images, setImages] = useState([]);
+  const { accessToken, user, setUser } = useStateContext();
+
   const [image, setImage] = useState(null);
-  const [city, setCity] = useState(null);
-  const [categoryId, setCategoryId] = useState(null);
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [name, setName] = useState("");
-  const [mail, setMail] = useState("");
+ 
+  const [name, setName] = useState(user.firstName);
+  const [mail, setMail] = useState(user.lastName);
 
-  const { accessToken } = useStateContext();
 
-  const { cities, isCitiesLoading, citiesError } = searchCities(
-    accessToken,
-    ""
-  );
-
-  const { childCategories, isLoading, error, refetchChildCategories } =
-    getChildCategories(accessToken, "df8762e6-e127-4e75-ac55-da372c2fcb09");
+  const { updateAvatar, isUpdateAvatarLoading, error, refetch } = updateAvatarHook();
 
   const pickMainImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -115,20 +94,14 @@ export default function EditProfile({ route }) {
       setImage(result.assets[0].uri);
     }
   };
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      aspect: [1, 1],
-      quality: 1,
-      allowsMultipleSelection: true,
-      orderedSelection: true,
-    });
-    console.log(result);
-    if (!result.canceled) {
-      setImages((images) => [...result.assets.map((asset) => asset.uri)]);
-    }
-  };
+
+  const handleEditProfile = async () => {
+    console.log(image);
+    let userProfile = await updateAvatar(accessToken, user.id, image);
+    setUser({ ...user, avatar: userProfile.data.avatar });
+    navigation.navigate("ProfileScreen", { userId: user.id });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.statusBar}>
@@ -138,8 +111,8 @@ export default function EditProfile({ route }) {
         <Text style={styles.title}>Chỉnh sửa Hồ Sơ</Text>
         <Pressable
           style={styles.button}
-          //   onPress={() => handleCreatePost()}
-          //   disabled={isCreatePostLoading || isAddImageLoading}
+          onPress={() => handleEditProfile()}
+            disabled={isUpdateAvatarLoading}
         >
           <Text style={styles.checkout}>Xong</Text>
         </Pressable>
@@ -167,7 +140,7 @@ export default function EditProfile({ route }) {
               alignSelf: "center",
             }}
             resizeMode="cover"
-            source={require("../Assets/ava1.jpg")}
+            source={{uri: user.avatar}}
           />
         </Pressable>
 

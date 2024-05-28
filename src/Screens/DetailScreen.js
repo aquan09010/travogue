@@ -324,11 +324,11 @@ export default function DetailScreen({ route }) {
               style={[styles.actionPadding, styles.extraLine]}
             >
               <SvgXml xml={CommentIcon} />
-              <Text style={styles.text}>120</Text>
+              {/* <Text style={styles.text}>120</Text> */}
             </Pressable>
             <Pressable style={[styles.actionPadding, styles.extraLine]}>
               <SvgXml xml={ShareIcon} />
-              <Text style={styles.text}>120</Text>
+              {/* <Text style={styles.text}>120</Text> */}
             </Pressable>
           </View>
           <View
@@ -372,13 +372,7 @@ export default function DetailScreen({ route }) {
           )}
 
           <View style={styles.detailContainer}>
-            {route.params.isExperience &&
-              activity.data.averageRating >= 4.8 && (
-                <View style={styles.topWrapper}>
-                  <Text style={[styles.textDetail]}>Top trải nghiệm</Text>
-                </View>
-              )}
-
+            
             <View>
               <Text style={[styles.title]} numberOfLines={2}>
                 {activity.data.activityName +
@@ -400,7 +394,14 @@ export default function DetailScreen({ route }) {
                 <View style={[styles.line]}>
                   <SvgXml xml={MiniLocation1} />
                   <Text style={[styles.text]}>{activity.data.city.name}</Text>
-                </View>
+                    </View>
+                    
+                    {route.params.isExperience &&
+                  activity.data.averageRating >= 4.8 && (
+                    <View style={styles.topWrapper}>
+                      <Text style={[styles.textDetail]}>Top trải nghiệm</Text>
+                    </View>
+                  )}
               </View>
               <View
                 style={[styles.frameContainer, styles.frameParentShadowBox]}
@@ -891,6 +892,7 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     top: 400,
+    right: 30,
     left: 360,
     alignItems: "center",
     position: "absolute",
@@ -1030,7 +1032,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
-    marginTop: 5,
+    marginTop: 5
   },
   inputArea: {
     borderRadius: 7,

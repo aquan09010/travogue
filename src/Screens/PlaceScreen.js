@@ -63,7 +63,7 @@ export default function PlaceScreen() {
   );
 
   const renderCityItem = ({ item }) => (
-    <CityCard cardName={item.name} imgPath={item.images} />
+    <CityCard item={item} />   
   );
 
   const onRefresh = () => {

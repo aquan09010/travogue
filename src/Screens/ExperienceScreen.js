@@ -71,7 +71,7 @@ export default function ExperienceScreen() {
   );
 
   const renderCityItem = ({ item }) => (
-    <CityCard cardName={item.name} imgPath={item.images} />
+    <CityCard item={item} />   
   );
 
   const onRefresh = () => {
@@ -207,10 +207,10 @@ export default function ExperienceScreen() {
                       key={i}
                       onPress={() => setSelected(e.id)}
                     >
-                      <SvgXml
+                      {/* <SvgXml
                         style={styles.icon}
                         xml={selected === e.id ? e.svgActive : e.svg}
-                      />
+                      /> */}
                       <Text
                         style={[
                           styles.titleTab,
