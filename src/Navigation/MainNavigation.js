@@ -11,6 +11,8 @@ import {
 } from "@/Assets/Icons/Community.js";
 import { PlanIcon, PlanIconFilled } from "@/Assets/Icons/Plan.js";
 import {
+  MapFilledIcon,
+  MapIcon,
   NotificationIcon,
   NotificationIconFilled,
 } from "@/Assets/Icons/Notification.js";
@@ -22,6 +24,7 @@ import SearchCityScreen from "@/Screens/SearchCityScreen";
 import ProfileScreen from "@/Screens/ProfileScreen";
 import CloneSceen from "@/Screens/CloneDetail";
 import HomePagePlanning from "@/Screens/HomePagePlanning";
+import MapScreen from "@/Screens/MapScreen";
 
 const MainNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -60,11 +63,11 @@ const MainNavigator = () => {
             } else {
               return <SvgXml xml={PlanIcon} />;
             }
-          } else if (route.name === "Thông báo") {
+          } else if (route.name === "Bản đồ") {
             if (focused) {
-              return <SvgXml xml={NotificationIconFilled} />;
+              return <SvgXml xml={MapFilledIcon} />;
             } else {
-              return <SvgXml xml={NotificationIcon} />;
+              return <SvgXml xml={MapIcon} />;
             }
           } else if (route.name === "Hồ sơ") {
             if (focused) {
@@ -84,21 +87,21 @@ const MainNavigator = () => {
         }}
       />
       <Tab.Screen name="Cộng đồng" component={CommunityScreen} />
-      <Tab.Screen 
-        name="Lập kế hoạch" 
+      <Tab.Screen
+        name="Lập kế hoạch"
         component={HomePagePlanning}
         options={{
           headerTitle: (props) => <TabHeader {...props} />,
-        }} 
+        }}
       />
-      <Tab.Screen name="Thông báo" component={HomeScreen} />
+      <Tab.Screen name="Bản đồ" component={MapScreen} />
       <Tab.Screen
         name="Hồ sơ"
         component={ProfileScreen}
         options={({}) => ({
           headerShown: false,
         })}
-        initialParams={{userId: null}}
+        initialParams={{ userId: null }}
       />
     </Tab.Navigator>
   );
