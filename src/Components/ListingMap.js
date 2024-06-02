@@ -106,6 +106,11 @@ const ListingMap = () => {
             }}
           >
             <View style={styles.marker}>
+              <Image
+                style={{ width: 30, height: 30, marginRight: 5 }}
+                resizeMode="cover"
+                source={require("../Assets/card1.jpg")}
+              />
               <Text style={styles.markerText}>€ {item.price}</Text>
             </View>
           </Marker>
@@ -134,6 +139,7 @@ const styles = StyleSheet.create({
       width: 1,
       height: 10,
     },
+    flexDirection: "row",
   },
   markerText: {
     fontSize: 14,
