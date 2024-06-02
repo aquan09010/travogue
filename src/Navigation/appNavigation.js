@@ -39,6 +39,7 @@ import EditTicketPrice from "@/Screens/Host/EditTicketPrice";
 import WishlistScreen from "@/Screens/WishlistScreen";
 import EditScreen from "@/Screens/Host/EditScreen";
 import EditProfile from "@/Screens/EditProfile";
+import Result from "@/Screens/Result";
 // import WhereaboutSearchScreen from "@/Screens/WhereaboutSearchScreen";
 
 const Stack = createNativeStackNavigator();
@@ -244,6 +245,11 @@ export default function AppNavigation() {
           name="EditProfile"
           options={{ headerShown: false }}
           component={EditProfile}
+        />
+        <Stack.Screen
+          name="Result"
+          options={{ headerShown: false }}
+          component={Result}
         />
       </Stack.Navigator>
     </NavigationContainer>

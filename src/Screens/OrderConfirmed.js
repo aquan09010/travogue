@@ -9,18 +9,18 @@ import {
   ImageBackground,
   Pressable,
   SafeAreaView,
-  ActivityIndicator
-} from 'react-native';
-import { SvgXml } from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
-import { ParkIconActive } from '@/Assets/Icons/Where';
-import React, { useLayoutEffect, useState, useRef, useEffect } from 'react';
+  ActivityIndicator,
+} from "react-native";
+import { SvgXml } from "react-native-svg";
+import { useNavigation } from "@react-navigation/native";
+import { ParkIconActive } from "@/Assets/Icons/Where";
+import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 import {
   SearchIcon,
   ArrowLeft,
   ArrowLeftBlack,
   SearchIconBlack,
-} from '@/Assets/Icons/Navigation';
+} from "@/Assets/Icons/Navigation";
 import {
   CommentIcon,
   DotIcon,
@@ -29,8 +29,8 @@ import {
   MiniLocation1,
   MiniStar,
   ShareIcon,
-} from '@/Assets/Icons/DetailIcon';
-import { MiniLocation } from '@/Assets/Icons/Card';
+} from "@/Assets/Icons/DetailIcon";
+import { MiniLocation } from "@/Assets/Icons/Card";
 import {
   AppleIcon,
   BoxCheckIcon,
@@ -42,15 +42,15 @@ import {
   SuccessIcon,
   TimeIcon,
   VisaIcon,
-} from '@/Assets/Icons/OrderConfirm';
-import { checkDiscountCodeHook } from '@/Hooks/PromotionHook';
-import { useStateContext } from '@/Context/StateContext';
-import { buyTicketAPI } from '@/Hooks/TicketHooks';
+} from "@/Assets/Icons/OrderConfirm";
+import { checkDiscountCodeHook } from "@/Hooks/PromotionHook";
+import { useStateContext } from "@/Context/StateContext";
+import { buyTicketAPI } from "@/Hooks/TicketHooks";
 export default function OrderConfirm({ route }) {
   const navigation = useNavigation();
   const gotoHost = async (e) => {
     e.preventDefault();
-    navigation.navigate('HostProfile');
+    navigation.navigate("HostProfile");
   };
 
   const { activity, host, data } = route.params;
@@ -60,38 +60,48 @@ export default function OrderConfirm({ route }) {
 
   const [discountCode, setDiscountCode] = useState(null);
 
-  const { checkDiscount,
+  const {
+    checkDiscount,
     discount,
     isCheckDiscountLoading,
-    checkDiscountError } = checkDiscountCodeHook();
-  
-  const { buyTicket,
-    ticket,
-    isTicketLoading,
-    ticketError } = buyTicketAPI();
-  
+    checkDiscountError,
+  } = checkDiscountCodeHook();
+
+  const { buyTicket, ticket, isTicketLoading, ticketError } = buyTicketAPI();
+
   const handleCheckDiscountCode = async () => {
     await checkDiscount(accessToken, activity.id, discountCode);
-  }
+  };
 
   const handleCheckout = async () => {
     const body = {
       ...data,
       insuranceCost: selectedInsurance ? selectedInsurance.bestOffer : 0,
-      totalDiscountCode: discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
-        data.numOfChildren * data.childrenPrice +
-        data.numOfBabies * data.babyPrice) : 0,
+      totalDiscountCode:
+        discount && !checkDiscountError
+          ? discount *
+            0.01 *
+            (data.numOfAdults * data.adultsPrice +
+              data.numOfChildren * data.childrenPrice +
+              data.numOfBabies * data.babyPrice)
+          : 0,
       totalDiscountEvent: 0,
-      totalPay: (data.numOfAdults * data.adultsPrice +
+      totalPay:
+        data.numOfAdults * data.adultsPrice +
         data.numOfChildren * data.childrenPrice +
-        data.numOfBabies * data.babyPrice + (selectedInsurance ? selectedInsurance.bestOffer : 0)
-        - (discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
-          data.numOfChildren * data.childrenPrice +
-          data.numOfBabies * data.babyPrice) : 0)),
+        data.numOfBabies * data.babyPrice +
+        (selectedInsurance ? selectedInsurance.bestOffer : 0) -
+        (discount && !checkDiscountError
+          ? discount *
+            0.01 *
+            (data.numOfAdults * data.adultsPrice +
+              data.numOfChildren * data.childrenPrice +
+              data.numOfBabies * data.babyPrice)
+          : 0),
       insuranceId: selectedInsurance ? selectedInsurance.id : null,
-    }
+    };
     await buyTicket(accessToken, null, activity.activityTimeFrameId, body);
-    navigation.navigate('Main');
+    navigation.navigate("Result");
   };
 
   return (
@@ -105,7 +115,7 @@ export default function OrderConfirm({ route }) {
           <SvgXml xml={SearchIconBlack} />
         </Pressable>
       </View>
-      <ScrollView style={{ height: '87%' }}>
+      <ScrollView style={{ height: "87%" }}>
         <View style={styles.containerCard}>
           <Image
             style={styles.img}
@@ -125,21 +135,21 @@ export default function OrderConfirm({ route }) {
             <View style={[styles.line]}>
               <SvgXml xml={PeopleIcon} />
               <Text style={[styles.text]}>
-                {' '}
-                {data.numOfAdults} người lớn, {data.numOfChildren} trẻ em,{' '}
+                {" "}
+                {data.numOfAdults} người lớn, {data.numOfChildren} trẻ em,{" "}
                 {data.numOfBabies} em bé
               </Text>
             </View>
             <Pressable style={styles.line1} onPress={gotoHost}>
-              <Text style={{ alignSelf: 'center', marginRight: 5 }}>
-                <Text style={{ fontWeight: '600', fontSize: 16 }}>Host:</Text>
+              <Text style={{ alignSelf: "center", marginRight: 5 }}>
+                <Text style={{ fontWeight: "600", fontSize: 16 }}>Host:</Text>
                 <Text style={{ fontSize: 16 }}> {host.email}</Text>
               </Text>
               <View style={[styles.avatar, styles.actionPadding]}>
                 <Image
                   style={styles.avaImg}
                   resizeMode="cover"
-                  source={{uri: host.avatar}}
+                  source={{ uri: host.avatar }}
                 />
               </View>
             </Pressable>
@@ -148,16 +158,16 @@ export default function OrderConfirm({ route }) {
         <View style={styles.mainView}>
           <View style={[styles.line]}>
             <SvgXml xml={OrderIcon} />
-            <Text style={{ fontWeight: '600', fontSize: 16 }}>
-              {' '}
+            <Text style={{ fontWeight: "600", fontSize: 16 }}>
+              {" "}
               Nhập mã giảm giá
             </Text>
           </View>
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
               marginTop: 10,
             }}
           >
@@ -171,28 +181,30 @@ export default function OrderConfirm({ route }) {
               <Text>Áp dụng</Text>
             </Pressable>
           </View>
-          {isCheckDiscountLoading ?
-                    <ActivityIndicator
-                    size="large"
-                    color="#ED2939"
-                    style={{ paddingVertical: 12 }}
-                  /> :  checkDiscountError ?
+          {isCheckDiscountLoading ? (
+            <ActivityIndicator
+              size="large"
+              color="#ED2939"
+              style={{ paddingVertical: 12 }}
+            />
+          ) : checkDiscountError ? (
             <View style={styles.line3}>
-              <Text style={{}}>{ checkDiscountError.message}</Text>
-            </View> :
-            discount ? <View style={styles.line3}>
+              <Text style={{}}>{checkDiscountError.message}</Text>
+            </View>
+          ) : discount ? (
+            <View style={styles.line3}>
               <Text style={{}}>Đã áp dụng mã {discountCode}</Text>
               <Text style={{}}>giảm {discount}%</Text>
-              </View> : <></>
-          }
-          
-          
+            </View>
+          ) : (
+            <></>
+          )}
         </View>
         <View style={styles.mainView}>
           <View style={[styles.line]}>
             <SvgXml xml={OrderIcon} />
-            <Text style={{ fontWeight: '600', fontSize: 16 }}>
-              {' '}
+            <Text style={{ fontWeight: "600", fontSize: 16 }}>
+              {" "}
               Chi tiết thanh toán
             </Text>
           </View>
@@ -215,30 +227,44 @@ export default function OrderConfirm({ route }) {
 
           <View style={styles.line3}>
             <Text style={{}}>Tổng cộng Voucher giảm giá</Text>
-            <Text style={{}}>-đ{(discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
-                data.numOfChildren * data.childrenPrice +
-                data.numOfBabies * data.babyPrice) : 0).toLocaleString()}</Text>
+            <Text style={{}}>
+              -đ
+              {(discount && !checkDiscountError
+                ? discount *
+                  0.01 *
+                  (data.numOfAdults * data.adultsPrice +
+                    data.numOfChildren * data.childrenPrice +
+                    data.numOfBabies * data.babyPrice)
+                : 0
+              ).toLocaleString()}
+            </Text>
           </View>
-          {selectedInsurance && 
+          {selectedInsurance && (
+            <View style={styles.line3}>
+              <Text style={{}}>{selectedInsurance.name}</Text>
+              <Text style={{}}>-đ{selectedInsurance.bestOffer}</Text>
+            </View>
+          )}
+
           <View style={styles.line3}>
-            <Text style={{}}>{selectedInsurance.name}</Text>
-            <Text style={{}}>-đ{selectedInsurance.bestOffer}</Text>
-          </View>
-          }
-          
-          <View style={styles.line3}>
-            <Text style={{ fontWeight: '600', fontSize: 16 }}>
+            <Text style={{ fontWeight: "600", fontSize: 16 }}>
               Tổng thanh toán:
             </Text>
-            <Text style={{ fontWeight: '600', fontSize: 16, color: '#ed2939' }}>
+            <Text style={{ fontWeight: "600", fontSize: 16, color: "#ed2939" }}>
               đ
-              {(data.numOfAdults * data.adultsPrice +
+              {(
+                data.numOfAdults * data.adultsPrice +
                 data.numOfChildren * data.childrenPrice +
-                data.numOfBabies * data.babyPrice + (selectedInsurance ? selectedInsurance.bestOffer : 0)
-                - (discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
-                  data.numOfChildren * data.childrenPrice +
-                  data.numOfBabies * data.babyPrice) : 0)).toLocaleString()
-              }
+                data.numOfBabies * data.babyPrice +
+                (selectedInsurance ? selectedInsurance.bestOffer : 0) -
+                (discount && !checkDiscountError
+                  ? discount *
+                    0.01 *
+                    (data.numOfAdults * data.adultsPrice +
+                      data.numOfChildren * data.childrenPrice +
+                      data.numOfBabies * data.babyPrice)
+                  : 0)
+              ).toLocaleString()}
             </Text>
           </View>
         </View>
@@ -246,8 +272,8 @@ export default function OrderConfirm({ route }) {
         <View style={styles.mainView}>
           <View style={[styles.line]}>
             <SvgXml xml={CashIcon} />
-            <Text style={{ fontWeight: '600', fontSize: 16 }}>
-              {' '}
+            <Text style={{ fontWeight: "600", fontSize: 16 }}>
+              {" "}
               Phương thức thanh toán
             </Text>
           </View>
@@ -260,12 +286,12 @@ export default function OrderConfirm({ route }) {
             <Text style={{}}> Apple Pay</Text>
           </View>
         </View>
-        
+
         <View style={styles.listKind}>
           <View style={[styles.line]}>
             <SvgXml xml={CashIcon} />
-            <Text style={{ fontWeight: '600', fontSize: 16 }}>
-              {' '}
+            <Text style={{ fontWeight: "600", fontSize: 16 }}>
+              {" "}
               Bảo hiểm du lịch
             </Text>
           </View>
@@ -276,9 +302,11 @@ export default function OrderConfirm({ route }) {
               style={[
                 styles.option,
                 {
-                  borderColor: selectedInsurance && selectedInsurance.id === insurance.insurance.id
-                    ? "red"
-                    : "gray",
+                  borderColor:
+                    selectedInsurance &&
+                    selectedInsurance.id === insurance.insurance.id
+                      ? "red"
+                      : "gray",
                 },
               ]}
               onPress={() => setSelectedInsurance(insurance.insurance)}
@@ -287,23 +315,20 @@ export default function OrderConfirm({ route }) {
                 style={[
                   styles.optionText,
                   {
-                    color: selectedInsurance && selectedInsurance.id === insurance.insurance.id ? "red" : "gray",
+                    color:
+                      selectedInsurance &&
+                      selectedInsurance.id === insurance.insurance.id
+                        ? "red"
+                        : "gray",
                   },
                 ]}
               >
                 {insurance.insurance.name} : {insurance.insurance.bestOffer}đ
               </Text>
 
-              {insurance.insurance.benefits.split(';').map(item => 
-                <Text
-                  style={[
-                    styles.th714,
-                    {color: "gray"}
-                  ]}
-                >
-                  {item}, 
-                </Text>
-              )}
+              {insurance.insurance.benefits.split(";").map((item) => (
+                <Text style={[styles.th714, { color: "gray" }]}>{item},</Text>
+              ))}
             </TouchableOpacity>
           ))}
         </View>
@@ -312,7 +337,7 @@ export default function OrderConfirm({ route }) {
           <View style={[styles.line]}>
             <SvgXml xml={BoxCheckIcon} />
             <Text style={{}}>
-              {' '}
+              {" "}
               Nhấn “Thanh toán” đồng nghĩa với việc bạn đồng ý tuân theo Điều
               khoản của Travogue.
             </Text>
@@ -322,24 +347,34 @@ export default function OrderConfirm({ route }) {
       <View style={[styles.frameParent4]}>
         <View style={{}}>
           <Text style={{}}>Tổng thanh toán</Text>
-          <Text style={{ fontWeight: '600', fontSize: 16, color: '#ed2939' }}>
-              đ
-              {(data.numOfAdults * data.adultsPrice +
-                data.numOfChildren * data.childrenPrice +
-                data.numOfBabies * data.babyPrice + (selectedInsurance ? selectedInsurance.bestOffer : 0)
-                - (discount && !checkDiscountError ? discount*0.01*(data.numOfAdults * data.adultsPrice +
-                  data.numOfChildren * data.childrenPrice +
-                  data.numOfBabies * data.babyPrice) : 0)).toLocaleString()
-              }
+          <Text style={{ fontWeight: "600", fontSize: 16, color: "#ed2939" }}>
+            đ
+            {(
+              data.numOfAdults * data.adultsPrice +
+              data.numOfChildren * data.childrenPrice +
+              data.numOfBabies * data.babyPrice +
+              (selectedInsurance ? selectedInsurance.bestOffer : 0) -
+              (discount && !checkDiscountError
+                ? discount *
+                  0.01 *
+                  (data.numOfAdults * data.adultsPrice +
+                    data.numOfChildren * data.childrenPrice +
+                    data.numOfBabies * data.babyPrice)
+                : 0)
+            ).toLocaleString()}
           </Text>
         </View>
-        {isTicketLoading ? <ActivityIndicator
-                    size="large"
-                    color="#ED2939"
-                    style={{ paddingVertical: 12 }}
-                  /> : <></>}
+        {isTicketLoading ? (
+          <ActivityIndicator
+            size="large"
+            color="#ED2939"
+            style={{ paddingVertical: 12 }}
+          />
+        ) : (
+          <></>
+        )}
         <Pressable style={[styles.button1]} onPress={handleCheckout}>
-          <Text style={{ color: '#fff' }}>Thanh toán</Text>
+          <Text style={{ color: "#fff" }}>Thanh toán</Text>
         </Pressable>
       </View>
     </SafeAreaView>
@@ -351,25 +386,25 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   statusBar: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 18,
     paddingVertical: 14,
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   containerCard: {
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 18,
     paddingVertical: 12,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   img: {
     borderRadius: 7,
@@ -378,23 +413,23 @@ const styles = StyleSheet.create({
   },
   orderCard: {
     marginLeft: 12,
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     flex: 1,
   },
   textDetail: {
     fontSize: 16,
-    textAlign: 'left',
-    fontWeight: '600',
+    textAlign: "left",
+    fontWeight: "600",
   },
   line: {
-    flexDirection: 'row',
-    alignContent: 'center',
+    flexDirection: "row",
+    alignContent: "center",
     // height: 10,
     paddingTop: 10,
   },
   line1: {
-    flexDirection: 'row',
-    alignContent: 'center',
+    flexDirection: "row",
+    alignContent: "center",
     // height: 10,
   },
   avaImg: {
@@ -404,57 +439,57 @@ const styles = StyleSheet.create({
   },
   inputArea: {
     borderRadius: 7,
-    borderStyle: 'solid',
-    borderColor: '#767676',
+    borderStyle: "solid",
+    borderColor: "#767676",
     borderWidth: 1,
-    width: '70%',
-    flexDirection: 'row',
+    width: "70%",
+    flexDirection: "row",
     paddingHorizontal: 12,
     paddingVertical: 12,
   },
   button: {
     borderRadius: 7,
-    backgroundColor: '#fff',
-    borderStyle: 'solid',
-    borderColor: '#151515',
+    backgroundColor: "#fff",
+    borderStyle: "solid",
+    borderColor: "#151515",
     borderWidth: 1,
-    overflow: 'hidden',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
+    overflow: "hidden",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
   line3: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingTop: 10,
   },
   frameParent4: {
     height: 80,
     borderTopWidth: 1,
     paddingTop: 18,
-    flexWrap: 'wrap',
-    alignItems: 'center',
+    flexWrap: "wrap",
+    alignItems: "center",
     paddingHorizontal: 18,
     paddingVertical: 0,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    borderColor: '#bababa',
-    borderStyle: 'solid',
-    backgroundColor: '#fff',
+    justifyContent: "space-between",
+    flexDirection: "row",
+    borderColor: "#bababa",
+    borderStyle: "solid",
+    backgroundColor: "#fff",
     bottom: 0,
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
   },
   button1: {
     borderRadius: 7,
-    backgroundColor: '#ed2939',
-    borderColor: '#fff',
-    flexWrap: 'wrap',
+    backgroundColor: "#ed2939",
+    borderColor: "#fff",
+    flexWrap: "wrap",
     paddingVertical: 12,
     paddingHorizontal: 16,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   th714: {
     fontSize: 12,
