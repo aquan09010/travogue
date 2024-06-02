@@ -141,7 +141,10 @@ export default function SetTicketPrice({ route }) {
     for (const image of basicInfo.images) {
       await addOtherImage(accessToken, response.data.id, image);
     }
-    navigation.navigate("HomeHost");
+    navigation.navigate("HostDetailScreen", {
+      activityId: response.data.id,
+      isExperience: true,
+    });
   }
 
   return (

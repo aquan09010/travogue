@@ -101,7 +101,7 @@ export default function OrderConfirm({ route }) {
       insuranceId: selectedInsurance ? selectedInsurance.id : null,
     };
     await buyTicket(accessToken, null, activity.activityTimeFrameId, body);
-    navigation.navigate("Result");
+    navigation.navigate("Result", {activity: activity, host: host, data: data});
   };
 
   return (

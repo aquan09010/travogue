@@ -213,7 +213,7 @@ export default function WhereaboutSearchScreen({ route }) {
 
         <Text style={{ fontSize: 18, fontWeight: "600" }}>{city.name}</Text>
 
-        <SvgXml xml={SearchBlackIcon} style={styles.search} />
+        {/* <SvgXml xml={SearchBlackIcon} style={styles.search} /> */}
       </SafeAreaView>
       <SafeAreaView>
         <View>
@@ -469,7 +469,7 @@ export default function WhereaboutSearchScreen({ route }) {
           </BottomSheetModal>
         </View>
 
-        <View style={styles.mainView}>
+        <ScrollView style={styles.mainView}>
           {isActivitiesLoading ? (
             <>
               <ActivityIndicator
@@ -490,7 +490,7 @@ export default function WhereaboutSearchScreen({ route }) {
               Something went wrong!
             </Text>
           ) : (
-            <ScrollView style={styles.cardListContainer}>
+            <View style={styles.cardListContainer}>
               {activities.data.data.map((item, index) => {
                 return (
                   <AccommodationCard
@@ -507,9 +507,9 @@ export default function WhereaboutSearchScreen({ route }) {
                 );
               })}
               <View style={{ marginBottom: 400 }}></View>
-            </ScrollView>
+            </View>
           )}
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </SafeAreaView>
   );
@@ -751,6 +751,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   cardListContainer: {
-    height: "100%",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between", // Evenly distribute cards
   },
 });

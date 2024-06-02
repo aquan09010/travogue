@@ -259,45 +259,51 @@ const postCommentsByActivity = () => {
   };
 };
 
-const searchActivities = (accessToken, keyword) => {
-  const [activities, setCities] = useState([]);
-  const [isSearchActivitiesLoading, setIsLoading] = useState(true);
+const searchActivitiesHook = (cityId) => {
+  const [activities, setCities] = useState(null);
+  const [isSearchActivitiesLoading, setIsLoading] = useState(false);
   const [searchActivitiesError, setError] = useState(null);
 
-  const options = {
-    method: 'GET',
-    url: `https://travogue-production.up.railway.app/travogue-service/travel-activities/search?criteria=${keyword}&pageNumber=0&pageSize=10&sortField=updated_at`,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
+  const searchActivities = useCallback(
+    async (accessToken, keyword, cityId) => {
+      setIsLoading(true);
+
+      try {
+        const options = {
+          method: 'GET',
+          url: `https://travogue-production.up.railway.app/travogue-service/travel-activities/search?criteria=${keyword}&pageNumber=0&pageSize=20&sortField=updated_at`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            cityId: cityId
+          }
+        };
+        const response = await axios.request(options);
+        setCities(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.response.data);
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
     },
-  };
-
-  const fetchData = async () => {
-    setIsLoading(true);
-
-    try {
-      const response = await axios.request(options);
-
-      setCities(response.data); // Assuming the response contains the child categories
-      setIsLoading(false);
-    } catch (error) {
-      setError(error);
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [keyword]); // No dependencies for initial fetch
+    []
+  );
 
   const refetch = () => {
     setIsLoading(true);
-    fetchData();
+    searchActivities();
   };
 
-  return { activities, isSearchActivitiesLoading, searchActivitiesError, refetch };
+  return {
+    searchActivities,
+    activities,
+    isSearchActivitiesLoading,
+    searchActivitiesError,
+    refetch,
+  };
 };
 
 export {
@@ -307,5 +313,5 @@ export {
   getDetailActivity,
   getCommentsByActivity,
   postCommentsByActivity,
-  searchActivities
+  searchActivitiesHook
 };

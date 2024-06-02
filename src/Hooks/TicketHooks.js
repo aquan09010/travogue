@@ -90,4 +90,45 @@ const getTicketsByUser = (accessToken, userId) => {
   return { tickets, isTicketsLoading, error, refetchGetTicketsByUser };
 };
 
-export { buyTicketAPI, getTicketsByUser };
+const getTicketsById = (accessToken, ticketId) => {
+  const [tickets, setTickets] = useState([]);
+  const [isTicketsLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const options = {
+    method: 'GET',
+    url: `https://travogue-production.up.railway.app/travogue-service/tickets/${ticketId}`,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.request(options);
+
+      setTickets(response.data); // Assuming the response contains the child categories
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []); // No dependencies for initial fetch
+
+  const refetchGetTicketsById = () => {
+    setIsLoading(true);
+    fetchData();
+  };
+
+  return { tickets, isTicketsLoading, error, refetchGetTicketsById };
+};
+
+export { buyTicketAPI, getTicketsByUser, getTicketsById };

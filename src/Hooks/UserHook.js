@@ -136,6 +136,50 @@ const updateAvatarHook = () => {
   return { updateAvatar, userProfile, isUpdateAvatarLoading, error, refetch };
 };
 
+const searchUsersHook = () => {
+  const [users, setUsers] = useState(null);
+  const [isSearchUsersLoading, setIsLoading] = useState(false);
+  const [searchUsersError, setError] = useState(null);
+
+  const searchUsers = useCallback(
+    async (accessToken, keyword) => {
+      setIsLoading(true);
+
+      try {
+        const options = {
+          method: 'GET',
+          url: `https://travogue-production.up.railway.app/travogue-service/users?keyword=${keyword}&pageNumber=0&pageSize=20&sortField=first_name`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+        const response = await axios.request(options);
+        setUsers(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  const refetch = () => {
+    setIsLoading(true);
+    searchUsers();
+  };
+
+  return {
+     searchUsers,
+    users,
+    isSearchUsersLoading,
+    searchUsersError,
+    refetch,
+  };
+};
 
 
-export { getUserProfile, getHostInfo, updateAvatarHook };
+
+
+export { getUserProfile, getHostInfo, updateAvatarHook, searchUsersHook };

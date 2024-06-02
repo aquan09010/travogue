@@ -13,7 +13,7 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/82716b8e-2818-4161-8a88-c571df4369a5"
+      "url": "https://u.expo.dev/733e46a6-5464-4835-a8f2-eaee2cbd14c8"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -27,7 +27,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.hpcc.expo_redux_template"
+      "package": "com.hpcc.expo_redux_template",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -43,6 +46,11 @@
     ],
     "runtimeVersion": {
       "policy": "sdkVersion"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "733e46a6-5464-4835-a8f2-eaee2cbd14c8"
+      }
     }
   }
 }

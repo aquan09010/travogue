@@ -318,7 +318,7 @@ export default function DetailHost({ route }) {
             ]}
           >
             <View style={styles.statusBar}>
-              <Pressable onPress={() => navigation.goBack()}>
+              <Pressable onPress={() => navigation.navigate("Host")}>
                 <SvgXml xml={ArrowLeft} />
               </Pressable>
               <Pressable onPress={() => {}}>
