@@ -48,9 +48,14 @@ const Result = () => {
           </Text>
         </View>
       </View>
-      <View style={{ paddingVertical: 8, paddingHorizontal: 30 }}>
-        <Text>Xin chúc mừng bạn đã đặt vé thành công cho trải nghiệm: ABC</Text>
-        <Text>Sau đây là vé trải nghiệm:</Text>
+      <View style={{ paddingVertical: 8, paddingHorizontal: 25 }}>
+        <Text style={{ fontWeight: "bold" }}>
+          Xin chúc mừng bạn đã đặt vé thành công cho trải nghiệm: ABC
+        </Text>
+        <Text style={{ fontWeight: "bold" }}>Sau đây là vé trải nghiệm:</Text>
+        <Text style={{ fontWeight: "bold" }}>
+          {"Vé của bạn sẽ được hiển thị trong phần Hồ Sơ > Vé của bạn."}{" "}
+        </Text>
       </View>
     </SafeAreaView>
   );
