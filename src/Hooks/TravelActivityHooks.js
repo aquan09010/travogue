@@ -306,6 +306,47 @@ const searchActivitiesHook = (cityId) => {
   };
 };
 
+const searchActivities = (accessToken, keyword) => {
+  const [activities, setCities] = useState([]);
+  const [isSearchActivitiesLoading, setIsLoading] = useState(true);
+  const [searchActivitiesError, setError] = useState(null);
+
+  const options = {
+    method: 'GET',
+    url: `https://travogue-production.up.railway.app/travogue-service/travel-activities/search?criteria=${keyword}&pageNumber=0&pageSize=10&sortField=updated_at`,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.request(options);
+
+      setCities(response.data); // Assuming the response contains the child categories
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [keyword]); // No dependencies for initial fetch
+
+  const refetch = () => {
+    setIsLoading(true);
+    fetchData();
+  };
+
+  return { activities, isSearchActivitiesLoading, searchActivitiesError, refetch };
+};
+
 export {
   getChildCategories,
   getPopularByCategory,
@@ -313,5 +354,6 @@ export {
   getDetailActivity,
   getCommentsByActivity,
   postCommentsByActivity,
-  searchActivitiesHook
+  searchActivitiesHook,
+  searchActivities
 };
